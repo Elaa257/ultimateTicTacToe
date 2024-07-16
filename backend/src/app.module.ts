@@ -2,9 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {User} from "../database/User";
-import {Game} from "../database/Game";
-import {Matchfield} from "../database/Matchfield";
+import {User} from "./user/user.entity";
+import {Game} from "./game/game.entity";
+import {Matchfield} from "./matchfield/matchfield.entity";
+import { GameService } from './game/game.service';
+import { MatchfieldController } from './matchfield/matchfield.controller';
+import { MatchfieldService } from './matchfield/matchfield.service';
 
 @Module({
   imports: [
@@ -15,7 +18,7 @@ import {Matchfield} from "../database/Matchfield";
       synchronize: true,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, MatchfieldController],
+  providers: [AppService, GameService, MatchfieldService],
 })
 export class AppModule {}

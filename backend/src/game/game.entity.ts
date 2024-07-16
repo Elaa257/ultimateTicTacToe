@@ -1,5 +1,5 @@
-import {Column, Entity, OneToOne, PrimaryGeneratedColumn, JoinColumn} from "typeorm";
-import {User} from "./User";
+import {Column, Entity, OneToOne, PrimaryGeneratedColumn, JoinColumn, CreateDateColumn} from "typeorm";
+import {User} from "../user/user.entity";
 
 @Entity()
 export class Game {
@@ -25,7 +25,7 @@ export class Game {
     @JoinColumn()
     loser: User;
 
-    @Column()
+    @CreateDateColumn({ type: 'timestamp' })
     time: Date;
 
     @Column()

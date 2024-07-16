@@ -1,5 +1,5 @@
 import {Column, Entity, OneToOne, PrimaryGeneratedColumn, JoinColumn} from "typeorm";
-import {Game} from "./Game";
+import {Game} from "../game/game.entity";
 
 @Entity()
 export class Matchfield {
