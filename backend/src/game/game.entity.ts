@@ -31,6 +31,10 @@ export class Game {
 
     @OneToOne(() => User)
     @JoinColumn()
+    turn: User;
+
+    @OneToOne(() => User)
+    @JoinColumn()
     player1: User;
 
     @OneToOne(() => User)
