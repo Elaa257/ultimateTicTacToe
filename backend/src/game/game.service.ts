@@ -1,50 +1,71 @@
-import { Injectable } from '@nestjs/common';
-import {Matchfield} from "../matchfield/matchfield.entity";
+//controls general game operations
+
+import {Injectable, NotFoundException} from '@nestjs/common';
+import {InjectRepository} from "@nestjs/typeorm";
+import {Game} from "./game.entity";
+import {Repository} from "typeorm";
+import {CreateGameDTO} from "./DTOs/createGameDTO";
+import {UpdateGameDTO} from "./DTOs/updateGameDTO";
+import {GameLogicService} from "./game-logic.service";
 
 @Injectable()
 export class GameService {
+    constructor(
+        @InjectRepository(Game)
+        private gameRepo: Repository<Game>,
+        private gameLogicService: GameLogicService,
+    ) {}
 
-    const matchfields: Matchfield[] = new Array(9).fill(null).map((_, index) => new Matchfield());
-
-
-// oder so:
-
-    int[] board = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0}
-
-// Von einem if zum simplen return
-
-boolean isValid(int[] board) {
-    return board.length == 9;
-}
-
-// Von einem if/else zu einem if mit return; ein else ist überflüssig, wenn es ein return gibt
-// Von drei if-Abfragen zum Spielbrett zu einer if-Anweisung mit Oder-Verknüpfung (||)
-// Von einer Negativ-Logik (board[i] != 0 etc.) zu einer Positiv-Logik samt continue
-// Fortgeschrittene: for(int token : board) {...} ist sehr elegant // Token = Spielstein
-
-boolean isValid(int[] board) {
-    if (board.length != 9) return false;
-    for (int i = 0; i < 9; i++) {
-        if (board[i] == 0 || board[i] == -1 || board[i] == 1) continue;
-        return false;
+    //create new game
+    async create(createGameDto: CreateGameDTO): Promise<Game> {
+        const newGame = this.gameRepo.create(createGameDto);
+        return await this.gameRepo.save(newGame);
     }
-    return true;
-}
 
-// Von if-Unterscheidungen mit jeweiligen Prints zum "Trick" mit dem char[] symbol
-// Von zwei, verschachtelten for-Schleifen zu einer for-Schleife
-// Von komplizierter Logik für println zur Modulo-Arithmetik
-// Die assert-Anweisung kennengelernt; Zweck: Als Zusicherung im Code und zum Testen von Code
-
-void printBoard(int[] board) {
-    assert isValid(board);
-    char[] symbol = {'O', '.', 'X'}; // -1, 0, +1
-    for(int i = 0; i < 9; i++) { // besser noch: i <= board.length - 1
-        System.out.print(symbol[board[i] + 1]);
-        if (i % 3 == 2) System.out.println();
+    //get all games
+    async getGames(): Promise<Game[]> {
+        return await this.gameRepo.find();
     }
-}
 
+    //get specific game
+    async getGame(id: number): Promise<Game> {
+        const game: Game = await this.gameRepo.findOne({ where: { id: id }});
+        if (game == null) {
+            throw new NotFoundException();
+        }
+        return game;
+    }
 
+    //delete a specific game
+    async deleteGame(id: number): Promise<void> {
+        if (! await this.gameRepo.exist({
+            where: {
+                id:
+                id
+            } })) {
+            throw new NotFoundException();
+        }
+        await this.gameRepo.delete(id);
+    }
 
+    //make a move
+    async makeMove(id: number, updateGameDTO: UpdateGameDTO): Promise<Game> {
+        const game: Game = await this.gameRepo.findOne({
+            where: {
+                id: id
+            }
+        });
+
+        if (game == null) { throw new NotFoundException(); }
+
+        Object.assign(game, updateGameDTO);
+        await this.gameRepo.save(game);
+
+        const gameOutcome = this.gameLogicService.calculateGameOutcome(game);
+        if(gameOutcome !== null) {
+            Object.assign(game, gameOutcome);
+            await this.gameRepo.save(game);
+        }
+        return game;
+    }
 }
