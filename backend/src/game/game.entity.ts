@@ -6,7 +6,7 @@ import {
     JoinColumn,
     CreateDateColumn,
     BeforeInsert,
-    BeforeUpdate
+    BeforeUpdate, ManyToMany, JoinTable
 } from "typeorm";
 import {User} from "../user/user.entity";
 import { validateOrReject, IsArray, ArrayMaxSize, ArrayMinSize } from 'class-validator';
@@ -63,6 +63,10 @@ export class Game {
 
     @Column()
     player2EloAfter: number;
+
+    @ManyToMany(() => User, (user) => user.games)
+    @JoinTable()
+    users: User[];
 
     @BeforeInsert()
     @BeforeUpdate()

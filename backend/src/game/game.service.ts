@@ -7,12 +7,14 @@ import {Repository} from "typeorm";
 import {CreateGameDTO} from "./DTOs/createGameDTO";
 import {UpdateGameDTO} from "./DTOs/updateGameDTO";
 import {GameLogicService} from "./game-logic.service";
+import {User} from "../user/user.entity";
 
 @Injectable()
 export class GameService {
     constructor(
         @InjectRepository(Game)
         private gameRepo: Repository<Game>,
+        private userRepo: Repository<User>,
         private gameLogicService: GameLogicService,
     ) {}
 

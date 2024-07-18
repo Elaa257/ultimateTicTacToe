@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Game} from "../game/game.entity";
 
 @Entity()
 export class User {
@@ -32,4 +33,7 @@ export class User {
 
     @Column({ default: 0 })
     draw: number;
+
+    @OneToMany(() => Game, (game) => game.users)
+    games: Game[];
 }
