@@ -242,7 +242,6 @@ describe('GameService', () => {
           jest.resetAllMocks();
       });
 
-
       it('should throw an exception if game is not found', async() => {
       (gameRepo.findOne as jest.Mock).mockResolvedValue(null);
 
