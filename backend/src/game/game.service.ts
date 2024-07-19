@@ -7,67 +7,85 @@ import {Repository} from "typeorm";
 import {CreateGameDTO} from "./DTOs/createGameDTO";
 import {UpdateGameDTO} from "./DTOs/updateGameDTO";
 import {GameLogicService} from "./game-logic.service";
-import {User} from "../user/user.entity";
 
 @Injectable()
 export class GameService {
     constructor(
         @InjectRepository(Game)
         private gameRepo: Repository<Game>,
-        private userRepo: Repository<User>,
         private gameLogicService: GameLogicService,
     ) {}
 
     //create new game
     async create(createGameDto: CreateGameDTO): Promise<Game> {
-        const newGame = this.gameRepo.create(createGameDto);
-        return await this.gameRepo.save(newGame);
+        try {
+            const newGame = this.gameRepo.create(createGameDto);
+            return await this.gameRepo.save(newGame);
+        } catch(error) {
+            console.log(error);
+            throw new Error('Could not create new game');
+        }
     }
 
     //get all games
     async getGames(): Promise<Game[]> {
-        return await this.gameRepo.find();
+        try {
+            return await this.gameRepo.find();
+        } catch(error) {
+            console.log(error);
+            return null;
+        }
     }
 
     //get specific game
     async getGame(id: number): Promise<Game> {
-        const game: Game = await this.gameRepo.findOne({ where: { id: id }});
-        if (game == null) {
-            throw new NotFoundException();
+        try {
+            return await this.gameRepo.findOne({ where: { id: id }});
+        } catch(error) {
+            console.log(error);
+            return null;
         }
-        return game;
     }
 
     //delete a specific game
     async deleteGame(id: number): Promise<void> {
-        if (! await this.gameRepo.exist({
-            where: {
-                id:
-                id
-            } })) {
-            throw new NotFoundException();
-        }
-        await this.gameRepo.delete(id);
-    }
-
-    //make a move
-    async makeMove(id: number, updateGameDTO: UpdateGameDTO): Promise<Game> {
         const game: Game = await this.gameRepo.findOne({
             where: {
                 id: id
             }
         });
-
         if (game == null) { throw new NotFoundException(); }
-
-        Object.assign(game, updateGameDTO);
-        await this.gameRepo.save(game);
-
-        const gameOutcome = this.gameLogicService.calculateGameOutcome(game);
-        if(gameOutcome !== null) {
-            Object.assign(game, gameOutcome);
-            await this.gameRepo.save(game);
+        try {
+            await this.gameRepo.delete(id);
+        } catch(error) {
+            console.log(error);
+            throw new Error('Game could not be deleted');
         }
-        return game;
+    }
+
+    //make a move
+    async makeMove(id: number, updateGameDTO: UpdateGameDTO): Promise<Game> {
+        let game: Game = await this.gameRepo.findOne({
+            where: {
+                id: id
+            }
+        });
+
+        if (game === null) { throw new NotFoundException(); }
+
+        try {
+            Object.assign(game, updateGameDTO);
+            game = await this.gameRepo.save(game);
+
+            const gameOutcome = await this.gameLogicService.calculateGameOutcome(game);
+            if(gameOutcome !== null) {
+                Object.assign(game, gameOutcome);
+                game = await this.gameRepo.save(game);
+            }
+            return game;
+        } catch(error) {
+            console.log(error);
+            throw new Error('An error occured while making the move');
+        }
     }
 }
