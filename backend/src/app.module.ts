@@ -2,20 +2,22 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {User} from "../database/User";
-import {Game} from "../database/Game";
-import {Matchfield} from "../database/Matchfield";
+import {User} from "./user/user.entity";
+import {Game} from "./game/game.entity";
+import { GameService } from './game/game.service';
+import {GameController} from "./game/game.controller";
+import { GameLogicService } from './game/game-logic.service';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: './tmp.sqlite',
-      entities: [User, Game, Matchfield],
+      entities: [User, Game],
       synchronize: true,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, GameController],
+  providers: [AppService, GameService, GameLogicService],
 })
 export class AppModule {}
