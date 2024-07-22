@@ -4,13 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2c6741a-4650-489e-ae3d-1f272856c49b" name="Changes" comment="test">
+    <list default="true" id="b2c6741a-4650-489e-ae3d-1f272856c49b" name="Changes" comment="Login and Register lifecycle in backend">
+      <change afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/registerDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/app.controller.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/app.controller.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tmp.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tmp.sqlite" afterDir="false" />
+    </list>
+    <list id="94806782-b721-4e79-a0d0-9c7bdeb9e50b" name="Changes by leonf" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/src/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -20,10 +37,23 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;MrVioz&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Elaa257/ultimateTicTacToe.git&quot;,
+    &quot;accountId&quot;: &quot;553ad790-f486-46ae-8cff-0a0be3fefb76&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2jKyk11HFxOPXUtazkUA2ObDdic" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -31,30 +61,28 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "5-create-the-game-logic",
-    "last_opened_file_path": "C:/Users/lisbe/git/code-verzeichnis/KMS/to-do",
+    "git-widget-placeholder": "13-create-user-register",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\lisbe\\git\\code-verzeichnis\\ultimateTicTacToe\\backend\\node_modules\\typescript\\lib",
+    "prettier.import.notification.dismissed": "true",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "ts.external.directory.path": "C:\\Users\\Jan (Uni)\\WebstormProjects\\ultimateTicTacToe\\backend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src\game" />
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src\game\DTOs" />
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src\matchfield" />
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src\user" />
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src" />
+      <recent name="C:\Users\Jan (Uni)\WebstormProjects\ultimateTicTacToe\backend\src\auth" />
+      <recent name="C:\Users\Jan (Uni)\WebstormProjects\ultimateTicTacToe\backend\src" />
     </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-WS-241.15989.105" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.18034.50" />
       </set>
     </attachedChunks>
   </component>
@@ -66,7 +94,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1721150203675</updated>
-      <workItem from="1721150205591" duration="12854000" />
+      <workItem from="1721150205591" duration="313000" />
+      <workItem from="1721637031037" duration="8011000" />
+      <workItem from="1721648679806" duration="3732000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -82,8 +112,23 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/backend" />
+    </ignored-roots>
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="Login and Register lifecycle in backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="Login and Register lifecycle in backend" />
   </component>
 </project>
