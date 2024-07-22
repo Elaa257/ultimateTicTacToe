@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {User} from "../database/User";
 import {Game} from "../database/Game";
 import {Matchfield} from "../database/Matchfield";
+import {AuthModule} from "./auth/auth.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import {Matchfield} from "../database/Matchfield";
       entities: [User, Game, Matchfield],
       synchronize: true,
     }),
+      AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
