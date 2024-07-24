@@ -1,11 +1,13 @@
 // user.service.ts
-import {Injectable, HttpException, HttpStatus, Res} from '@nestjs/common';
+import {Injectable, HttpException, HttpStatus, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import {Repository, UpdateResult} from 'typeorm';
 import { Repository } from 'typeorm';
 import {registerDTO} from "./DTOs/registerDTO";
 import * as crypto from 'crypto';
 import {loginDTO} from "./DTOs/loginDTO";
 import {JwtService} from "@nestjs/jwt";
+import {UpdateDTO} from "./DTOs/updateDTO";
 import {User} from "../user/user.entity";
 
 @Injectable()
@@ -16,30 +18,12 @@ export class UserService {
         private jwtService: JwtService,
     ) {}
 
-    async register(registerDTO: registerDTO): Promise<User> {
-        await this.validateRegisterInputs(registerDTO.email, registerDTO.password, registerDTO.nickname);
-
-        const user = this.userRepository.create({
+    async register(registerDTO: registerDTO): Promise<User> {        const user = this.userRepository.create({
             ...registerDTO,
             password: this.hashPassword(registerDTO.password),
+            role: registerDTO.role
         });
         return this.userRepository.save(user);
-    }
-
-    async validateRegisterInputs(email: string, password: string, nickname: string): Promise<void> {
-        const user = await this.userRepository.findOne({ where: { email } });
-        if (user) {
-            throw new HttpException('User with this email already exists', HttpStatus.BAD_REQUEST);
-        }
-        if (email.trim().length === 0 || nickname.trim().length === 0) {
-            throw new HttpException('You need to choose valid characters', HttpStatus.BAD_REQUEST);
-        }
-        if (!email.includes('@')) {
-            throw new HttpException('The email is invalid, needs to contain "@" symbol', HttpStatus.BAD_REQUEST);
-        }
-        if (password.length < 8 || password.trim().length === 0) {
-            throw new HttpException('The password must contain more than 8 characters', HttpStatus.BAD_REQUEST);
-        }
     }
 
     async validateUser(email: string, password: string): Promise<User> {
@@ -55,7 +39,7 @@ export class UserService {
 
     async login(loginDTO: loginDTO): Promise<{ access_token: string, user: Partial<User> }> {
         const user = await this.validateUser(loginDTO.email, loginDTO.password);
-        const payload = { sub: user.id, username: user.nickname, email: user.email };
+        const payload = { sub: user.id, username: user.nickname, email: user.email, role: user.role };
         const access_token = await this.jwtService.signAsync(payload);
 
         const { password, ...userWithoutPassword } = user;
@@ -71,10 +55,28 @@ export class UserService {
         return hashedPassword === storedPasswordHash;
     }
 
+    async getUser(id:number){
+        return await this.userRepository.findOne({ where: { id } });
+    }
+    async getUsers(){
+        return await this.userRepository.find();
+    }
 
+    async updateUser(nickname: string, updateUser: UpdateDTO): Promise<UpdateResult> {
+        if(!updateUser){
+            throw new HttpException("User not Fund", 404)
+        }
+        return await this.userRepository.update(nickname, {
+            ...updateUser,
+            password: this.hashPassword(updateUser.password)
+        });
+    }
+
+    async deleteUserProfile(nickname: string){
+        return await this.userRepository.delete(nickname);
+    }
 
     async delete(id: number){
-
         return await this.userRepository.delete(id)
     }
 }

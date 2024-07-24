@@ -7,6 +7,8 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
+  app.setGlobalPrefix('api'); // Hier wird der globale Präfix gesetzt
+
 
   const config = new DocumentBuilder()
       .setTitle('Cats example')
