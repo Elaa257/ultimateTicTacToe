@@ -1,0 +1,199 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"b2c6741a-4650-489e-ae3d-1f272856c49b\" name=\"Changes\" comment=\"test\">\r\n      <change beforePath=\"$PROJECT_DIR$/.eslintrc.js\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gitignore\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.prettierrc\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/nest-cli.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/package-lock.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/package.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/app.controller.spec.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/app.controller.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/app.module.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/app.service.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/test/app.e2e-spec.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/test/jest-e2e.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/tsconfig.build.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/tsconfig.json\" beforeDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"associatedIndex\": 7\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"2jKyk11HFxOPXUtazkUA2ObDdic\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"git-widget-placeholder\": \"dev\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-WS-241.15989.105\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"b2c6741a-4650-489e-ae3d-1f272856c49b\" name=\"Changes\" comment=\"\" />\r\n      <created>1721150203675</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1721150203675</updated>\r\n      <workItem from=\"1721150205591\" duration=\"313000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"test\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721150326310</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721150326310</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"test\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"test\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 5e75f527c02188596836e8a4982531785e14a233)
++++ b/.idea/workspace.xml	(date 1721810633378)
+@@ -1,60 +1,111 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="AutoImportSettings">
++    <option name="autoReloadType" value="SELECTIVE" />
++  </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="b2c6741a-4650-489e-ae3d-1f272856c49b" name="Changes" comment="test">
+-      <change beforePath="$PROJECT_DIR$/.eslintrc.js" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.prettierrc" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/nest-cli.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/app.controller.spec.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/app.controller.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/app.module.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/app.service.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/test/app.e2e-spec.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/test/jest-e2e.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/tsconfig.build.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
++    <list default="true" id="b2c6741a-4650-489e-ae3d-1f272856c49b" name="Changes" comment="Login and Register lifecycle in backend">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+     </list>
++    <list id="94806782-b721-4e79-a0d0-9c7bdeb9e50b" name="Changes by leonf" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="FileTemplateManagerImpl">
++    <option name="RECENT_TEMPLATES">
++      <list>
++        <option value="TypeScript File" />
++      </list>
++    </option>
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_BRANCH_BY_REPOSITORY">
+       <map>
+-        <entry key="$PROJECT_DIR$" value="main" />
++        <entry key="$PROJECT_DIR$" value="13-create-user-register" />
+       </map>
+     </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 7
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;MrVioz&quot;
++  }
++}</component>
++  <component name="GithubPullRequestsUISettings"><![CDATA[{
++  "selectedUrlAndAccountId": {
++    "url": "https://github.com/Elaa257/ultimateTicTacToe.git",
++    "accountId": "553ad790-f486-46ae-8cff-0a0be3fefb76"
++  },
++  "recentNewPullRequestHead": {
++    "server": {
++      "useHttp": false,
++      "host": "github.com",
++      "port": null,
++      "suffix": null
++    },
++    "owner": "Elaa257",
++    "repository": "ultimateTicTacToe"
++  }
+ }]]></component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 7
++}</component>
+   <component name="ProjectId" id="2jKyk11HFxOPXUtazkUA2ObDdic" />
++  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+   <component name="PropertiesComponent"><![CDATA[{
+   "keyToString": {
++    "Jest.UserService.executor": "Run",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "git-widget-placeholder": "dev",
+     "node.js.detected.package.eslint": "true",
+     "node.js.detected.package.tslint": "true",
+     "node.js.selected.package.eslint": "(autodetect)",
+     "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs.jest.jest_package": "C:/Users/Jan (Uni)/WebstormProjects/ultimateTicTacToe/backend/node_modules/jest",
+     "nodejs_package_manager_path": "npm",
++    "prettier.import.notification.dismissed": "true",
++    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
++    "ts.external.directory.path": "C:\\Users\\Jan (Uni)\\WebstormProjects\\ultimateTicTacToe\\frontend\\node_modules\\typescript\\lib",
+     "vue.rearranger.settings.migration": "true"
+   }
+ }]]></component>
++  <component name="RecentsManager">
++    <key name="MoveFile.RECENT_KEYS">
++      <recent name="C:\Users\Jan (Uni)\WebstormProjects\ultimateTicTacToe\frontend\src\app\assets" />
++      <recent name="C:\Users\Jan (Uni)\WebstormProjects\ultimateTicTacToe\backend\src\auth" />
++      <recent name="C:\Users\Jan (Uni)\WebstormProjects\ultimateTicTacToe\backend\src" />
++    </key>
++  </component>
++  <component name="RunManager">
++    <configuration name="UserService" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
++      <node-interpreter value="project" />
++      <jest-package value="$PROJECT_DIR$/backend/node_modules/jest" />
++      <working-dir value="$PROJECT_DIR$/backend" />
++      <envs />
++      <scope-kind value="SUITE" />
++      <test-file value="$PROJECT_DIR$/backend/src/auth/user.service.spec.ts" />
++      <test-names>
++        <test-name value="UserService" />
++      </test-names>
++      <method v="2" />
++    </configuration>
++    <recent_temporary>
++      <list>
++        <item itemvalue="Jest.UserService" />
++      </list>
++    </recent_temporary>
++  </component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+       <set>
+-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-WS-241.15989.105" />
++        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.18034.50" />
+       </set>
+     </attachedChunks>
+   </component>
+@@ -67,6 +118,15 @@
+       <option name="presentableId" value="Default" />
+       <updated>1721150203675</updated>
+       <workItem from="1721150205591" duration="313000" />
++      <workItem from="1721637031037" duration="8011000" />
++      <workItem from="1721648679806" duration="3961000" />
++      <workItem from="1721654969117" duration="2642000" />
++      <workItem from="1721658051068" duration="376000" />
++      <workItem from="1721658808854" duration="1051000" />
++      <workItem from="1721721901039" duration="9392000" />
++      <workItem from="1721736702048" duration="36000" />
++      <workItem from="1721808140183" duration="1039000" />
++      <workItem from="1721810000523" duration="583000" />
+     </task>
+     <task id="LOCAL-00001" summary="test">
+       <option name="closed" value="true" />
+@@ -76,14 +136,37 @@
+       <option name="project" value="LOCAL" />
+       <updated>1721150326310</updated>
+     </task>
+-    <option name="localTasksCounter" value="2" />
++    <task id="LOCAL-00002" summary="Login and Register lifecycle in backend">
++      <option name="closed" value="true" />
++      <created>1721810109747</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1721810109747</updated>
++    </task>
++    <option name="localTasksCounter" value="3" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="Vcs.Log.Tabs.Properties">
++    <option name="TAB_STATES">
++      <map>
++        <entry key="MAIN">
++          <value>
++            <State />
++          </value>
++        </entry>
++      </map>
++    </option>
++  </component>
+   <component name="VcsManagerConfiguration">
++    <ignored-roots>
++      <path value="$PROJECT_DIR$/backend" />
++    </ignored-roots>
+     <MESSAGE value="test" />
+-    <option name="LAST_COMMIT_MESSAGE" value="test" />
++    <MESSAGE value="Login and Register lifecycle in backend" />
++    <option name="LAST_COMMIT_MESSAGE" value="Login and Register lifecycle in backend" />
+   </component>
+ </project>
+\ No newline at end of file

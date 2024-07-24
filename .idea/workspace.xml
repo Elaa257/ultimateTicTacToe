@@ -4,13 +4,39 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2c6741a-4650-489e-ae3d-1f272856c49b" name="Changes" comment="test">
+    <list default="true" id="b2c6741a-4650-489e-ae3d-1f272856c49b" name="Changes" comment="Login and Register lifecycle in backend">
+      <change afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/multipleUsersResponseDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/responseDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/responseUserDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/auth/session/cookie.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/DTOs/loginDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/loginDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/DTOs/registerDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/registerDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/DTOs/updateDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/updateDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/jwt/auth.guard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/jwt/auth.guard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/user/user.entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/user/user.entity.ts" afterDir="false" />
+    </list>
+    <list id="94806782-b721-4e79-a0d0-9c7bdeb9e50b" name="Changes by leonf" comment="" />
+    <list id="044619df-2daa-4203-ab65-6bb55245d86f" name="Changes by lisbe" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -20,41 +46,114 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;MrVioz&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Elaa257/ultimateTicTacToe.git&quot;,
+    &quot;accountId&quot;: &quot;553ad790-f486-46ae-8cff-0a0be3fefb76&quot;
+  }
+}</component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/backend/src/auth/user.service.ts">
+      <ranges>
+        <range start1="4" end1="5" start2="4" end2="6" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="6" end1="7" start2="7" end2="8" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="10" end1="10" start2="11" end2="14" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="19" end1="25" start2="23" end2="35" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="38" end1="42" start2="48" end2="54" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="43" end1="45" start2="55" end2="59" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="56" end1="58" start2="70" end2="77" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="59" end1="61" start2="78" end2="86" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="63" end1="71" start2="88" end2="100" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="73" end1="75" start2="102" end2="116" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="76" end1="76" start2="117" end2="128" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="77" end1="79" start2="129" end2="131" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/backend/src/auth/user.controller.ts">
+      <ranges>
+        <range start1="7" end1="8" start2="7" end2="8" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="10" end1="11" start2="10" end2="11" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="13" end1="14" start2="13" end2="14" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="15" end1="16" start2="15" end2="15" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="17" end1="18" start2="16" end2="17" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="24" end1="24" start2="23" end2="29" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="27" end1="28" start2="32" end2="34" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="30" end1="31" start2="36" end2="37" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="33" end1="33" start2="39" end2="40" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="34" end1="38" start2="41" end2="53" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="39" end1="45" start2="54" end2="54" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="47" end1="50" start2="56" end2="63" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="55" end1="61" start2="68" end2="71" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="63" end1="64" start2="73" end2="73" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="67" end1="70" start2="76" end2="78" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="74" end1="80" start2="82" end2="84" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="84" end1="85" start2="88" end2="89" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="90" end1="99" start2="94" end2="96" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+      </ranges>
+    </file>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2jKyk11HFxOPXUtazkUA2ObDdic" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Jest.UserService.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "5-create-the-game-logic",
-    "last_opened_file_path": "C:/Users/lisbe/git/code-verzeichnis/KMS/to-do",
+    "git-widget-placeholder": "#16 on 13-create-user-register",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/Jan (Uni)/WebstormProjects/ultimateTicTacToe/backend/node_modules/jest",
     "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\lisbe\\git\\code-verzeichnis\\ultimateTicTacToe\\backend\\node_modules\\typescript\\lib",
+    "prettier.import.notification.dismissed": "true",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "ts.external.directory.path": "C:\\Users\\Jan (Uni)\\WebstormProjects\\ultimateTicTacToe\\frontend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src\game" />
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src\game\DTOs" />
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src\matchfield" />
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src\user" />
-      <recent name="C:\Users\lisbe\git\code-verzeichnis\ultimateTicTacToe\backend\src" />
+      <recent name="C:\Users\Jan (Uni)\WebstormProjects\ultimateTicTacToe\frontend\src\app\assets" />
+      <recent name="C:\Users\Jan (Uni)\WebstormProjects\ultimateTicTacToe\backend\src\auth" />
+      <recent name="C:\Users\Jan (Uni)\WebstormProjects\ultimateTicTacToe\backend\src" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="UserService" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/backend/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/backend" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/backend/src/auth/user.service.spec.ts" />
+      <test-names>
+        <test-name value="UserService" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Jest.UserService" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-WS-241.15989.105" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.18034.50" />
       </set>
     </attachedChunks>
   </component>
@@ -66,7 +165,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1721150203675</updated>
-      <workItem from="1721150205591" duration="12854000" />
+      <workItem from="1721150205591" duration="313000" />
+      <workItem from="1721637031037" duration="8011000" />
+      <workItem from="1721648679806" duration="3961000" />
+      <workItem from="1721654969117" duration="2642000" />
+      <workItem from="1721658051068" duration="376000" />
+      <workItem from="1721658808854" duration="1051000" />
+      <workItem from="1721721901039" duration="9392000" />
+      <workItem from="1721736702048" duration="36000" />
+      <workItem from="1721808140183" duration="1039000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -76,14 +183,45 @@
       <option name="project" value="LOCAL" />
       <updated>1721150326310</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Login and Register lifecycle in backend">
+      <option name="closed" value="true" />
+      <created>1721811553087</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1721811553087</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Login and Register lifecycle in backend">
+      <option name="closed" value="true" />
+      <created>1721811753075</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1721811753075</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/backend" />
+    </ignored-roots>
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="Login and Register lifecycle in backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="Login and Register lifecycle in backend" />
   </component>
 </project>

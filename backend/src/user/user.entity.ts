@@ -1,3 +1,4 @@
+import {Role} from "../auth/roles/enum.roles";
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Game} from "../game/game.entity";
 
@@ -15,9 +16,11 @@ export class User {
     @Column({ unique: true })
     nickname: string;
 
-    @Column({ default: 1 })
-        // 0 = Admin | 1 = Client
-    roleID: number;
+    @Column({
+        type: 'text',
+        default: Role.User
+    })
+    role: string
 
     @Column({ default: 1000 })
     elo: number;
