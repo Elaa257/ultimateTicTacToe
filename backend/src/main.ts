@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
-import * as session from 'express-session';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -27,20 +26,20 @@ async function bootstrap() {
     secret: 'my-secret', // for signed cookies
   });
 
+  /*
   app.use(session({
     secret: 'my-secret',
     resave: false,
     saveUninitialized: false,
   }));
-  app.setGlobalPrefix('api'); // Hier wird der globale Präfix gesetzt
-
+  app.setGlobalPrefix('api');
+*/
 
 
   const config = new DocumentBuilder()
-      .setTitle('Cats example')
-      .setDescription('The cats API description')
+      .setTitle('Ultimate TicTacToe')
+      .setDescription('The ultimate TicTacToe API description')
       .setVersion('1.0')
-      .addTag('cats')
       .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

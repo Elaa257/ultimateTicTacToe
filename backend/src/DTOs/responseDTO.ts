@@ -1,8 +1,9 @@
 import {ApiProperty} from "@nestjs/swagger";
 
-export class Response{
+export class ResponseDTO {
     @ApiProperty()
     ok:boolean;
+    @ApiProperty()
     message:string;
 
     constructor(ok:boolean, message:string){

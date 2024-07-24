@@ -49,7 +49,7 @@ export class Game {
     @JoinColumn()
     loser: User;
 
-    @CreateDateColumn({ type: 'timestamp' })
+    @CreateDateColumn({ type: 'date' })
     time: Date;
 
     @Column()
