@@ -5,98 +5,95 @@ import {
     Get,
     HttpStatus,
     NotFoundException,
-    Param,
+    Param, ParseIntPipe,
     Post,
     Put, Req,
-    Res,
+    Res, Session,
     UseGuards
 } from '@nestjs/common';
-import {registerDTO} from "./DTOs/registerDTO";
+import {RegisterDTO} from "./DTOs/registerDTO";
 import {UserService} from "./user.service";
-import {loginDTO} from "./DTOs/loginDTO";
 import {UpdateDTO} from "./DTOs/updateDTO";
-import { Response, Request } from 'express';
+import {Response} from './DTOs/responseDTO';
 import {JwtAuthGuard} from "./jwt/auth.guard";
 import {UpdateResult} from "typeorm";
 import {Roles} from "./roles/roles.decorator";
 import {Role} from "./roles/enum.roles";
 import {RolesGuard} from "./roles/roles.guard";
 import {User} from "../user/user.entity";
+import {SessionData} from "express-session";
+import {LoginDTO} from "./DTOs/loginDTO";
+import {FastifyReply} from 'fastify';
+import {ResponseUserDTO} from "./DTOs/responseUserDTO";
+import {MultiUsersResponseDTO} from "./DTOs/multipleUsersResponseDTO";
+
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService) {
+    }
 
     @Post('register')
-    async register(@Body() registerDTO: registerDTO): Promise<User> {
+    async register(@Body() registerDTO: RegisterDTO): Promise<Response> {
         return this.userService.register(registerDTO);
     }
-    @Post('login')
-    async login(@Body() loginDTO: loginDTO, @Res() res: Response): Promise<Response> {
-        const { access_token, user } = await this.userService.login(loginDTO);
-        res.cookie('access_token', access_token, { httpOnly: true });
-        return res.json({ user });
-    }
 
-    @UseGuards(JwtAuthGuard)
-    @Get('protected')
-    getProtectedRoute() {
-        return { message: 'This is a protected route' };
+    @Post('login')
+    async login(
+        @Session() session: SessionData,
+        @Body() loginDto: LoginDTO,
+        @Res() reply: FastifyReply
+    ): Promise<Response> {
+        const {access_token, response} = await this.userService.login(loginDto, session);
+        reply
+            .setCookie('access_token', access_token, {
+                httpOnly: true, // Makes the cookie accessible only by web server
+            })
+        return response;
+
     }
 
     @Post('logout')
-    async logout(@Res() res: Response): Promise<Response> {
-        res.clearCookie('access_token');
-        return res.status(HttpStatus.OK).json({message: 'Logged out successfully'});
+    async logout(
+        @Session() session: SessionData,
+        @Res() reply: FastifyReply
+    ): Promise<Response> {
+        reply.clearCookie('access_token');
+        session.isLoggedIn = undefined;
+        return new Response(true, "logged out successfully")
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.User)
     @Delete('deleteUserProfile')
-    async deleteOwnProfile(@Req() req: Request, @Res() res: Response): Promise<Response> {
-        const user = req.user as any;
-        const username = user.username;
-
-        await this.userService.deleteUserProfile(username);
-        return res.status(200).json({ message: 'User profile deleted successfully' });
+    async deleteOwnProfile(@Session() session: SessionData): Promise<Response> {
+        const user = (await this.userService.getLoggedInUser(session)).user;
+        return await this.userService.deleteUserProfile(user.id);
     }
-
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin)
     @Delete('delete/:id')
-    async delete(@Param('id') id: string, @Res() res: Response): Promise<Response> {
-        await this.userService.delete(Number(id));
-        return res.status(200).json({ message: 'User deleted successfully' });
+    async delete(@Param('id', ParseIntPipe) id: number): Promise<Response> {
+        return await this.userService.deleteUserProfile(id);
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('user/:id')
-    async getOneUser(@Param('id') id: string): Promise<User> {
-        const user = await this.userService.getUser(Number(id));
-        if(!user){
-            throw new NotFoundException('User not found');
-        }
-        return user;
+    async getOneUser(@Param('id') id: string): Promise<ResponseUserDTO> {
+        return await this.userService.getUser(Number(id));
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('users')
-    async getAllUsers(): Promise<User[]> {
+    async getAllUsers(): Promise<MultiUsersResponseDTO> {
         return await this.userService.getUsers();
     }
 
     @UseGuards(JwtAuthGuard)
     @Put('update')
-    async updateUser(@Req() req: Request, @Body() updateUserDTO: UpdateDTO): Promise<UpdateResult> {
-        const user = req.user as any
-        const nickname = user.username
-
-        const updatedUser = await this.userService.updateUser(nickname, updateUserDTO);
-        if (!updatedUser) {
-            throw new NotFoundException('User not found');
-        }
-        return updatedUser;
+    async updateUser(@Session() session: SessionData, @Body() updateUserDTO: UpdateDTO): Promise<Response> {
+        return await this.userService.updateUser(session, updateUserDTO);
     }
 
 }

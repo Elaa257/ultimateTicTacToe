@@ -5,30 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2c6741a-4650-489e-ae3d-1f272856c49b" name="Changes" comment="Login and Register lifecycle in backend">
-      <change afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/updateDTO.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/assets/pexels-manei-2690323.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/multipleUsersResponseDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/responseDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/responseUserDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/auth/session/cookie.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/DTOs/loginDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/loginDTO.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/auth/DTOs/registerDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/registerDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/DTOs/updateDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/updateDTO.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/auth/jwt/auth.guard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/jwt/auth.guard.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/auth/jwt/jwt.strategy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/jwt/jwt.strategy.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/auth/user.service.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.service.spec.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/auth/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/tmp.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tmp.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/angular.json" afterDir="false" />
-    </list>
-    <list id="94806782-b721-4e79-a0d0-9c7bdeb9e50b" name="Changes by leonf" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/auth/roles/enum.roles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/auth/roles/roles.decorator.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/auth/roles/roles.guard.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/database/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/User.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/auth/DTOs/registerDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/DTOs/registerDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/user/user.entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/user/user.entity.ts" afterDir="false" />
+    </list>
+    <list id="94806782-b721-4e79-a0d0-9c7bdeb9e50b" name="Changes by leonf" comment="" />
+    <list id="044619df-2daa-4203-ab65-6bb55245d86f" name="Changes by lisbe" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/user.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,31 +59,42 @@
   }
 }</component>
   <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/backend/src/auth/DTOs/registerDTO.ts">
+    <file path="$PROJECT_DIR$/backend/src/auth/user.service.ts">
       <ranges>
-        <range start1="0" end1="0" start2="0" end2="3" changelist="94806782-b721-4e79-a0d0-9c7bdeb9e50b" />
-        <range start1="1" end1="1" start2="4" end2="6" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
-        <range start1="2" end1="2" start2="7" end2="9" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
-        <range start1="3" end1="3" start2="10" end2="13" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
-        <range start1="4" end1="4" start2="14" end2="16" changelist="94806782-b721-4e79-a0d0-9c7bdeb9e50b" />
+        <range start1="4" end1="5" start2="4" end2="6" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="6" end1="7" start2="7" end2="8" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="10" end1="10" start2="11" end2="14" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="19" end1="25" start2="23" end2="35" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="38" end1="42" start2="48" end2="54" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="43" end1="45" start2="55" end2="59" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="56" end1="58" start2="70" end2="77" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="59" end1="61" start2="78" end2="86" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="63" end1="71" start2="88" end2="100" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="73" end1="75" start2="102" end2="116" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="76" end1="76" start2="117" end2="128" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="77" end1="79" start2="129" end2="131" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
       </ranges>
     </file>
     <file path="$PROJECT_DIR$/backend/src/auth/user.controller.ts">
       <ranges>
-        <range start1="0" end1="1" start2="0" end2="13" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
-        <range start1="5" end1="6" start2="17" end2="19" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
-        <range start1="7" end1="7" start2="20" end2="24" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
-        <range start1="37" end1="37" start2="54" end2="66" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
-        <range start1="38" end1="39" start2="67" end2="69" changelist="94806782-b721-4e79-a0d0-9c7bdeb9e50b" />
-        <range start1="41" end1="42" start2="71" end2="71" changelist="94806782-b721-4e79-a0d0-9c7bdeb9e50b" />
-        <range start1="45" end1="45" start2="74" end2="103" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/backend/src/app.module.ts">
-      <ranges>
-        <range start1="8" end1="8" start2="8" end2="11" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
-        <range start1="17" end1="18" start2="20" end2="25" changelist="94806782-b721-4e79-a0d0-9c7bdeb9e50b" />
-        <range start1="20" end1="21" start2="27" end2="28" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="7" end1="8" start2="7" end2="8" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="10" end1="11" start2="10" end2="11" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="13" end1="14" start2="13" end2="14" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="15" end1="16" start2="15" end2="15" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="17" end1="18" start2="16" end2="17" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="24" end1="24" start2="23" end2="29" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="27" end1="28" start2="32" end2="34" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="30" end1="31" start2="36" end2="37" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="33" end1="33" start2="39" end2="40" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="34" end1="38" start2="41" end2="53" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="39" end1="45" start2="54" end2="54" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="47" end1="50" start2="56" end2="63" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="55" end1="61" start2="68" end2="71" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="63" end1="64" start2="73" end2="73" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="67" end1="70" start2="76" end2="78" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="74" end1="80" start2="82" end2="84" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
+        <range start1="84" end1="85" start2="88" end2="89" changelist="044619df-2daa-4203-ab65-6bb55245d86f" />
+        <range start1="90" end1="99" start2="94" end2="96" changelist="b2c6741a-4650-489e-ae3d-1f272856c49b" />
       </ranges>
     </file>
   </component>
@@ -104,7 +111,7 @@
   "keyToString": {
     "Jest.UserService.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "13-create-user-register",
+    "git-widget-placeholder": "#16 on 13-create-user-register",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -176,7 +183,23 @@
       <option name="project" value="LOCAL" />
       <updated>1721150326310</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Login and Register lifecycle in backend">
+      <option name="closed" value="true" />
+      <created>1721811553087</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1721811553087</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Login and Register lifecycle in backend">
+      <option name="closed" value="true" />
+      <created>1721811753075</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1721811753075</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

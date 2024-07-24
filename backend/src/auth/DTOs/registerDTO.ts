@@ -1,7 +1,7 @@
 import {Role} from "../roles/enum.roles";
 import {IsEmail, IsNotEmpty, MinLength} from "class-validator";
 
-export class registerDTO{
+export class RegisterDTO{
 
     @IsNotEmpty()
     nickname:string;

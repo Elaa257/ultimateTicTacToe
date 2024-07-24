@@ -2,12 +2,16 @@
 import {Injectable, HttpException, HttpStatus, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository, UpdateResult} from 'typeorm';
-import {registerDTO} from "./DTOs/registerDTO";
+import {Response} from './DTOs/responseDTO';
+import {RegisterDTO} from "./DTOs/registerDTO";
 import * as crypto from 'crypto';
-import {loginDTO} from "./DTOs/loginDTO";
+import {LoginDTO} from "./DTOs/loginDTO";
 import {JwtService} from "@nestjs/jwt";
 import {UpdateDTO} from "./DTOs/updateDTO";
 import {User} from "../user/user.entity";
+import {SessionData} from "express-session";
+import {ResponseUserDTO} from "./DTOs/responseUserDTO";
+import {MultiUsersResponseDTO} from "./DTOs/multipleUsersResponseDTO";
 
 @Injectable()
 export class UserService {
@@ -17,12 +21,18 @@ export class UserService {
         private jwtService: JwtService,
     ) {}
 
-    async register(registerDTO: registerDTO): Promise<User> {        const user = this.userRepository.create({
-            ...registerDTO,
-            password: this.hashPassword(registerDTO.password),
-            role: registerDTO.role
-        });
-        return this.userRepository.save(user);
+    async register(registerDTO: RegisterDTO): Promise<Response> {
+        try {
+            const user = this.userRepository.create({
+                ...registerDTO,
+                password: this.hashPassword(registerDTO.password),
+                role: registerDTO.role
+            });
+            await this.userRepository.save(user);
+            return new Response(true, "Successfully created new user");
+        } catch(error) {
+            return new Response(false, `New user could not be created ${error}` );
+        }
     }
 
     async validateUser(email: string, password: string): Promise<User> {
@@ -36,13 +46,17 @@ export class UserService {
         return user;
     }
 
-    async login(loginDTO: loginDTO): Promise<{ access_token: string, user: Partial<User> }> {
-        const user = await this.validateUser(loginDTO.email, loginDTO.password);
-        const payload = { sub: user.id, username: user.nickname, email: user.email, role: user.role };
-        const access_token = await this.jwtService.signAsync(payload);
+    async login(loginDTO: LoginDTO, session: SessionData): Promise<{ access_token?: string, response:Response}> {
+        try {
+            const user = await this.validateUser(loginDTO.email, loginDTO.password);
+            session.isLoggedIn = true;
+            const payload = { sub: user.id, username: user.nickname, email: user.email, role: user.role };
+            const access_token = await this.jwtService.signAsync(payload);
 
-        const { password, ...userWithoutPassword } = user;
-        return { access_token, user: userWithoutPassword };
+            return { access_token, response: new Response(true, `User: ${user.nickname}, has successfully logged in`)};
+        } catch(error) {
+            return {response: new Response(false, `Login failed ${error}`)};
+        }
     }
 
     private hashPassword(password: string): string {
@@ -54,28 +68,66 @@ export class UserService {
         return hashedPassword === storedPasswordHash;
     }
 
-    async getUser(id:number){
-        return await this.userRepository.findOne({ where: { id } });
-    }
-    async getUsers(){
-        return await this.userRepository.find();
-    }
-
-    async updateUser(nickname: string, updateUser: UpdateDTO): Promise<UpdateResult> {
-        if(!updateUser){
-            throw new HttpException("User not Fund", 404)
+    async getUser(id:number): Promise<ResponseUserDTO>{
+        try {
+            const user = await this.userRepository.findOne({ where: { id } });
+            return new ResponseUserDTO(`User ${user.id} found successfully`, user);
+        } catch(error) {
+            return new ResponseUserDTO(`User with id ${id} could not be found`);
         }
-        return await this.userRepository.update(nickname, {
-            ...updateUser,
-            password: this.hashPassword(updateUser.password)
-        });
     }
 
-    async deleteUserProfile(nickname: string){
-        return await this.userRepository.delete(nickname);
+    async getUsers(): Promise<MultiUsersResponseDTO> {
+        try {
+            const users = await this.userRepository.find();
+            return new MultiUsersResponseDTO('Successfully retrieved all avaible users', users);
+        } catch(error) {
+            return new MultiUsersResponseDTO(`Database error`);
+        }
     }
 
-    async delete(id: number){
-        return await this.userRepository.delete(id)
+    async updateUser(session:SessionData, updateUser: UpdateDTO): Promise<Response> {
+        try {
+            const userResponse = await this.getLoggedInUser(session)
+            await this.userRepository.update(userResponse.user.id, {
+                ...updateUser,
+                password: this.hashPassword(updateUser.password)
+            });
+            return new Response(true,"updated Account successfully")
+        } catch(error) {
+            console.log(error);
+            return new Response(false,"User could not be updated " + error);
+        }
+    }
+
+
+    async deleteUserProfile(id: number){
+        const user =  await this.userRepository.findOne({ where: { id: id } });
+        if (!user){
+            return new Response(false, "User not found");
+        }
+        try {
+            await this.userRepository.delete(user.id);
+            return new Response(true, "Account successfully deleted");
+        }
+        catch (error){
+            return new Response(false, `User couldn't be deleted ${error}` );
+        }
+
+    }
+    async getLoggedInUser(session:SessionData): Promise<ResponseUserDTO>{
+        if (!session.isLoggedIn){
+            return new ResponseUserDTO("Unauthorized");
+        }
+
+        try {
+            const user = await this.userRepository.findOne({ where: {email: session.email } });
+            return new ResponseUserDTO(`User with the ID: ${user.id} is logged in`,user);
+        }catch (error){
+            return new ResponseUserDTO(`user couldn't found ${error}`)
+        }
+
+
+
     }
 }
