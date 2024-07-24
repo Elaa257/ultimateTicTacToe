@@ -2,7 +2,6 @@
 import {Injectable, HttpException, HttpStatus, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository, UpdateResult} from 'typeorm';
-import { Repository } from 'typeorm';
 import {registerDTO} from "./DTOs/registerDTO";
 import * as crypto from 'crypto';
 import {loginDTO} from "./DTOs/loginDTO";

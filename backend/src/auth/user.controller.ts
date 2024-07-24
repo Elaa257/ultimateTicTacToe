@@ -23,10 +23,6 @@ import {Role} from "./roles/enum.roles";
 import {RolesGuard} from "./roles/roles.guard";
 import {User} from "../user/user.entity";
 
-
-
-
-
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) {}
