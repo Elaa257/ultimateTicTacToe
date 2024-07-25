@@ -14,6 +14,19 @@ lerna-debug.log*
 
 # OS
 .DS_Store
+Thumbs.db
+
+# MacOS files
+*.DS_Store
+
+# Linux generated file
+*.swp
+
+# Windows specific files
+*.exe
+*.dll
+*.bat
+*.cmd
 
 # Tests
 /coverage
@@ -28,12 +41,34 @@ lerna-debug.log*
 .settings/
 *.sublime-workspace
 
+# WebStorm project files
+.idea/
+*.iml
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# JetBrains IDEs
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Generated files
+.idea/**/contentModel.xml
+.idea/**/dataSources.xml
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/vcs.xml
 
 # dotenv environment variable files
 .env
@@ -45,6 +80,21 @@ lerna-debug.log*
 # temp directory
 .temp
 .tmp
+
+# TypeScript compiled files
+*.tsbuildinfo
+
+# Nest CLI specific files
+.nest-cli.json
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
 
 # Runtime data
 pids
