@@ -1,10 +1,14 @@
 import {User} from "../../user/user.entity";
+import {ApiProperty} from "@nestjs/swagger";
 
 export class EndGameDTO {
+    @ApiProperty()
     winner: User;
+    @ApiProperty()
     loser: User;
     player1EloAfter: number;
     player2EloAfter: number;
+    @ApiProperty()
     draw: boolean;
     finished: boolean;
 

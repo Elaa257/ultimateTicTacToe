@@ -4,9 +4,12 @@ import {Injectable, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Game} from "./game.entity";
 import {Repository} from "typeorm";
-import {CreateGameDTO} from "./DTOs/createGameDTO";
-import {UpdateGameDTO} from "./DTOs/updateGameDTO";
+import {CreateGameRequestDto} from "./DTOs/createGameRequestDto";
+import {UpdateGameRequestDto} from "./DTOs/updateGameRequestDto";
 import {GameLogicService} from "./game-logic.service";
+import {GameResponseDto} from "./DTOs/gameResponseDto";
+import {ResponseDTO} from "../DTOs/responseDTO";
+import {MultiGamesResponseDTO} from "./DTOs/multiGamesResponseDTO";
 
 @Injectable()
 export class GameService {
@@ -17,54 +20,55 @@ export class GameService {
     ) {}
 
     //create new game
-    async create(createGameDto: CreateGameDTO): Promise<Game> {
+    async create(createGameRequestDto: CreateGameRequestDto): Promise<ResponseDTO> {
         try {
-            const newGame = this.gameRepo.create(createGameDto);
-            return await this.gameRepo.save(newGame);
+            const newGame = this.gameRepo.create(createGameRequestDto);
+            await this.gameRepo.save(newGame);
+            return new ResponseDTO(true, "Game successfully created");
         } catch(error) {
-            console.log(error);
-            throw new Error('Could not create new game');
+            return new ResponseDTO(false, `Could not create new game. Error: ${error}`)
         }
     }
 
     //get all games
-    async getGames(): Promise<Game[]> {
+    async getGames(): Promise<MultiGamesResponseDTO> {
         try {
-            return await this.gameRepo.find();
+            const games = await this.gameRepo.find();
+            return new MultiGamesResponseDTO(`Successfully retrieved all available games.`, games)
         } catch(error) {
-            console.log(error);
-            return null;
+            return new MultiGamesResponseDTO(`There was an error queueing games: ${error}`);
         }
     }
 
     //get specific game
-    async getGame(id: number): Promise<Game> {
+    async getGame(id: number): Promise<GameResponseDto> {
         try {
-            return await this.gameRepo.findOne({ where: { id: id }});
+            const game = await this.gameRepo.findOne({ where: { id: id }});
+            if(game === null) { return new GameResponseDto(`Game with id ${id} could not be found.`, null); }
+            return new GameResponseDto(`Successfully retrieved game with id ${id}.`, game);
         } catch(error) {
-            console.log(error);
-            return null;
+            return new GameResponseDto(`There was an error queueing game with id ${id}: ${error}`);
         }
     }
 
     //delete a specific game
-    async deleteGame(id: number): Promise<void> {
+    async deleteGame(id: number): Promise<ResponseDTO> {
         const game: Game = await this.gameRepo.findOne({
             where: {
                 id: id
             }
         });
-        if (game == null) { throw new NotFoundException(); }
+        if (game == null) { return new ResponseDTO(false, `Game with id ${id} could not be found`); }
         try {
             await this.gameRepo.delete(id);
+            return new ResponseDTO(true, `Game with id ${id} successfully deleted`);
         } catch(error) {
-            console.log(error);
-            throw new Error('Game could not be deleted');
+            return new ResponseDTO(false, `Game with id ${id} could not be deleted. Error: ${error}`);
         }
     }
 
     //make a move
-    async makeMove(id: number, updateGameDTO: UpdateGameDTO): Promise<Game> {
+    async makeMove(id: number, updateGameRequestDTO: UpdateGameRequestDto): Promise<GameResponseDto> {
         let game: Game = await this.gameRepo.findOne({
             where: {
                 id: id
@@ -74,7 +78,7 @@ export class GameService {
         if (game === null) { throw new NotFoundException(); }
 
         try {
-            Object.assign(game, updateGameDTO);
+            Object.assign(game, updateGameRequestDTO);
             game = await this.gameRepo.save(game);
 
             const gameOutcome = await this.gameLogicService.calculateGameOutcome(game);
@@ -82,10 +86,9 @@ export class GameService {
                 Object.assign(game, gameOutcome);
                 game = await this.gameRepo.save(game);
             }
-            return game;
+            return new GameResponseDto(`Successfully made move`, game);
         } catch(error) {
-            console.log(error);
-            throw new Error('An error occured while making the move');
+            return new GameResponseDto(`An error occured while making the move: ${error}`);
         }
     }
 }

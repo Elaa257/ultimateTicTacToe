@@ -5,12 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {AuthModule} from "./auth/auth.module";
 import {User} from "./user/user.entity";
 import {Game} from "./game/game.entity";
-import { GameService } from './game/game.service';
-import {GameController} from "./game/game.controller";
-import { GameLogicService } from './game/game-logic.service';
 import {RolesGuard} from "./auth/roles/roles.guard";
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import {GameModule} from "./game/game.module";
+import {UserModule} from "./user/user.module";
 
 @Module({
   imports: [
@@ -21,12 +20,14 @@ import { join } from 'path';
       synchronize: true,
     }),
       AuthModule,
+      GameModule,
+      UserModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', '..', 'frontend', 'dist', 'frontend', 'browser'),
       exclude: ['/api*'],
     }),
   ],
-  controllers: [AppController, GameController],
-  providers: [AppService, RolesGuard,GameService, GameLogicService],
+  controllers: [AppController],
+  providers: [AppService, RolesGuard],
 })
 export class AppModule {}

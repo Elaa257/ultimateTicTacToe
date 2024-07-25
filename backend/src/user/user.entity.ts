@@ -1,6 +1,7 @@
 import {Role} from "../auth/roles/enum.roles";
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Game} from "../game/game.entity";
+import {IsNotEmpty, MinLength} from "class-validator";
 
 @Entity()
 export class User {
@@ -11,6 +12,8 @@ export class User {
     email: string;
 
     @Column()
+    @IsNotEmpty()
+    @MinLength(8)
     password: string;
 
     @Column({ unique: true })

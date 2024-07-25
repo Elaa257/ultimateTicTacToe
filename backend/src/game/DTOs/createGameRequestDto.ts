@@ -1,7 +1,10 @@
 import {User} from "../../user/user.entity";
+import {ApiProperty} from "@nestjs/swagger";
 
-export class CreateGameDTO {
+export class CreateGameRequestDto {
+    @ApiProperty()
     player1: User;
+    @ApiProperty()
     player2: User;
     player1EloBefore: number;
     player2EloBefore: number;
