@@ -18,23 +18,19 @@ export class AuthController {
     return this.userService.register(registerDTO);
   }
 
-  @Post('login')
-  @ApiResponse({ type: ResponseDTO })
-  async login(
-    @Session() session: SessionData,
-    @Body() loginDto: LoginDTO,
-    @Res() reply: FastifyReply,
-  ): Promise<void> {
-    const { access_token, response } = await this.userService.login(
-      loginDto,
-      session,
-    );
-    reply
-      .setCookie('access_token', access_token, {
-        httpOnly: true, // Makes the cookie accessible only by web server
-      })
-      .send(response);
-  }
+    @Post('login')
+    @ApiResponse({ type: ResponseDTO })
+    async login(
+      @Body() loginDto: LoginDTO,
+      @Res() reply: FastifyReply
+    ): Promise<void> {
+        const { access_token, response, user } = await this.userService.login(loginDto);
+        reply
+          .setCookie('access_token', access_token, {
+              httpOnly: true, // Makes the cookie accessible only by the web server
+          })
+          .send({ response, user });
+    }
 
   @Post('logout')
   @ApiResponse({ type: ResponseDTO })
