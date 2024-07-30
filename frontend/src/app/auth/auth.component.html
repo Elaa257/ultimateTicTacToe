@@ -1,0 +1,59 @@
+<script src="../profile/profile.component.ts"></script>
+<div>
+  @if (isLoginVisible) {
+    <section id="login">
+      <!--
+      <form action="">
+        <mat-form-field>
+          <mat-label>E-mail</mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput [type]=" hide()? 'password' : 'text'">
+          <button
+            mat-icon-button
+            matSuffix
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()"
+            (click)="onPassword($event)"
+          >
+            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
+      -->
+
+
+      <h4>Login</h4>
+      <form (ngSubmit)="onLogin()">
+        <input type="email" placeholder="E-mail" id="loginEmail" [(ngModel)]="loginEmail" name="email">
+        <input type="password" placeholder="Password" id="loginPassword" [(ngModel)]="loginPassword" name="password">
+        <button type="submit">login</button>
+      </form>
+      <div>
+        <a (click)="showRegister()">you don't have an Account yet? Sign Up for free </a>
+      </div>
+    </section>
+  }
+
+  @if (!isLoginVisible) {
+
+    <section id="register">
+      <h4>Register</h4>
+      <form (submit)="onRegister()">
+        <input type="text" placeholder="Nickname" id="registerNickname">
+        <input type="email" placeholder="E-mail" id="registerEmail">
+        <input type="password" placeholder="Password" id="registerPassword">
+        <input type="password" placeholder="Confirm-Password" id="confirmPassword">
+
+      </form>
+      <a (click)="showLogin()">you already have an Account? Sign in</a>
+    </section>
+  }
+
+
+</div>
+
+
+

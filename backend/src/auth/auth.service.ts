@@ -43,16 +43,20 @@ export class AuthService {
         return user;
     }
 
-    async login(loginDTO: LoginDTO, session: SessionData): Promise<{ access_token?: string, response:ResponseDTO}> {
+    async login(loginDTO: LoginDTO): Promise<{ access_token?: string, response: ResponseDTO, user?: any }> {
         try {
             const user = await this.validateUser(loginDTO.email, loginDTO.password);
-            session.isLoggedIn = true;
+            const { password, ...userWithoutPassword } = user;
             const payload = { sub: user.id, username: user.nickname, email: user.email, role: user.role };
             const access_token = await this.jwtService.signAsync(payload);
 
-            return { access_token, response: new ResponseDTO(true, `User: ${user.nickname}, has successfully logged in`)};
-        } catch(error) {
-            return {response: new ResponseDTO(false, `Login failed ${error}`)};
+            return {
+                access_token,
+                response: new ResponseDTO(true, `User: ${user.nickname}, has successfully logged in`),
+                user: userWithoutPassword
+            };
+        } catch (error) {
+            return { response: new ResponseDTO(false, `Login failed ${error}`) };
         }
     }
 

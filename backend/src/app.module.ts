@@ -24,7 +24,7 @@ import {UserModule} from "./user/user.module";
       UserModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', '..', 'frontend', 'dist', 'frontend', 'browser'),
-      exclude: ['/api*'],
+      exclude: ['/backend*'],
     }),
   ],
   controllers: [AppController],
