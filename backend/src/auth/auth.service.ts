@@ -1,47 +1,47 @@
 // auth.service.ts
-import {Injectable, HttpException, HttpStatus} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
-import {ResponseDTO} from '../DTOs/responseDTO';
-import {RegisterDTO} from "./DTOs/registerDTO";
+import { Repository } from 'typeorm';
+import { ResponseDTO } from '../DTOs/responseDTO';
+import { RegisterDTO } from './DTOs/registerDTO';
 import * as crypto from 'crypto';
-import {LoginDTO} from "./DTOs/loginDTO";
-import {JwtService} from "@nestjs/jwt";
-import {User} from "../user/user.entity";
-import {SessionData} from "express-session";
-import {ResponseUserDTO} from "../user/DTOs/responseUserDTO";
+import { LoginDTO } from './DTOs/loginDTO';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '../user/user.entity';
+import { SessionData } from 'express-session';
+import { ResponseUserDTO } from '../user/DTOs/responseUserDTO';
 @Injectable()
 export class AuthService {
-    constructor(
-        @InjectRepository(User)
-        private userRepository: Repository<User>,
-        private jwtService: JwtService,
-    ) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    private jwtService: JwtService,
+  ) {}
 
-    async register(registerDTO: RegisterDTO): Promise<ResponseDTO> {
-        try {
-            const user = this.userRepository.create({
-                ...registerDTO,
-                password: this.hashPassword(registerDTO.password),
-                role: registerDTO.role
-            });
-            await this.userRepository.save(user);
-            return new ResponseDTO(true, "Successfully created new user");
-        } catch(error) {
-            return new ResponseDTO(false, `New user could not be created ${error}` );
-        }
+  async register(registerDTO: RegisterDTO): Promise<ResponseDTO> {
+    try {
+      const user = this.userRepository.create({
+        ...registerDTO,
+        password: this.hashPassword(registerDTO.password),
+        role: registerDTO.role,
+      });
+      await this.userRepository.save(user);
+      return new ResponseDTO(true, 'Successfully created new user');
+    } catch (error) {
+      return new ResponseDTO(false, `New user could not be created ${error}`);
     }
+  }
 
-    async validateUser(email: string, password: string): Promise<User> {
-        const user = await this.userRepository.findOne({ where: { email } });
-        if (!user) {
-            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-        }
-        if (!this.comparePassword(password, user.password)) {
-            throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-        }
-        return user;
+  async validateUser(email: string, password: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
+    if (!this.comparePassword(password, user.password)) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+    return user;
+  }
 
     async login(loginDTO: LoginDTO): Promise<{ access_token?: string, response: ResponseDTO, user?: any }> {
         try {
@@ -60,29 +60,33 @@ export class AuthService {
         }
     }
 
-    hashPassword(password: string): string {
-        return crypto.createHmac('sha256', password).digest('hex');
+  hashPassword(password: string): string {
+    return crypto.createHmac('sha256', password).digest('hex');
+  }
+
+  private comparePassword(
+    password: string,
+    storedPasswordHash: string,
+  ): boolean {
+    const hashedPassword = this.hashPassword(password);
+    return hashedPassword === storedPasswordHash;
+  }
+
+  async getLoggedInUser(session: SessionData): Promise<ResponseUserDTO> {
+    if (!session.isLoggedIn) {
+      return new ResponseUserDTO('Unauthorized');
     }
 
-    private comparePassword(password: string, storedPasswordHash: string): boolean {
-        const hashedPassword = this.hashPassword(password);
-        return hashedPassword === storedPasswordHash;
+    try {
+      const user = await this.userRepository.findOne({
+        where: { email: session.email },
+      });
+      return new ResponseUserDTO(
+        `User with the ID: ${user.id} is logged in`,
+        user,
+      );
+    } catch (error) {
+      return new ResponseUserDTO(`user couldn't found ${error}`);
     }
-
-
-    async getLoggedInUser(session:SessionData): Promise<ResponseUserDTO>{
-        if (!session.isLoggedIn){
-            return new ResponseUserDTO("Unauthorized");
-        }
-
-        try {
-            const user = await this.userRepository.findOne({ where: {email: session.email } });
-            return new ResponseUserDTO(`User with the ID: ${user.id} is logged in`,user);
-        }catch (error){
-            return new ResponseUserDTO(`user couldn't found ${error}`)
-        }
-
-
-
-    }
+  }
 }

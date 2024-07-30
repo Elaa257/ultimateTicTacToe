@@ -1,13 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameService } from './game.service';
-import {Repository} from "typeorm";
-import {Game} from "./game.entity";
-import {CreateGameRequestDto} from "./DTOs/createGameRequestDto";
-import {User} from "../user/user.entity";
-import {getRepositoryToken} from "@nestjs/typeorm";
-import {GameLogicService} from "./game-logic.service";
-import {UpdateGameRequestDto} from "./DTOs/updateGameRequestDto";
-import {EndGameDTO} from "./DTOs/endGameDTO";
+import { Repository } from 'typeorm';
+import { Game } from './game.entity';
+import { CreateGameRequestDto } from './DTOs/createGameRequestDto';
+import { User } from '../user/user.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { GameLogicService } from './game-logic.service';
+import { UpdateGameRequestDto } from './DTOs/updateGameRequestDto';
+import { EndGameDTO } from './DTOs/endGameDTO';
+import { ResponseDTO } from '../DTOs/responseDTO';
+import { MultiGamesResponseDTO } from './DTOs/multiGamesResponseDTO';
+import { GameResponseDto } from './DTOs/gameResponseDto';
 
 describe('GameService', () => {
   let provider: GameService;
@@ -27,7 +30,7 @@ describe('GameService', () => {
   };
 
   beforeEach(async () => {
-      jest.resetAllMocks();
+    jest.resetAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         GameService,
@@ -51,17 +54,18 @@ describe('GameService', () => {
     expect(provider).toBeDefined();
   });
 
-  /*
   describe('create', () => {
-      beforeEach(() => {
-          jest.resetAllMocks();
-      });
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
 
-
-      it('creates and saves a new game', async () => {
+    it('creates and saves a new game', async () => {
       const player1 = new User();
       const player2 = new User();
-      const createGameDto: CreateGameRequestDto = new CreateGameRequestDto(player1, player2);
+      const createGameDto: CreateGameRequestDto = new CreateGameRequestDto(
+        player1,
+        player2,
+      );
 
       (gameRepo.create as jest.Mock).mockImplementation((dto) => {
         return {
@@ -70,298 +74,346 @@ describe('GameService', () => {
         };
       });
 
-      (gameRepo.save as jest.Mock).mockImplementation((game) => Promise.resolve(game));
+      (gameRepo.save as jest.Mock).mockImplementation((game) =>
+        Promise.resolve(game),
+      );
 
       const result = await provider.create(createGameDto);
 
       expect(gameRepo.create).toHaveBeenCalledWith(createGameDto);
-      expect(gameRepo.save).toHaveBeenCalledWith(expect.objectContaining(createGameDto));
-      expect(result).toEqual(new GameResponseOkDto(true));
+      expect(gameRepo.save).toHaveBeenCalledWith(
+        expect.objectContaining(createGameDto),
+      );
+      expect(result).toEqual(
+        new ResponseDTO(true, 'Game successfully created'),
+      );
     });
 
     it('throws an error if creating the game is not possible', async () => {
       const player1 = new User();
       const player2 = new User();
-      const createGameDto: CreateGameRequestDto = new CreateGameRequestDto(player1, player2);
+      const createGameDto: CreateGameRequestDto = new CreateGameRequestDto(
+        player1,
+        player2,
+      );
 
       (gameRepo.create as jest.Mock).mockImplementation(() => {
         throw new Error('Database error');
       });
 
-      await expect(provider.create(createGameDto)).rejects.toThrow('Could not create new game');
+      const result = await provider.create(createGameDto);
+
+      expect(gameRepo.create).toHaveBeenCalledWith(createGameDto);
+      expect(gameRepo.save).not.toHaveBeenCalled();
+      expect(result).toEqual(
+        new ResponseDTO(
+          false,
+          'Could not create new game. Error: Database error',
+        ),
+      );
     });
   });
 
   describe('getGames', () => {
-      beforeEach(() => {
-          jest.resetAllMocks();
-      });
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
 
+    it('should return an array of games', async () => {
+      const testGame = new Game();
+      const game1: Game = {
+        ...testGame,
+        id: 1,
+        finished: false,
+        draw: false,
+        board: [null, null, null, null, null, null, null, null, null],
+        player1: new User(),
+        player2: new User(),
+        turn: new User(),
+        winner: null,
+        loser: null,
+        time: new Date(),
+        player1EloBefore: 1,
+        player2EloBefore: 1,
+        player1EloAfter: null,
+        player2EloAfter: null,
+        validate: jest.fn(),
+      };
 
-      it('should return an array of games', async () => {
-      (gameRepo.find as jest.Mock).mockResolvedValue([
-        {
-          id: 1,
-          finished: false,
-          draw: false,
-          board: [null, null, null, null, null, null, null, null, null],
-          player1: {},
-          player2: {},
-          turn: {},
-          winner: null,
-          loser: null,
-          time: {},
-          player1EloBefore: 1,
-          player2EloBefore: 1,
-          player1EloAfter: null,
-          player2EloAfter: null,
-        },
-        {
-          id: 2,
-          finished: false,
-          draw: false,
-          board: [null, null, null, null, null, null, null, null, null],
-          player1: {},
-          player2: {},
-          turn: {},
-          winner: null,
-          loser: null,
-          time: {},
-          player1EloBefore: 1,
-          player2EloBefore: 1,
-          player1EloAfter: null,
-          player2EloAfter: null,
-        },
-      ]);
+      const game2: Game = {
+        ...testGame,
+        id: 2,
+        finished: false,
+        draw: false,
+        board: [null, null, null, null, null, null, null, null, null],
+        player1: new User(),
+        player2: new User(),
+        turn: new User(),
+        winner: null,
+        loser: null,
+        time: new Date(),
+        player1EloBefore: 1,
+        player2EloBefore: 1,
+        player1EloAfter: null,
+        player2EloAfter: null,
+        validate: jest.fn(),
+      };
+
+      const games: Game[] = [game1, game2];
+
+      (gameRepo.find as jest.Mock).mockResolvedValue(games);
 
       const result = await provider.getGames();
 
       expect(gameRepo.find).toHaveBeenCalled();
-      expect(result).toEqual([
-        {
-          id: 1,
-          finished: false,
-          draw: false,
-          board: [null, null, null, null, null, null, null, null, null],
-          player1: {},
-          player2: {},
-          turn: {},
-          winner: null,
-          loser: null,
-          time: {},
-          player1EloBefore: 1,
-          player2EloBefore: 1,
-          player1EloAfter: null,
-          player2EloAfter: null,
-        },
-        {
-          id: 2,
-          finished: false,
-          draw: false,
-          board: [null, null, null, null, null, null, null, null, null],
-          player1: {},
-          player2: {},
-          turn: {},
-          winner: null,
-          loser: null,
-          time: {},
-          player1EloBefore: 1,
-          player2EloBefore: 1,
-          player1EloAfter: null,
-          player2EloAfter: null,
-        },
-      ]);
+      expect(result).toEqual(
+        new MultiGamesResponseDTO(
+          `Successfully retrieved all available games.`,
+          games,
+        ),
+      );
     });
 
     it('should return null if error occurs', async () => {
-      (gameRepo.find as jest.Mock).mockRejectedValue(new Error('Database error'));
+      (gameRepo.find as jest.Mock).mockRejectedValue(
+        new Error('Database error'),
+      );
 
       const result = await provider.getGames();
 
       expect(gameRepo.find).toHaveBeenCalled();
-      expect(result).toBeNull();
+      expect(result).toEqual(
+        new MultiGamesResponseDTO(
+          `There was an error queueing games: Error: Database error`,
+        ),
+      );
     });
-
   });
 
   describe('getGame', () => {
-    it('should return the specific game', async() => {
-      (gameRepo.findOne as jest.Mock).mockResolvedValue(
-          {
-            id: 1,
-            finished: false,
-            draw: false,
-            board: [null, null, null, null, null, null, null, null, null],
-            player1: {},
-            player2: {},
-            turn: {},
-            winner: null,
-            loser: null,
-            time: {},
-            player1EloBefore: 1,
-            player2EloBefore: 1,
-            player1EloAfter: null,
-            player2EloAfter: null,
-          },
-      );
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should return the specific game', async () => {
+      const testGame = new Game();
+      const game: Game = {
+        ...testGame,
+        id: 1,
+        finished: false,
+        draw: false,
+        board: [null, null, null, null, null, null, null, null, null],
+        player1: new User(),
+        player2: new User(),
+        turn: new User(),
+        winner: null,
+        loser: null,
+        time: new Date(),
+        player1EloBefore: 1,
+        player2EloBefore: 1,
+        player1EloAfter: null,
+        player2EloAfter: null,
+        validate: jest.fn(),
+      };
+
+      (gameRepo.findOne as jest.Mock).mockResolvedValue(game);
 
       const result = await provider.getGame(1);
 
-      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 }});
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(result).toEqual(
-          {
-            id: 1,
-            finished: false,
-            draw: false,
-            board: [null, null, null, null, null, null, null, null, null],
-            player1: {},
-            player2: {},
-            turn: {},
-            winner: null,
-            loser: null,
-            time: {},
-            player1EloBefore: 1,
-            player2EloBefore: 1,
-            player1EloAfter: null,
-            player2EloAfter: null,
-          },
+        new GameResponseDto(
+          `Successfully retrieved game with id ${game.id}.`,
+          game,
+        ),
       );
     });
 
-    it('should return null if error occurs', async () => {
-      (gameRepo.findOne as jest.Mock).mockRejectedValue(new Error('Database error'));
+    it('should return error if error occurs', async () => {
+      (gameRepo.findOne as jest.Mock).mockRejectedValue(
+        new Error('Database error'),
+      );
 
       const result = await provider.getGame(1);
 
-      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 }});
-      expect(result).toBeNull();
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+      expect(result).toEqual(
+        new GameResponseDto(
+          `There was an error queueing game with id 1: Error: Database error`,
+        ),
+      );
+    });
+
+    it('should return null with error if game cannot be found', async () => {
+      (gameRepo.findOne as jest.Mock).mockResolvedValue(null);
+
+      const result = await provider.getGame(1);
+
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+      expect(result).toEqual(
+        new GameResponseDto(`Game with id 1 could not be found.`, null),
+      );
     });
   });
 
   describe('deleteGame', () => {
-      beforeEach(() => {
-          jest.resetAllMocks();
-      });
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
 
-      it('should throw an exception if game is not found', async() => {
+    it('should return false if game is not found', async () => {
       (gameRepo.findOne as jest.Mock).mockResolvedValue(null);
 
-      await expect(provider.deleteGame(1)).rejects.toThrow('Not Found');
-      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 }});
+      const result = await provider.deleteGame(1);
+
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+      expect(gameRepo.delete).not.toHaveBeenCalled();
+      expect(result).toEqual(
+        new ResponseDTO(false, `Game with id 1 could not be found`),
+      );
     });
 
-    it('should delete game when found', async() => {
-      (gameRepo.findOne as jest.Mock).mockResolvedValue(
-          {
-            id: 1,
-            finished: false,
-            draw: false,
-            board: [null, null, null, null, null, null, null, null, null],
-            player1: {},
-            player2: {},
-            turn: {},
-            winner: null,
-            loser: null,
-            time: {},
-            player1EloBefore: 1,
-            player2EloBefore: 1,
-            player1EloAfter: null,
-            player2EloAfter: null,
-          },
-      );
+    it('should delete game when found', async () => {
+      (gameRepo.findOne as jest.Mock).mockResolvedValue({
+        id: 1,
+        finished: false,
+        draw: false,
+        board: [null, null, null, null, null, null, null, null, null],
+        player1: {},
+        player2: {},
+        turn: {},
+        winner: null,
+        loser: null,
+        time: {},
+        player1EloBefore: 1,
+        player2EloBefore: 1,
+        player1EloAfter: null,
+        player2EloAfter: null,
+      });
       (gameRepo.delete as jest.Mock).mockResolvedValue({});
 
-      await provider.deleteGame(1);
+      const result = await provider.deleteGame(1);
 
-      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 }});
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(gameRepo.delete).toHaveBeenCalledWith(1);
+      expect(result).toEqual(
+        new ResponseDTO(true, `Game with id 1 successfully deleted`),
+      );
     });
 
-    it('should throw an error if game could not be deleted', async() => {
-      (gameRepo.findOne as jest.Mock).mockResolvedValue(
-          {
-            id: 1,
-            finished: false,
-            draw: false,
-            board: [null, null, null, null, null, null, null, null, null],
-            player1: {},
-            player2: {},
-            turn: {},
-            winner: null,
-            loser: null,
-            time: {},
-            player1EloBefore: 1,
-            player21EloBefore: 1,
-            player1EloAfter: null,
-            player2EloAfter: null,
-          },
+    it('should return false with an error if game could not be deleted', async () => {
+      (gameRepo.findOne as jest.Mock).mockResolvedValue({
+        id: 1,
+        finished: false,
+        draw: false,
+        board: [null, null, null, null, null, null, null, null, null],
+        player1: {},
+        player2: {},
+        turn: {},
+        winner: null,
+        loser: null,
+        time: {},
+        player1EloBefore: 1,
+        player21EloBefore: 1,
+        player1EloAfter: null,
+        player2EloAfter: null,
+      });
+      (gameRepo.delete as jest.Mock).mockRejectedValue(
+        new Error('Database error'),
       );
-      (gameRepo.delete as jest.Mock).mockRejectedValue(new Error("Database error"));
 
-      await expect(provider.deleteGame(1)).rejects.toThrow('Game could not be deleted');
-      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 }});
+      const result = await provider.deleteGame(1);
+
+      expect(result).toEqual(
+        new ResponseDTO(
+          false,
+          `Game with id 1 could not be deleted. Error: Database error`,
+        ),
+      );
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(gameRepo.delete).toHaveBeenCalledWith(1);
     });
   });
 
   describe('makeMove', () => {
-      beforeEach(() => {
-          jest.resetAllMocks();
-      });
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
 
-      it('should throw an exception if game is not found', async() => {
-      const updateGameDTO = new UpdateGameRequestDto([null, null, 1, null, null, null, null, null, null]);
+    it('should return an error if game is not found', async () => {
+      const updateGameDTO = new UpdateGameRequestDto([
+        null,
+        null,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]);
 
       (gameRepo.findOne as jest.Mock).mockResolvedValue(null);
 
-      await expect(provider.makeMove(1, updateGameDTO)).rejects.toThrow('Not Found');
-      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 }});
+      const result = await provider.makeMove(1, updateGameDTO);
+
+      expect(result).toEqual(
+        new GameResponseDto(`Game with id 1 could not be found`),
+      );
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
     });
 
-    it('should safe the updated game board', async() => {
+    it('should safe the updated game board', async () => {
       const updatedBoard = [null, null, 1, null, null, null, null, null, null];
       const updateGameDTO = new UpdateGameRequestDto(updatedBoard);
 
-      const game = {
-            id: 1,
-            finished: false,
-            draw: false,
-            board: [null, null, null, null, null, null, null, null, null],
-            player1: new User(),
-            player2: new User(),
-            turn: new User(),
-            winner: null,
-            loser: null,
-            time: new Date(),
-            player1EloBefore: 1,
-            player2EloBefore: 1,
-            player1EloAfter: null,
-            player2EloAfter: null,
-          };
+      const game: Game = {
+        ...new Game(),
+        id: 1,
+        finished: false,
+        draw: false,
+        board: [null, null, null, null, null, null, null, null, null],
+        player1: new User(),
+        player2: new User(),
+        turn: new User(),
+        winner: null,
+        loser: null,
+        time: new Date(),
+        player1EloBefore: 1,
+        player2EloBefore: 1,
+        player1EloAfter: null,
+        player2EloAfter: null,
+        validate: jest.fn(),
+      };
+
+      const updatedGame: Game = {
+        ...game,
+        board: updatedBoard,
+        validate: jest.fn(),
+      };
 
       (gameRepo.findOne as jest.Mock).mockResolvedValue(game);
-      (gameRepo.save as jest.Mock).mockResolvedValue({
-        ...game,
-        board: updatedBoard
-      });
-      (mockGameLogicService.calculateGameOutcome as jest.Mock).mockResolvedValue(null);
+      (gameRepo.save as jest.Mock).mockResolvedValue(updatedGame);
+      (
+        mockGameLogicService.calculateGameOutcome as jest.Mock
+      ).mockResolvedValue(null);
 
       const result = await provider.makeMove(1, updateGameDTO);
 
-      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 }});
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(gameRepo.save).toBeCalledTimes(1);
       expect(mockGameLogicService.calculateGameOutcome).toHaveBeenCalled();
-      expect(result).toEqual({
-        ...game,
-        board: updatedBoard
-      });
+      expect(result).toEqual(
+        new GameResponseDto(`Successfully made move`, updatedGame),
+      );
     });
 
-    it('should safe the updated board and mark the game as finished if the game is done', async() => {
+    it('should safe the updated board and mark the game as finished', async () => {
       const updatedBoard = [1, 1, 1, 0, null, 0, null, null, null];
       const updateGameDTO = new UpdateGameRequestDto(updatedBoard);
 
-      const game = {
+      const game: Game = {
+        ...new Game(),
         id: 1,
         finished: false,
         draw: false,
@@ -376,9 +428,10 @@ describe('GameService', () => {
         player2EloBefore: 1,
         player1EloAfter: null,
         player2EloAfter: null,
+        validate: jest.fn(),
       };
 
-      const finishedGame = {
+      const finishedGame: Game = {
         ...game,
         winner: game.player1,
         loser: game.player2,
@@ -387,35 +440,55 @@ describe('GameService', () => {
         finished: true,
         player1EloAfter: undefined,
         player2EloAfter: undefined,
+        validate: jest.fn(),
       };
 
       (gameRepo.findOne as jest.Mock).mockResolvedValue(game);
       (gameRepo.save as jest.Mock).mockResolvedValue({
         ...game,
-        board: updatedBoard
+        board: updatedBoard,
       });
-      (mockGameLogicService.calculateGameOutcome as jest.Mock).mockResolvedValue(new EndGameDTO(game.player1, game.player2, game.player1, game.player2, false));
+      (
+        mockGameLogicService.calculateGameOutcome as jest.Mock
+      ).mockResolvedValue(
+        new EndGameDTO(
+          game.player1,
+          game.player2,
+          game.player1,
+          game.player2,
+          false,
+        ),
+      );
 
       const result = await provider.makeMove(1, updateGameDTO);
 
-      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 }});
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(gameRepo.save).toBeCalledTimes(2);
       expect(mockGameLogicService.calculateGameOutcome).toHaveBeenCalled();
-      expect(result).toEqual(finishedGame);
+      expect(result).toEqual(
+        new GameResponseDto(`Successfully made move`, finishedGame),
+      );
     });
 
-    it('should throw an error if the move could not be made', async() => {
+    it('should return an error if the move could not be made', async () => {
       const updatedBoard = [null, null, 1, null, null, null, null, null, null];
       const updateGameDTO = new UpdateGameRequestDto(updatedBoard);
 
       (gameRepo.findOne as jest.Mock).mockResolvedValue({});
-      (gameRepo.save as jest.Mock).mockRejectedValue(new Error("Database error"));
+      (gameRepo.save as jest.Mock).mockRejectedValue(
+        new Error('Database error'),
+      );
 
-      await expect(provider.makeMove(1, updateGameDTO)).rejects.toThrow('An error occured while making the move');
-      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 }});
+      const result = await provider.makeMove(1, updateGameDTO);
+
+      expect(result).toEqual(
+        new GameResponseDto(
+          `An error occured while making the move: Error: Database error`,
+        ),
+      );
+      expect(gameRepo.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(gameRepo.save).toBeCalledTimes(1);
       expect(mockGameLogicService.calculateGameOutcome).not.toHaveBeenCalled();
     });
   });
-    */
 });
