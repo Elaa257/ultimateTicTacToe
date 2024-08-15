@@ -1,0 +1,84 @@
+mat-toolbar.footer {
+  background-color: #000;
+  padding: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column; /* Stack items vertically on small screens */
+  align-items: center; /* Center-align content */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer-left, .footer-right {
+  text-align: center;
+  width: 100%;
+  padding: 0 10px;
+  flex: 1;
+  box-sizing: border-box;
+  min-width: 0; /* Prevent flex items from being too small */
+}
+
+.footer-right {
+  margin-top: 20px; /* Add margin on top for spacing on smaller screens */
+}
+
+.footer-right .social-media {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.footer-left span, .footer-right span {
+  display: block; /* Ensure the span takes up full width */
+}
+
+.footer-right .social-media img {
+  height: 30px;
+  width: 30px;
+  border-radius: 10%;
+}
+
+.footer-left h3, .footer-right h3 {
+  font-size: 1.5rem; /* Responsive font size for headings */
+  margin-bottom: 10px;
+}
+
+.footer-left p {
+  font-size: 0.875rem; /* Responsive font size for paragraphs */
+  line-height: 1.5; /* Improve readability with line-height */
+  word-break: break-word;
+  overflow-wrap: break-word;
+  margin: 0;
+  padding: 0;
+  white-space: pre-line;
+}
+
+.spacer {
+  display: none; /* Hide the spacer on larger screens */
+}
+
+/* Media query for larger screens */
+@media (min-width: 600px) {
+  mat-toolbar.footer {
+    flex-direction: row; /* Stack items horizontally on larger screens */
+    justify-content: space-between; /* Space out the left and right sections */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .footer-left {
+    text-align: left; /* Align text to the left for larger screens */
+    flex: 1;
+    margin: 0; /* Remove margin on larger screens */
+  }
+
+  .footer-right h3 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .spacer {
+    display: block; /* Show the spacer on larger screens */
+    flex: 1 1 auto; /* Allow spacer to grow and push content apart */
+  }
+}
