@@ -1,50 +1,36 @@
 <mat-toolbar>
   <nav class="navbar">
-    <div>
-      <img src="tic-tac-toe-logo.png" alt="Logo" height="50" width="50"/>
+    <div class="nav-wrapper">
+      <div>
+        <img src="tic-tac-toe-logo.png" alt="Logo" height="50" width="50"/>
+      </div>
+
+      <!-- desktop -->
+      <ul class="nav-links large-screen">
+        <li><a [routerLink]="'/home'">Home</a></li>
+        <li><a href="#">Ranking list</a></li>
+      </ul>
+      <span class="spacer"></span>
     </div>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Ranking list</a></li>
-    </ul>
-    <span class="spacer"></span>
-    <button mat-button class="login-btn">Login</button>
-  </nav>
-</mat-toolbar>
+    <button mat-button class="login-btn large-screen" [routerLink]="'/auth'">Login</button>
 
-<!--Responsive Design-->
-<!--
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'">
-    <mat-nav-list>
-      <a mat-list-item href="#">Home</a>
-      <a mat-list-item href="#">About</a>
-      <a mat-list-item href="#">Contact</a>
-    </mat-nav-list>
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle navigation" mat-icon-button (click)="drawer.toggle()">
+    <!-- mobile -->
+    <!-- bug: when clicked, menu is shown at the end of the page -->
+    <div class="menu-toggle">
+      <button mat-icon-button [matMenuTriggerFor]="aboveMenu" class="menu">
         <mat-icon>menu</mat-icon>
       </button>
-      <span>MyApp</span>
-      <span class="spacer"></span>
-      <nav class="desktop-menu">
-        <button mat-button>Home</button>
-        <button mat-button>About</button>
-        <button mat-button>Contact</button>
-        <button mat-button [matMenuTriggerFor]="menu">More</button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item>Profile</button>
-          <button mat-menu-item>Settings</button>
-          <button mat-menu-item>Logout</button>
-        </mat-menu>
-      </nav>
-    </mat-toolbar>
-
-    <div class="content">
+      <mat-menu #aboveMenu="matMenu" [overlapTrigger]="true" yPosition="above" class="menu">
+        <button mat-menu-item class="menu" [routerLink]="'/home'">
+          <span>Home</span>
+        </button>
+        <button mat-menu-item class="menu">
+          <span>Ranking list</span>
+        </button>
+        <button mat-menu-item class="menu" [routerLink]="'/auth'">
+          <span>Login</span>
+        </button>
+      </mat-menu>
     </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
--->
+  </nav>
+</mat-toolbar>

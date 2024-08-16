@@ -1,5 +1,6 @@
 .navbar {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   background-color: #000;
@@ -8,7 +9,6 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
   box-sizing: border-box;
 }
 
@@ -18,12 +18,19 @@ mat-toolbar {
   width: 100%;
 }
 
-.nav-links {
-  list-style: none;
+.nav-wrapper {
   display: flex;
   align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  flex-direction: row;
+  align-items: center;
   gap: 20px;
-  margin-left: 60px;
+  padding: 0;
+  display: none; /* Hide menu on mobile initially */
+  margin-left: 20px;
 }
 
 .nav-links a {
@@ -31,46 +38,80 @@ mat-toolbar {
   color: white;
 }
 
+.large-screen {
+  display: none;
+}
+
 .spacer {
-  flex: 1 1 auto; /* Fills the space between the left and right content */
+  display: none; /* Hide spacer on mobile */
+}
+
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.menu {
+  background-color: #000; /* Match navbar background */
+  color: white;
+
 }
 
 .login-btn {
   background-color: #ED4AB7;
   color: white !important;
-  font-family: 'Helvetica', sans-serif;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
   border-radius: 3px;
   box-shadow: 4px 6px 8px rgba(237, 74, 183, 0.48);
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
-
-/*Styles for responsive*/
-/*
-&.sidenav-container {
-  height: 100%;
-}
-
-.sidenav {
-  width: 250px;
-}
-
-.mat-toolbar-row, .spacer {
-  display: flex;
-}
-
-.desktop-menu {
-  display: none;
-}
-
+/* Styles for larger screens (tablet and above) */
 @media (min-width: 600px) {
-  .desktop-menu {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .large-screen {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-links {
     display: flex;
   }
+
+  .nav-links li {
+    margin: 0 10px;
+  }
+
+  .menu-toggle {
+    display: none; /* Hide menu toggle on larger screens */
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+    display: block; /* Show spacer on larger screens */
+  }
+
+  .login-btn {
+    margin-top: 0;
+    margin-right: 20px;
+  }
 }
+
+/* Styles for large screens (desktop and above)
+@media (min-width: 1024px) {
+  .nav-links {
+    gap: 20px;
+  }
+}
+
  */
