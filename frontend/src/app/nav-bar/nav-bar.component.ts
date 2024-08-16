@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatToolbar } from '@angular/material/toolbar';
-import { MatMenu } from '@angular/material/menu';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatSidenavContainer } from '@angular/material/sidenav';
 import { MatNavList } from '@angular/material/list';
+import { NgClass } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,6 +17,12 @@ import { MatNavList } from '@angular/material/list';
     MatMenu,
     MatSidenavContainer,
     MatNavList,
+    NgClass,
+    MatMenuTrigger,
+    MatIconButton,
+    MatIcon,
+    MatMenuItem,
+    RouterLink,
   ],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'

@@ -5,7 +5,8 @@
   padding: 50px;
   background: url("../assets/home-background.jpg") no-repeat center center;
   background-size: cover;
-  height: calc(100vh - 80px); /* Adjust based on your header height */
+  height: calc(100vh - 80px);
+  position: relative;
 }
 
 .intro {
@@ -20,9 +21,9 @@
 
 .intro-container {
   display: flex;
-  align-items: center; /* Center the mat-card vertically */
-  justify-content: flex-start; /* Align the mat-card to the right */
-  height: 100vh; /* Full height of the viewport */
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
   width: 100%;
   position: relative;
 }
@@ -42,23 +43,24 @@
 }
 
 .game-area {
-  width: 70%;           /* Width of the rectangle */
-  height: 100px;          /* Height of the rectangle */
+  width: 70%;
+  height: 100px;
   background-color: #15072E;
-  position: absolute;     /* Position it relative to the container */
-  top: 50%;               /* Center vertically */
-  left: 0;               /* Align to the right */
-  transform: translateY(-50%); /* Adjust for vertical centering */
-  border-radius: 20px;    /* Rounded corners */
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  border-radius: 20px;
   opacity: 84%;
   padding: 16px;
 }
 
+
 .game-area-container {
   display: flex;
-  align-items: center; /* Center the mat-card vertically */
-  justify-content: flex-end; /* Align the mat-card to the right */
-  height: 100vh; /* Full height of the viewport */
+  align-items: center;
+  justify-content: flex-end;
+  height: 100vh;
   width: 100%;
   position: relative;
 }
@@ -71,10 +73,6 @@
 }
 
 /*
-.game-area {
-  text-align: center;
-  color: white;
-}
 
 .xoxo {
   font-size: 100px;
