@@ -1,0 +1,10 @@
+.page-not-found {
+  background: url("../assets/page-not-found.jpg") repeat center center rgba(0, 0, 0, 0.7);
+  background-size: contain;
+  background-blend-mode: multiply;
+}
+
+@media (min-width: 600px) {
+  background: url("../assets/page-not-found.jpg") no-repeat center center;
+  background-size: cover;
+}

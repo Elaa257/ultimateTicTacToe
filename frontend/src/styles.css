@@ -1,28 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
-
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
+  overflow-x: hidden;
 }
-body {font-family: Helvetica, sans-serif; }
-
-/*
-.cdk-overlay-container {
-  position: fixed;
-  z-index: 1000;
-  pointer-events: none;
-  top: 0;
-  left: 0;
+body {
+  font-family: Helvetica, sans-serif;
 }
-
-.cdk-overlay-backdrop {
-  pointer-events: auto;
-}
-
-.cdk-overlay-pane {
-  pointer-events: auto;
-  position: absolute;
-  z-index: 1001;
-}
- */

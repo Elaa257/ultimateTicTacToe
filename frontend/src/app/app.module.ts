@@ -7,6 +7,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthComponent } from './auth/auth.component';
+import { FooterComponent } from './footer/footer.component';
+import { HomeComponent } from './home/home.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 
 @NgModule({
@@ -19,6 +22,9 @@ import { AuthComponent } from './auth/auth.component';
     MatMenuModule,
     MatButtonModule,
     BrowserAnimationsModule,
+    FooterComponent,
+    HomeComponent,
+    NavBarComponent
   ],
   providers: [],
 })
