@@ -68,7 +68,6 @@ mat-toolbar.footer {
 
   .footer-left {
     text-align: left; /* Align text to the left for larger screens */
-    flex: 1;
     margin: 0; /* Remove margin on larger screens */
   }
 
@@ -77,8 +76,12 @@ mat-toolbar.footer {
     margin-bottom: 10px;
   }
 
+  .footer-left p {
+    white-space: normal; /* Prevent text wrapping */
+  }
+
   .spacer {
     display: block; /* Show the spacer on larger screens */
-    flex: 1 1 auto; /* Allow spacer to grow and push content apart */
+    flex: 0 1 auto; /* Allow spacer to grow and push content apart */
   }
 }
