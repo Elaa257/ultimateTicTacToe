@@ -8,7 +8,7 @@ export const routes: Routes = [
   { path: 'auth', component: AuthComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'notfound', component: PageNotFoundComponent}
+  { path: '**', component: PageNotFoundComponent}
 ];
 
 

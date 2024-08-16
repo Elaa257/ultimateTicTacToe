@@ -1,10 +1,25 @@
 .page-not-found {
-  background: url("../assets/page-not-found.jpg") repeat center center rgba(0, 0, 0, 0.7);
-  background-size: contain;
-  background-blend-mode: multiply;
+  background: url("../assets/page-not-found.jpg") no-repeat center center rgba(0, 0, 0, 0.3);
+  background-size: cover;
+  color: white;
+  font-family: 'Audiowide', sans-serif;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-not-found h1 {
+  margin: 20px;
 }
 
 @media (min-width: 600px) {
-  background: url("../assets/page-not-found.jpg") no-repeat center center;
-  background-size: cover;
+  .page-not-found {
+    background: url("../assets/page-not-found.jpg") no-repeat center center;
+    background-size: cover;
+    background-blend-mode: normal;
+    height: 100vh;
+  }
+
 }
