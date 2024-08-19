@@ -7,6 +7,8 @@ mat-toolbar.footer {
   align-items: center; /* Center-align content */
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  margin-top: auto;
 }
 
 .footer-left, .footer-right {

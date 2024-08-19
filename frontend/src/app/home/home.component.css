@@ -5,12 +5,11 @@
   justify-content: flex-start;
   align-items: center;
   padding: 20px;
-  background: url("../assets/home-background.jpg") repeat center center rgba(0, 0, 0, 0.7);
+  background: url("../assets/home-background.jpg") repeat center center rgba(0, 0, 0, 0.3);
   background-size: contain;
   background-blend-mode: multiply;
-  height: 100vh;
   position: relative;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
 .intro {
@@ -26,13 +25,14 @@
 
 .intro-container {
   position: static;
-  max-width: 100%; /* Full width for small screens */
+  max-width: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center align items */
+  align-items: center;
   margin-top: 40px;
-  transform: none;
+  padding-bottom: 60px;
+  flex: none;
 }
 
 .home-body {
@@ -61,7 +61,7 @@
 .signup-btn {
   margin-right: 20px;
   margin-top: 5px;
-  padding: 15px 30px; /* Increase padding to make the button larger */
+  padding: 15px 30px;
 }
 
 .play-btn {
@@ -69,46 +69,48 @@
 }
 
 .game-area-container {
-  position: static; /* Remove absolute positioning */
-  margin-top: 20px; /* Space between intro and game area */
-  max-width: 100%; /* Full width for small screens */
+  position: static;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center align items */
+  align-items: center;
+  margin-bottom: 20px;
+  height: auto;
+  flex: none;
 }
 
 .game-area {
-  position: static; /* Remove fixed positioning */
-  width: 90%; /* Full width for small screens */
+  position: static;
+  width: 90%;
   max-width: 600px;
-  height: auto; /* Adjust height to fit content */
+  height: auto;
   background-color: #15072E;
-  border-radius: 20px; /* Rounded corners */
+  border-radius: 20px;
   opacity: 84%;
-  padding: 16px;
+  padding: 10px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
-  margin: 0 auto; /* Center the game area */
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .game-area-title {
   white-space: normal;
-  margin-right: 0; /* Remove right margin */
+  margin-right: 0;
   margin-top: 20px;
   padding-left: 10px;
-  padding-right: 10px; /* Adjust padding */
+  padding-right: 10px;
   overflow-wrap: break-word;
-  text-align: center; /* Center align text */
+  text-align: center;
 }
 
 mat-card-actions {
   display: flex;
-  justify-content: center; /* Center button horizontally */
-  width: 100%; /* Full width for small screens */
-  padding-top: 20px; /* Space above the button */
+  justify-content: center;
+  width: 100%;
+  padding-top: 20px;
 }
 
 .xoxo {
@@ -122,61 +124,71 @@ mat-card-actions {
   color: white;
 }
 
-/* Styles for larger screens (tablet and above) */
-@media (min-width: 800px) and (min-height: 550px){
+/* Styles for larger screens, vertical (tablet and above) */
+@media (min-width: 600px) and (orientation: portrait) {
   .home-container {
     flex: 1;
     display: flex;
-    justify-content: flex-start;
     flex-direction: column;
     align-items: center;
     padding: 50px;
-    background: url("../assets/home-background.jpg") no-repeat center center;
-    background-size: cover;
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
   }
 
-  .intro h1 {
-    text-align: left;
-  }
-
-  .home-body {
-    text-align: left;
-  }
-
-  .intro-container{
-    position: absolute;
-    top: 35vh;
-    left: 19vw;
-    transform: translate(-10%,-30%);
+  .intro-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    max-width: 25%;
+    max-width: 100%;
     margin-bottom: 20px;
-    margin-right: 20px;
-    flex:0 0 auto;
+    flex: 0 0 auto;
     height: auto;
-    width: 100%;
+    min-height: 500px;
   }
 
   .game-area-container {
-    position: absolute; /* Position relative to the .home-container */
-    top: 35vh; /* Same vertical position as intro-container */
-    left: 35%;
-    transform: translate(10%, -30%); /* Fine-tune the position */
     display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Align items to the right */
-    justify-content: flex-end;
-    max-width: 90%;
-    margin-bottom: 20px;
-    margin-left: 10px; /* Add space to the left of the game area */
-    flex: 0 0 auto; /* Ensure it doesn't grow or shrink */
-    height: 100vh;
+    flex-direction: row;
+    align-items: center;
     width: 100%;
+    height: auto;
+    min-height: 500px;
+  }
+
+  .game-area {
+    position: absolute;
+    left: 12%;
+    top: 540px;
+    width: 50%;
+    min-height: 500px;
+    max-height: 500px;
+    border-radius: 50px;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 600px;
+    margin-left: 5%;
+  }
+
+  .intro {
+    max-width: 80%;
+  }
+
+  .intro h1 {
+    font-size: clamp(30px, 4vw, 40px);
+  }
+
+  .xoxo {
+    display: flex;
+    position: absolute;
+    top: 520px;
+    left: 43%;
+    width: 40%;
+    min-width: 230px;
+    height: 540px;
+    margin-right: 20%;
+    padding-left: 45px;
+    float: left;
   }
 
   .intro-container mat-card {
@@ -190,6 +202,7 @@ mat-card-actions {
     margin: 0;
     padding: 0;
     width: 100%;
+    align-items: flex-start;
   }
 
   .intro-container mat-card-content {
@@ -200,40 +213,155 @@ mat-card-actions {
 
   .intro-container mat-card-content p {
     margin-top: 0;
-    font-size: clamp(10px, 4vw, 20px);
+    font-size: clamp(15px, 4vw, 25px);
+  }
+
+  .game-area-title h1 {
+    font-size: clamp(20px, 3vw, 30px);
+    width: 50%;
+    white-space: normal;
+    margin-top: 30%;
+    margin-left: 20px;
+    margin-right: 80px;
+    padding-right: 80px;
+    overflow-wrap: break-word;
+    position: relative;
+    clear: left;
+    text-align: center;
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+  }
+
+  .play-btn {
+    margin-right: 50%;
+    padding: 15px 35px;
+  }
+
+  img[mat-card-image] {
+    width: 100%;
+    height: 100%;
+    border-radius: 213px;
+  }
+}
+
+
+/* Styles for larger screens, horizontal (tablet and above) */
+@media (min-width: 800px) and (orientation: landscape){
+  .home-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    padding: 50px;
+    background: url("../assets/home-background.jpg") repeat center center;
+    background-size: contain;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .intro h1 {
+    text-align: left;
+  }
+
+  .home-body {
+    text-align: left;
+  }
+
+  .intro-container{
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 25%;
+    margin-left: 15%;
+    margin-top: 5%;
+    flex:0 0 auto;
+    height: 100vh;
+    min-height: 500px;
+  }
+
+  .game-area-container {
+    position: relative;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    width: 50%;
+    height: 100vh;
+    min-height: 500px;
+    margin-right: 50%;
+    margin-left: 2%;
+    flex:0 0 auto;
   }
 
   .game-area {
-    position: fixed; /* Absolute positioning relative to .game-area-container */
+    position: absolute;
     left: 0;
-    top: 15%;
-    width: 30%;
-    height: 60%;
-    background-color: #15072E;
+    top: 10%;
+    width: 60%;
+    min-height: 500px;
+    max-height: 500px;
     border-radius: 50px;
-    opacity: 84%;
-    padding: 16px;
-    box-sizing: border-box;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 600px;
+    margin-left: 5%;
+  }
+
+  .xoxo {
+    display: flex;
+    position: absolute;
+    top: 8%;
+    left: 40%;
+    width: 40%;
+    min-width: 230px;
+    height: 540px;
+    margin-right: 20%;
+    float: left;
+  }
+
+  .intro-container mat-card {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+  }
+
+  .intro-container mat-card-title {
+    margin: 0;
+    padding: 0;
+    width: 100%;
     align-items: flex-start;
   }
 
-  .game-area-title {
-    font-size: clamp(20px, 4vw, 30px);
+  .intro-container mat-card-content {
+    margin: 10px 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .intro-container mat-card-content p {
+    margin-top: 0;
+    font-size: clamp(10px, 3vw, 20px);
+  }
+
+  .game-area-title h1{
+    font-size: clamp(20px, 3vw, 30px);
     white-space: normal;
-    margin-right: 30px;
-    padding-left: 10px;
-    padding-right: 30px;
+    margin-right: 70px;
+    padding-right: 80px;
     overflow-wrap: break-word;
+    position: relative;
+    clear: both;
     text-align: left;
   }
 
   mat-card-actions {
     display: flex;
-    justify-content: center; /* Center button horizontally */
-    width: 80%; /* Full width to center button */
+    justify-content: center;
+    width: 80%;
   }
 
   .play-btn {
@@ -241,19 +369,9 @@ mat-card-actions {
     padding: 15px 35px;
   }
 
-  .xoxo {
-    display: flex;
-    position: absolute; /* Absolute position to fix the image inside the game area */
-    top: 13%; /* Adjust to control vertical position */
-    left: 20%; /* Adjust to control horizontal position */
-    width: 25%; /* Adjust the size of the image */
-    height: 65%;
-    z-index: 0;
-  }
-
   img[mat-card-image] {
-    width: 100%; /* Make sure the image scales to fit the xoxo card */
+    width: 100%;
     height: 100%;
-    border-radius: 213px; /* Optional: rounded corners for the image */
+    border-radius: 213px;
   }
 }
