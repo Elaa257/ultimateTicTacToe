@@ -10,6 +10,7 @@ import { AuthComponent } from './auth/auth.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import {IMAGE_LOADER, ImageLoaderConfig} from '@angular/common';
 
 
 @NgModule({
@@ -26,6 +27,13 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     HomeComponent,
     NavBarComponent
   ],
-  providers: [],
+  providers: [
+    {
+      provide: IMAGE_LOADER,
+      useValue: (config: ImageLoaderConfig) => {
+        return `https://example.com/${config.src}-${config.width}.jpg}`;
+      }
+    },
+  ],
 })
 export class AppModule { }

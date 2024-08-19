@@ -15,22 +15,33 @@
     <button mat-button class="login-btn large-screen" [routerLink]="'/auth'">Login</button>
 
     <!-- mobile -->
-    <!-- bug: when clicked, menu is shown at the end of the page -->
-    <div class="menu-toggle">
-      <button mat-icon-button [matMenuTriggerFor]="aboveMenu" class="menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-menu #aboveMenu="matMenu" [overlapTrigger]="true" yPosition="above" class="menu">
-        <button mat-menu-item class="menu" [routerLink]="'/home'">
+    <mat-sidenav-container>
+      <!-- Sidenav Panel -->
+      <mat-sidenav #sidenav position="end" mode="over" class="menu">
+        <!-- Close Button -->
+        <button mat-icon-button (click)="sidenav.close()" class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+        <!-- Menu Items -->
+        <button mat-button class="menu-item" [routerLink]="'/home'" (click)="handleClick($event)">
           <span>Home</span>
         </button>
-        <button mat-menu-item class="menu" [routerLink]="'/ranking'">
+        <button mat-button class="menu-item" [routerLink]="'/ranking'" (click)="handleClick($event)">
           <span>Ranking list</span>
         </button>
-        <button mat-menu-item class="menu" [routerLink]="'/auth'">
+        <button mat-button class="login-btn" [routerLink]="'/auth'" (click)="handleClick($event)">
           <span>Login</span>
         </button>
-      </mat-menu>
-    </div>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <div class="menu-toggle">
+          <!-- Toggle Button to Open Sidenav -->
+          <button mat-icon-button (click)="sidenav.toggle()" class="menu">
+            <mat-icon>menu</mat-icon>
+          </button>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   </nav>
 </mat-toolbar>
