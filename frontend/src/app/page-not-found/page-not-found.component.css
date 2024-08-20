@@ -19,6 +19,7 @@
 /* Media query for larger screens */
 @media (min-width: 600px) {
   .page-not-found {
-    background: url("../assets/page-not-found.jpg") no-repeat center center; /* no semi-transparent overlay on larger screens */
+    background: url("../assets/page-not-found.jpg") repeat center center; /* no semi-transparent overlay on larger screens */
+    background-size: contain;
   }
 }
