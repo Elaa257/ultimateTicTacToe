@@ -9,6 +9,7 @@ mat-toolbar.footer {
   box-sizing: border-box;
   position: relative;
   margin-top: auto;
+  z-index: 9999;
 }
 
 .footer-left, .footer-right {

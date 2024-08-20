@@ -4,21 +4,11 @@
 $main-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: mat.$rose-palette,
+    primary: mat.$magenta-palette,
   )
 ));
 
 :root {
   @include mat.core-theme($main-theme);
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow-x: hidden;
-}
-body {
-  font-family: Helvetica, sans-serif;
-  min-height: 100vh;
+  @include mat.progress-spinner-theme($main-theme);
 }

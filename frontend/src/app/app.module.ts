@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import {AppComponent} from "./app.component";
@@ -10,13 +10,24 @@ import { AuthComponent } from './auth/auth.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import {IMAGE_LOADER, ImageLoaderConfig} from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { LoadingComponent } from './loading/loading.component';
+
+export function initializeApp(): () => Promise<void> {
+  return (): Promise<void> => {
+    // Return a promise that resolves when the app initialization is complete
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(), 2000); // Simulate initialization delay
+    });
+  };
+}
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     BrowserModule,
+    RouterModule,
     HttpClientModule,
     AppComponent,
     MatMenuModule,
@@ -24,15 +35,16 @@ import {IMAGE_LOADER, ImageLoaderConfig} from '@angular/common';
     BrowserAnimationsModule,
     FooterComponent,
     HomeComponent,
-    NavBarComponent
+    NavBarComponent,
+    AuthComponent,
+    LoadingComponent
   ],
   providers: [
     {
-      provide: IMAGE_LOADER,
-      useValue: (config: ImageLoaderConfig) => {
-        return `https://localhost:4200/assets/${config.src}-${config.width}.jpg}`;
-      }
-    },
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      multi: true
+    }
   ],
 })
 export class AppModule { }
