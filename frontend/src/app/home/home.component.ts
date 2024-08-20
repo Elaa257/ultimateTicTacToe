@@ -9,6 +9,7 @@ import {
 } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -22,10 +23,10 @@ import { RouterLink } from '@angular/router';
     MatCardActions,
     MatCardImage,
     RouterLink,
+    NgIf,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
 }

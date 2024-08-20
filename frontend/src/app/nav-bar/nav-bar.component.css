@@ -9,6 +9,11 @@
   left: 0;
   width: 100%;
   box-sizing: border-box;
+  z-index: 10000;
+}
+
+mat-sidenav-content {
+  background-color: black;
 }
 
 mat-toolbar {
@@ -51,11 +56,16 @@ mat-toolbar {
   cursor: pointer;
   margin-left: auto;
   margin-right: 20px;
+  background-color: black;
 }
 
 .menu {
   background-color: black; /* Match navbar background */
   color: white;
+}
+
+mat-sidenav-container {
+  z-index: 100000;
 }
 
 mat-sidenav {
@@ -65,6 +75,7 @@ mat-sidenav {
   height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: black;
 }
 
 .menu mat-icon {
@@ -85,17 +96,18 @@ mat-sidenav {
 }
 
 .highlighted {
-  background-color: #ED4AB7; /* Light gray background */
-  border: 3px solid #ED4AB7; /* Highlight with left border */
+  background-color: #ED4AB7;
+  border: 3px solid #ED4AB7;
   padding: 20px;
 }
 
 .menu-toggle {
   padding: 10px;
+  background-color: black;
 }
 
 .close-button {
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   display: flex;
   padding: 0;
