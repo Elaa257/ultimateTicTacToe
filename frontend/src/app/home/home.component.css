@@ -1,15 +1,50 @@
+
+
+
+
+
+
+/* Styles for smaller screens */
+@media (max-width: 600px) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
 .home-container {
   flex: 1;
   display: flex;
-  flex-direction: column;
   justify-content: flex-start;
+  flex-direction: column;
   align-items: center;
-  padding: 20px;
-  background: url("../assets/home-background.jpg") repeat center center rgba(0, 0, 0, 0.3);
-  background-size: contain;
   background-blend-mode: multiply;
   position: relative;
   min-height: 100vh;
+  padding: 20px;
+  background: url("../assets/home-background.jpg") repeat center center rgba(0, 0, 0, 0.3);
+  background-size: contain;
+}
+
+.home-body {
+  color: yellow;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 19px;
+  text-align: center;
 }
 
 .intro {
@@ -19,27 +54,21 @@
 }
 
 .intro h1 {
-  text-align: center;
   font-size: clamp(20px, 4vw, 30px);
+  text-align: center;
 }
 
 .intro-container {
   position: static;
+  justify-content: flex-start;
+  display: flex;
   max-width: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   margin-top: 40px;
   padding-bottom: 60px;
   flex: none;
-}
-
-.home-body {
-  color: yellow;
-  font-family: 'Helvetica', sans-serif;
-  font-size: 19px;
-  text-align: center;
+  min-height: auto;
 }
 
 .signup-btn, .play-btn {
@@ -71,27 +100,27 @@
 
 .game-area-container {
   position: static;
-  max-width: 100%;
   display: flex;
+  max-width: 100%;
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
-  height: auto;
+  min-height: auto;
   flex: none;
 }
 
 .game-area {
   position: static;
-  width: 90%;
-  max-width: 600px;
-  height: auto;
-  background-color: #15072E;
-  border-radius: 20px;
   opacity: 84%;
   padding: 10px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  background-color: #15072E;
+  width: 90%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 20px;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
@@ -99,7 +128,6 @@
 
 .game-area-title {
   white-space: normal;
-  margin-right: 0;
   margin-top: 20px;
   padding-left: 10px;
   padding-right: 10px;
@@ -114,15 +142,15 @@ mat-card-actions {
   padding-top: 20px;
 }
 
-.xoxo {
-  display: none;
-}
-
 .game-area h1 {
   font-size: clamp(20px, 4vw, 30px);
   line-height: 1.5;
   font-family: 'Audiowide', sans-serif;
   color: white;
+}
+
+.xoxo {
+  display: none;
 }
 
 /* Styles for larger screens, vertical (tablet and above) */
@@ -252,36 +280,36 @@ mat-card-actions {
 
 /* Styles for larger screens, horizontal (tablet and above) */
 @media (min-width: 800px) and (orientation: landscape){
+
   .home-container {
-    flex: 1;
-    display: flex;
-    justify-content: flex-start;
     flex-direction: row;
-    align-items: center;
     padding: 50px;
     background: url("../assets/home-background.jpg") repeat center center;
     background-size: contain;
-    position: relative;
-    min-height: 100vh;
-  }
-
-  .intro h1 {
-    text-align: left;
   }
 
   .home-body {
     text-align: left;
   }
 
+  .intro h1 {
+    text-align: left;
+  }
+
   .intro-container{
-    justify-content: flex-start;
     align-items: flex-start;
+    flex-direction: column;
     max-width: 25%;
     margin-left: 15%;
-    margin-top: 5%;
+    margin-bottom: 10%;
     flex:0 0 auto;
-    height: 100vh;
     min-height: 500px;
+  }
+
+  .play-btn {
+    margin-left: 10px;
+    margin-right: 30%;
+    padding: 15px 35px;
   }
 
   .game-area-container {
@@ -290,23 +318,23 @@ mat-card-actions {
     align-items: flex-start;
     flex-direction: row;
     width: 50%;
-    height: 100vh;
     min-height: 500px;
     margin-right: 50%;
     margin-left: 2%;
+    margin-bottom: 15%;
     flex:0 0 auto;
   }
 
   .game-area {
+    border-radius: 50px;
+    justify-content: flex-start;
+    align-items: flex-start;
     position: absolute;
     left: 0;
     top: 10%;
     width: 60%;
     min-height: 500px;
     max-height: 500px;
-    border-radius: 50px;
-    justify-content: flex-start;
-    align-items: flex-start;
     max-width: 600px;
     margin-left: 5%;
   }
@@ -314,12 +342,13 @@ mat-card-actions {
   .xoxo {
     display: flex;
     position: absolute;
-    top: 8%;
+    top: 7%;
     left: 40%;
     width: 40%;
     min-width: 230px;
     height: 540px;
     margin-right: 20%;
+    margin-left: 10px;
     float: left;
   }
 
@@ -348,10 +377,10 @@ mat-card-actions {
     font-size: clamp(10px, 3vw, 20px);
   }
 
-  .game-area-title h1{
+  .game-area-title{
     font-size: clamp(20px, 3vw, 30px);
-    white-space: normal;
-    margin-right: 70px;
+    margin-left: 8px;
+    margin-right: 75px;
     padding-right: 80px;
     overflow-wrap: break-word;
     position: relative;
@@ -360,14 +389,7 @@ mat-card-actions {
   }
 
   mat-card-actions {
-    display: flex;
-    justify-content: center;
     width: 80%;
-  }
-
-  .play-btn {
-    margin-right: 50px;
-    padding: 15px 35px;
   }
 
   img[mat-card-image] {
