@@ -23,7 +23,17 @@ import { UserModule } from './user/user.module';
     GameModule,
     UserModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', '..', 'frontend', 'dist', 'frontend', 'browser'),
+      rootPath: join(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        'ultimateTicTacToe',
+        'frontend',
+        'dist',
+        'frontend',
+        'browser'
+      ),
       exclude: ['/backend*'],
     }),
   ],
