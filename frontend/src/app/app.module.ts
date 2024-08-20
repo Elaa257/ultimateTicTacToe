@@ -12,7 +12,6 @@ import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import {IMAGE_LOADER, ImageLoaderConfig} from '@angular/common';
 
-
 @NgModule({
   declarations: [],
   imports: [
@@ -31,7 +30,7 @@ import {IMAGE_LOADER, ImageLoaderConfig} from '@angular/common';
     {
       provide: IMAGE_LOADER,
       useValue: (config: ImageLoaderConfig) => {
-        return `https://example.com/${config.src}-${config.width}.jpg}`;
+        return `https://localhost:4200/assets/${config.src}-${config.width}.jpg}`;
       }
     },
   ],

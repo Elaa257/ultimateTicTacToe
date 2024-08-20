@@ -28,7 +28,7 @@ mat-toolbar {
   align-items: center;
   gap: 20px;
   padding: 0;
-  display: none; /* Hide menu on mobile initially */
+  display: none; /* Hide menu on mobile */
   margin-left: 20px;
 }
 
@@ -121,11 +121,6 @@ mat-sidenav {
 
 /* Styles for larger screens (tablet and above) */
 @media (min-width: 600px) {
-  .navbar {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
 
   .large-screen {
     display: flex;
@@ -153,7 +148,7 @@ mat-sidenav {
     margin-top: 0;
     margin-right: 20px;
     padding: 10px 20px;
-    margin-left: 75%;
+    margin-left: 0;
     font-size: 16px;
   }
 }
