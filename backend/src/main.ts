@@ -19,7 +19,7 @@ declare module 'express-session' {
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new FastifyAdapter()
   );
   await app.register(fastifyCookie, {
     secret: 'my-secret', // for signed cookies
@@ -41,7 +41,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
 
   await app.listen(3000);
 }

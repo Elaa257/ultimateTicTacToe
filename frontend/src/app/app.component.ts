@@ -24,25 +24,30 @@ import { NgIf } from '@angular/common';
 export class AppComponent implements OnInit {
   title = 'frontend';
 
+  // Flag to indicate loading state
   isLoading = true;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
+
+    // Event handler to set loading state to false when the window has fully loaded
     window.onload = () => {
       this.isLoading = false;
     };
 
-    // Listen to router events
+    // Subscribe to router events to manage loading state
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.isLoading = true;
       }
+      // Fallback timeout to hide loading spinner after 2.5 seconds
       setTimeout(() => {
         this.isLoading = false;
       }, 2500); // fallback timeout
     });
 
+    // Fallback timeout to hide loading spinner after 2.5 seconds
     setTimeout(() => {
       this.isLoading = false;
     }, 2500); // fallback timeout

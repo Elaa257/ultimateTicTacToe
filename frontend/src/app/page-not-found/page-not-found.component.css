@@ -1,6 +1,7 @@
+/* Style for the page not found container */
 .page-not-found {
-  background: url("../assets/page-not-found.jpg") no-repeat center center rgba(0, 0, 0, 0.3);
-  background-size: cover;
+  background: url("../assets/page-not-found.jpg") no-repeat center center rgba(0, 0, 0, 0.3); /* semi-transparent overlay for a darkened effect */
+  background-size: cover; /* Ensure the background image covers the entire container */
   color: white;
   font-family: 'Audiowide', sans-serif;
   text-align: center;
@@ -10,16 +11,14 @@
   align-items: center;
 }
 
+/* Style for the heading inside the page not found container */
 .page-not-found h1 {
   margin: 20px;
 }
 
+/* Media query for larger screens */
 @media (min-width: 600px) {
   .page-not-found {
-    background: url("../assets/page-not-found.jpg") no-repeat center center;
-    background-size: cover;
-    background-blend-mode: normal;
-    height: 100vh;
+    background: url("../assets/page-not-found.jpg") no-repeat center center; /* no semi-transparent overlay on larger screens */
   }
-
 }

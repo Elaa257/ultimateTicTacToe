@@ -13,11 +13,14 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { RouterModule } from '@angular/router';
 import { LoadingComponent } from './loading/loading.component';
 
+/**
+ * Function to initialize the application.
+ * Returns a function that returns a promise resolving after a delay.
+ */
 export function initializeApp(): () => Promise<void> {
   return (): Promise<void> => {
-    // Return a promise that resolves when the app initialization is complete
     return new Promise((resolve) => {
-      setTimeout(() => resolve(), 2000); // Simulate initialization delay
+      setTimeout(() => resolve(), 2000); // Delay for 2 seconds before resolving
     });
   };
 }

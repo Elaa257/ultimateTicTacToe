@@ -1,5 +1,6 @@
+/* Main container for the home page */
 .home-container {
-  flex: 1;
+  flex: 1; /* Allows the container to grow and fill available space */
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
@@ -12,6 +13,7 @@
   background-size: contain;
 }
 
+/* Style for the introductory content */
 .home-body {
   color: yellow;
   font-family: 'Helvetica', sans-serif;
@@ -19,6 +21,7 @@
   text-align: center;
 }
 
+/* Style for the intro card title */
 .intro {
   color: yellow;
   max-width: 400px;
@@ -30,6 +33,7 @@
   text-align: center;
 }
 
+/* Style for the introductory card */
 .intro-container {
   position: static;
   justify-content: flex-start;
@@ -44,6 +48,7 @@
   background-color: rgba(0, 0, 0, 0);
 }
 
+/* Style for buttons */
 .signup-btn, .play-btn {
   background-color: #ED4AB7;
   color: white;
@@ -71,6 +76,7 @@
   padding: 15px 30px;
 }
 
+/* Style for the game area container */
 .game-area-container {
   position: static;
   display: flex;
@@ -83,6 +89,7 @@
   background-color: rgba(0, 0, 0, 0);
 }
 
+/* Style for the game area card */
 .game-area {
   position: static;
   opacity: 84%;
@@ -129,23 +136,14 @@ mat-card-actions {
   display: none;
 }
 
-/* Styles for larger screens, vertical (tablet and above) */
+/* Styles for larger screens, portrait orientation */
 @media (min-width: 600px) and (orientation: portrait) {
   .home-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     padding: 50px;
-    position: relative;
-    min-height: 100vh;
   }
 
   .intro-container {
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    max-width: 100%;
     margin-bottom: 20px;
     flex: 0 0 auto;
     height: auto;
@@ -153,9 +151,7 @@ mat-card-actions {
   }
 
   .game-area-container {
-    display: flex;
     flex-direction: row;
-    align-items: center;
     width: 100%;
     height: auto;
     min-height: 500px;
@@ -253,8 +249,7 @@ mat-card-actions {
   }
 }
 
-
-/* Styles for larger screens, horizontal (tablet and above) */
+/* Styles for larger screens, landscape orientation */
 @media (min-width: 800px) and (orientation: landscape){
 
   .home-container {

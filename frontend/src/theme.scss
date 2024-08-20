@@ -1,6 +1,12 @@
+/**
+* Custom angular theme which is needed by angular material to use its components correctly
+* Feel free to make adjustments but pay attention to possible side effects on other pages
+ */
+
 @use '@angular/material' as mat;
 @include mat.core();
 
+// Main theme
 $main-theme: mat.define-theme((
   color: (
     theme-type: dark,
@@ -9,6 +15,10 @@ $main-theme: mat.define-theme((
 ));
 
 :root {
+
+  // Core theme styles
   @include mat.core-theme($main-theme);
+
+  // Styles for Angular Material's progress spinner component
   @include mat.progress-spinner-theme($main-theme);
 }
