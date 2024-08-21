@@ -29,6 +29,11 @@ mat-card {
 }
 
 mat-tab-group {
-  min-width: 85%;
+  min-width: 90%;
   min-height: 90%;
 }
+
+th, td, tr {
+  color: white;
+}
+

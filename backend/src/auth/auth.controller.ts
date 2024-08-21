@@ -23,6 +23,7 @@ export class AuthController {
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
+        path: '/', //Makes the cookie accessible by all routes
       })
       .send(response);
   }
@@ -38,6 +39,7 @@ export class AuthController {
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
+        path: '/', //Makes the cookie accessible by all routes
       })
       .send(response);
   }
@@ -45,9 +47,9 @@ export class AuthController {
   @Post('logout')
   @ApiResponse({ type: ResponseDTO })
   async logout(@Res() reply: FastifyReply): Promise<void> {
-    console.log('enter logout');
+      console.log('enter logout');
     try {
-      reply.clearCookie('access_token', { path: '/backend/auth' });
+      reply.clearCookie('access_token', { path: '/' });
       console.log('Cookie cleared');
       reply.status(200).send(new ResponseDTO(true, `Logged out successfully`));
     } catch (error) {

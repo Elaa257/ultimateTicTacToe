@@ -10,17 +10,17 @@
     <mat-tab-group>
       <mat-tab label="Players">
 
-        <table mat-table [dataSource]="users" class="mat-elevation-z8">
+        <table mat-table [dataSource]="users" class="mat-elevation-z8 table">
 
           <!-- ID Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <th mat-header-cell class="table" *matHeaderCellDef> ID </th>
             <td mat-cell *matCellDef="let user"> {{ user.id }} </td>
           </ng-container>
 
           <!-- Name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
+          <ng-container matColumnDef="nickname">
+            <th mat-header-cell *matHeaderCellDef> Nickname </th>
             <td mat-cell *matCellDef="let user"> {{ user.nickname }} </td>
           </ng-container>
 
@@ -31,7 +31,7 @@
           </ng-container>
 
           <!-- Elo Column -->
-          <ng-container matColumnDef="Elo">
+          <ng-container matColumnDef="elo">
             <th mat-header-cell *matHeaderCellDef> Elo </th>
             <td mat-cell *matCellDef="let user"> {{ user.elo }} </td>
           </ng-container>
@@ -41,11 +41,28 @@
             <th mat-header-cell *matHeaderCellDef> Role </th>
             <td mat-cell *matCellDef="let user"> {{ user.role }} </td>
           </ng-container>
+
+          <!-- Header and Row Definitions -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 
 
       </mat-tab>
-      <mat-tab label="Queue"> Content 2 </mat-tab>
+
+      <mat-tab label="Queue">
+        <table mat-table [dataSource]="currentQueue" class="mat-elevation-z8 table">
+          <ng-container matColumnDef="currentQueue">
+            <th mat-header-cell *matHeaderCellDef> Current Queue </th>
+            <td mat-cell *matCellDef="let queue"> {{ queue }} </td>
+          </ng-container>
+
+          <!-- Header and Row Definitions -->
+          <tr mat-header-row *matHeaderRowDef="queueColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-tab>
+
       <mat-tab label="Current Games"> Content 3 </mat-tab>
     </mat-tab-group>
   </mat-card>

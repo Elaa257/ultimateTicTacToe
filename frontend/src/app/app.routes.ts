@@ -11,10 +11,12 @@ export const routes: Routes = [
   { path: 'auth', component: AuthComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent },
-  { path: 'admin', component: AdminPageComponent},
+  { path: 'admin', component: AdminPageComponent /*, canActivate: [AuthGuard]*/},
   { path: '**', component: PageNotFoundComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
+
+//TODO: canActivate
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -12,6 +12,7 @@ import {
   MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
   MatTable,
 } from '@angular/material/table';
+import { AdminService } from './admin.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -38,14 +39,22 @@ import {
 export class AdminPageComponent implements OnInit{
 
   users: UserDTO[] = [];
+  displayedColumns: string[] = ['id', 'nickname', 'email', 'elo', 'role'];
 
-  constructor(private userService: UserService) {}
+  currentQueue: string[] = [];
+  queueColumns: string[] = ['currentQueue'];
+
+  constructor(private userService: UserService, private adminService: AdminService) {}
 
   ngOnInit(): void {
     this.userService.getAllUsers().subscribe((data: UsersDTO) => {
-      this.users = data.users || []; // If users is undefined, initialize with an empty array
+      this.users = data.users || [];
       console.log('Message:', data.message);
       console.log('Users:', this.users);
+    });
+
+    this.adminService.getCurrentQueue().subscribe((data: string[]) => {
+      this.currentQueue = data || [];
     });
   }
 

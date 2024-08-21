@@ -1,4 +1,6 @@
 <app-nav-bar></app-nav-bar>
-<!--<app-loading [@ngIf]="isLoading"></app-loading> --> <!-- @If? -->
+@if (isLoading) {
+  <app-loading></app-loading>
+}
 <router-outlet></router-outlet>
 <app-footer></app-footer>
