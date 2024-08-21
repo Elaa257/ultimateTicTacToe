@@ -1,9 +1,12 @@
 export interface UserDTO {
-  user: {
-    id: number;
-    email: string;
-    nickname: string;
-    role: string;
-    elo: number;
-  };
+  id: number;
+  email: string;
+  nickname: string;
+  role: string;
+  elo: number;
+}
+
+export interface UsersDTO {
+  message: string;
+  users?: UserDTO[]; // Optional array of UserDTO
 }

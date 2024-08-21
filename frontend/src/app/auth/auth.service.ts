@@ -22,12 +22,12 @@ export class AuthService {
   register(registerDTO: RegisterDTO): Observable<ResponseDTO> {
     return this.http.post<ResponseDTO>(`${this.apiUrl}/register`, registerDTO, { withCredentials: true }).pipe(
       tap(response => {
-        if (response.response.ok) {
+        if (response.ok) {
           this.isAuthenticatedCache = true; // Update cache on successful register
           this.authCheckTimestamp = Date.now(); // Update the timestamp on successful register
-          if (response.user.role === 'user') {
+          if (response.user?.role === 'user') {
             this.router.navigate(['/profile']);
-          } else if (response.user.role === 'admin') {
+          } else if (response.user?.role === 'admin') {
             this.router.navigate(['/admin']);
           }
         }
@@ -65,12 +65,12 @@ export class AuthService {
   login(loginDTO: LoginDTO): Observable<ResponseDTO> {
     return this.http.post<ResponseDTO>(`${this.apiUrl}/login`, loginDTO, { withCredentials: true }).pipe(
       tap(response => {
-        if (response.response.ok) {
+        if (response.ok) {
           this.isAuthenticatedCache = true; // Update cache on successful login
           this.authCheckTimestamp = Date.now(); // Update the timestamp on successful login
-          if (response.user.role === 'user') {
+          if (response.user?.role === 'user') {
             this.router.navigate(['/profile']);
-          } else if (response.user.role === 'admin') {
+          } else if (response.user?.role === 'admin') {
             this.router.navigate(['/admin']);
           }
         }

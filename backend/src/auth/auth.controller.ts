@@ -18,13 +18,13 @@ export class AuthController {
     @Body() registerDTO: RegisterDTO,
     @Res() reply: FastifyReply
   ): Promise<void> {
-    const { access_token, response, user } =
+    const { access_token, response } =
       await this.userService.register(registerDTO);
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
       })
-      .send({ response, user });
+      .send(response);
   }
 
   @Post('login')
@@ -33,13 +33,13 @@ export class AuthController {
     @Body() loginDto: LoginDTO,
     @Res() reply: FastifyReply
   ): Promise<void> {
-    const { access_token, response, user } =
+    const { access_token, response } =
       await this.userService.login(loginDto);
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
       })
-      .send({ response, user });
+      .send(response);
   }
 
   @Post('logout')

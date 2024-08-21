@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatCard, MatCardTitle } from '@angular/material/card';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { UserService } from '../profile/user.service';
-import { UserDTO } from '../profile/DTOs/userDTO';
+import { UserDTO, UsersDTO } from '../profile/DTOs/userDTO';
 import {
   MatCell,
   MatCellDef,
@@ -42,9 +42,12 @@ export class AdminPageComponent implements OnInit{
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe((data: UserDTO[]) => {
-      this.users = data;
+    this.userService.getAllUsers().subscribe((data: UsersDTO) => {
+      this.users = data.users || []; // If users is undefined, initialize with an empty array
+      console.log('Message:', data.message);
+      console.log('Users:', this.users);
     });
   }
+
 
 }
