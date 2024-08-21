@@ -12,7 +12,7 @@
   background-color: white;
   padding-left: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 800px; /* Breiter, um Platz für Bild und Formular zu schaffen */
   width: 100%;
 }
