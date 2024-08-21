@@ -1,59 +1,51 @@
-<script src="../profile/profile.component.ts"></script>
-<div>
-  @if (isLoginVisible) {
-    <section id="login">
-      <!--
-      <form action="">
-        <mat-form-field>
-          <mat-label>E-mail</mat-label>
-          <input matInput>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Password</mat-label>
-          <input matInput [type]=" hide()? 'password' : 'text'">
-          <button
-            mat-icon-button
-            matSuffix
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide()"
-            (click)="onPassword($event)"
-          >
-            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-        </mat-form-field>
-      </form>
-      -->
-
-
-      <h4>Login</h4>
-      <form (ngSubmit)="onLogin()">
-        <input type="email" placeholder="E-mail" id="loginEmail" [(ngModel)]="loginEmail" name="email">
-        <input type="password" placeholder="Password" id="loginPassword" [(ngModel)]="loginPassword" name="password">
-        <button type="submit">login</button>
-      </form>
-      <div>
-        <a (click)="showRegister()">You don't have an Account yet? Sign Up for free </a>
+<div class="auth-bg">
+  @if(isLoginVisible) {
+    <section id="login" class="form-container">
+      <div class="form-content">
+        <h4>Login</h4>
+        <form (submit)="onLogin()">
+          <mat-form-field appearance="fill">
+            <input matInput type="email" placeholder="E-mail" id="loginEmail" [(ngModel)]="loginEmail" name="email">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <input matInput type="password" placeholder="Password" id="loginPassword" [(ngModel)]="loginPassword" name="password">
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit">Login</button>
+        </form>
+        <div>
+          <a (click)="showRegister()">You don't have an Account yet? Sign Up for free</a>
+        </div>
       </div>
+      <mat-card class="image-card">
+        <img mat-card-image src="pexels-manei-2690323.jpg" alt="login-img">
+      </mat-card>
     </section>
   }
 
-  @if (!isLoginVisible) {
-
-    <section id="register">
+  @if(!isLoginVisible) {
+    <section id="register" class="form-container">
+      <div class="form-content">
       <h4>Register</h4>
       <form (submit)="onRegister()">
-        <input type="text" placeholder="Nickname" id="registerNickname">
-        <input type="email" placeholder="E-mail" id="registerEmail">
-        <input type="password" placeholder="Password" id="registerPassword">
-        <input type="password" placeholder="Confirm-Password" id="confirmPassword">
-
+        <mat-form-field appearance="fill">
+          <input matInput type="text" placeholder="Nickname" [(ngModel)]="nickname" name="nickname">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <input matInput type="email" placeholder="E-mail" id="registerEmail" [(ngModel)]="registerEmail" name="registerEmail">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <input matInput type="password" placeholder="Password" [(ngModel)]="registerPassword" name="registerPassword">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <input matInput type="password" placeholder="Confirm-Password" [(ngModel)]="confirmPassword" name="confirmPassword">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Register</button>
       </form>
-      <a (click)="showLogin()">you already have an Account? Sign in</a>
+      <a (click)="showLogin()">You already have an Account? Sign in</a>
+      </div>
+      <mat-card class="image-card">
+        <img mat-card-image src="pexels-manei-2690323.jpg" alt="login-img">
+      </mat-card>
     </section>
   }
-
-
 </div>
-
-
-

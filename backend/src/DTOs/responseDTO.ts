@@ -1,13 +1,13 @@
-import {ApiProperty} from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ResponseDTO {
-    @ApiProperty()
-    ok:boolean;
-    @ApiProperty()
-    message:string;
+  @ApiProperty()
+  ok: boolean;
+  @ApiProperty()
+  message: string;
 
-    constructor(ok:boolean, message:string){
-        this.ok = ok;
-        this.message = message;
-    }
+  constructor(ok: boolean, message: string) {
+    this.ok = ok;
+    this.message = message;
+  }
 }

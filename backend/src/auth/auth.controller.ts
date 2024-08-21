@@ -14,8 +14,17 @@ export class AuthController {
 
   @Post('register')
   @ApiResponse({ type: ResponseDTO })
-  async register(@Body() registerDTO: RegisterDTO): Promise<ResponseDTO> {
-    return this.userService.register(registerDTO);
+  async register(
+    @Body() registerDTO: RegisterDTO,
+    @Res() reply: FastifyReply
+  ): Promise<void> {
+    const { access_token, response, user } =
+      await this.userService.register(registerDTO);
+    reply
+      .setCookie('access_token', access_token, {
+        httpOnly: true, // Makes the cookie accessible only by the web server
+      })
+      .send({ response, user });
   }
 
   @Post('login')
