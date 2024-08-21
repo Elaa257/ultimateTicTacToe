@@ -10,6 +10,7 @@ import { AuthComponent } from './auth/auth.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
 import { RouterModule } from '@angular/router';
 import { LoadingComponent } from './loading/loading.component';
 
@@ -39,6 +40,7 @@ export function initializeApp(): () => Promise<void> {
     FooterComponent,
     HomeComponent,
     NavBarComponent,
+    AdminPageComponent,
     AuthComponent,
     LoadingComponent
   ],

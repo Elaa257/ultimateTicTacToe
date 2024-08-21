@@ -30,10 +30,13 @@ export class AppComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
+    console.log("check " + this.isLoading);
 
     // Event handler to set loading state to false when the window has fully loaded
     window.onload = () => {
+
       this.isLoading = false;
+      console.log("loaded " + this.isLoading);
     };
 
     // Subscribe to router events to manage loading state
@@ -49,7 +52,9 @@ export class AppComponent implements OnInit {
 
     // Fallback timeout to hide loading spinner after 2.5 seconds
     setTimeout(() => {
+
       this.isLoading = false;
+      console.log("fallback " + this.isLoading);
     }, 2500); // fallback timeout
   }
 }

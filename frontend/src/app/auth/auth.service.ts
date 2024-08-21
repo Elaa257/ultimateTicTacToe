@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import { Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
-import { RegisterDTO } from './DTOs/registerDto';
+import { RegisterDTO } from './DTOs/RegisterDTO';
 import { ResponseDTO } from './DTOs/ResponseDTO';
 import { LoginDTO } from './DTOs/LoginDTO';
 import { LogOutDTO } from './DTOs/LogoutDTO';
