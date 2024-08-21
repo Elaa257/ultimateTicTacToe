@@ -1,0 +1,166 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  padding: 10px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 10000;
+}
+
+mat-sidenav-content {
+  background-color: black;
+}
+
+mat-toolbar {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 0;
+  display: none; /* Hide menu on mobile */
+  margin-left: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+}
+
+.large-screen {
+  display: none;
+}
+
+.spacer {
+  display: none; /* Hide spacer on mobile */
+}
+
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 20px;
+  background-color: black;
+}
+
+.menu {
+  background-color: black; /* Match navbar background */
+  color: white;
+}
+
+mat-sidenav-container {
+  z-index: 100000;
+}
+
+mat-sidenav {
+  width: 80%;
+  z-index: 1000;
+  position: fixed;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+}
+
+.menu mat-icon {
+  margin-right: 8px;
+}
+
+.menu-item {
+  text-align: left;
+  display: block;
+  padding: 20px;
+  border: 3px solid black;
+  border-top: 3px solid #ED4AB7;
+  margin-top: 10%;
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 80%;
+  font-size: clamp(15px, 4vw, 25px);
+}
+
+.highlighted {
+  background-color: #ED4AB7;
+  border: 3px solid #ED4AB7;
+  padding: 20px;
+}
+
+.menu-toggle {
+  padding: 10px;
+  background-color: black;
+}
+
+.close-button {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: 0;
+  margin: 20px;
+}
+
+.login-btn {
+  background-color: #ED4AB7;
+  color: white !important;
+  border: none;
+  padding: 20px 35px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-left: 30%;
+  margin-top: 35%;
+  font-size: clamp(15px, 4vw, 25px);
+}
+
+.login-btn:hover {
+  background-color: #d43a9a; /* Slightly darker shade for hover effect */
+}
+
+/* Styles for larger screens (tablet and above) */
+@media (min-width: 600px) {
+
+  .large-screen {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .nav-links {
+    display: flex;
+  }
+
+  .nav-links li {
+    margin: 0 10px;
+  }
+
+  .menu-toggle {
+    display: none; /* Hide menu toggle on larger screens */
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+    display: block; /* Show spacer on larger screens */
+  }
+
+  .login-btn {
+    margin-top: 0;
+    margin-right: 20px;
+    padding: 10px 20px;
+    margin-left: 0;
+    font-size: 16px;
+  }
+}

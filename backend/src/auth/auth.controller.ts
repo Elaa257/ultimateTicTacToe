@@ -1,16 +1,7 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Res,
-  Session,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { RegisterDTO } from './DTOs/registerDTO';
 import { AuthService } from './auth.service';
 import { ResponseDTO } from '../DTOs/responseDTO';
-import { SessionData } from 'express-session';
 import { LoginDTO } from './DTOs/loginDTO';
 import { FastifyReply } from 'fastify';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -43,15 +34,16 @@ export class AuthController {
   }
 
   @Post('logout')
+  @ApiResponse({ type: ResponseDTO })
   async logout(@Res() reply: FastifyReply): Promise<void> {
-    console.log("enter logout");
+    console.log('enter logout');
     try {
       reply.clearCookie('access_token', { path: '/backend/auth' });
-      console.log("Cookie cleared");
-      reply.status(200).send({ response: { ok: true, message: 'logged out successfully' } });
+      console.log('Cookie cleared');
+      reply.status(200).send(new ResponseDTO(true, `Logged out successfully`));
     } catch (error) {
       console.error('Error during logout:', error);
-      reply.status(500).send({ response: { ok: false, message: 'Logout failed' } });
+      reply.status(500).send(new ResponseDTO(false, `Logout failed ${error}`));
     }
   }
 

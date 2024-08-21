@@ -1,0 +1,102 @@
+/* Footer styling */
+mat-toolbar.footer {
+  background-color: #000;
+  padding: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column; /* Stack items vertically on small screens */
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  margin-top: auto; /* Push footer to the bottom of the page */
+  z-index: 9999;  /* Ensure footer appears above other content, but stays below side nav on mobile view */
+}
+
+/* Footer left and right section styling */
+.footer-left, .footer-right {
+  text-align: center;
+  width: 100%;
+  padding: 0 10px;
+  flex: 1; /* Allow sections to grow and fill space equally */
+  box-sizing: border-box;
+  min-width: 0; /* Prevent flex items from being too small */
+}
+
+/* Add margin to top of footer-right section on small screens */
+.footer-right {
+  margin-top: 20px; /* Add margin on top for spacing on smaller screens */
+}
+
+/* Social media icon container styling */
+.footer-right .social-media {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Ensure the span takes up full width */
+.footer-left span, .footer-right span {
+  display: block;
+}
+
+/* Style social media images */
+.footer-right .social-media img {
+  height: 30px;
+  width: 30px;
+  border-radius: 10%;
+}
+
+/* Style for headings */
+.footer-left h3, .footer-right h3 {
+  font-size: 1.5rem; /* Responsive font size for headings */
+  margin-bottom: 10px;
+}
+
+/* Style for paragraphs in the footer-left section */
+.footer-left p {
+  font-size: 0.875rem; /* Responsive font size */
+  line-height: 1.5; /* Improve readability with line-height */
+  word-break: break-word;
+  margin: 0;
+  padding: 0;
+  white-space: pre-line;
+}
+
+/* Hide spacer by default (for small screens) */
+.spacer {
+  display: none;
+}
+
+/* Media query for larger screens */
+@media (min-width: 600px) {
+  mat-toolbar.footer {
+    flex-direction: row; /* Stack items horizontally on larger screens */
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  /* Align text to the left for larger screens */
+  .footer-left {
+    text-align: left;
+    margin: 0;
+  }
+
+  /* Center heading text */
+  .footer-right h3 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  /* Prevent text wrapping */
+  .footer-left p {
+    white-space: normal;
+  }
+
+  /* Show the spacer on larger screens */
+  .spacer {
+    display: block;
+    flex: 0 1 auto; /* Allow spacer to grow and push content apart */
+  }
+}

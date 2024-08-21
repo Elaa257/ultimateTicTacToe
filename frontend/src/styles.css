@@ -1,4 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+body {
+  font-family: Helvetica, sans-serif;
+  min-height: 100vh;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+mat-card {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}

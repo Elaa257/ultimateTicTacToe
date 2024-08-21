@@ -1,1 +1,39 @@
-<p>home works!</p>
+<!-- Home page container -->
+<div class="home-container">
+
+  <!-- Introduction card -->
+  <mat-card class="intro-container">
+    <mat-card-title class="intro">
+      <h1>Welcome to "Quibic-T"
+        - The ultimate place for competitive TicTacToe!</h1>
+    </mat-card-title>
+    <mat-card-content class="home-body">
+      <p>
+        Are you ready to take your TicTacToe skills to the next level? Compete
+        against players from all over the world and show that you are the true
+        master of TicTacToe!
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button class="signup-btn" [routerLink]="'/auth'">Sign Up</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Game area container -->
+  <div class="game-area-container">
+
+    <mat-card class="game-area">
+      <mat-card-title class="game-area-title">
+        <h1>Ready To Play?</h1>
+      </mat-card-title>
+      <mat-card-actions>
+        <button mat-button class="play-btn" [routerLink]="'/play'">Play</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Image card -->
+    <mat-card class="xoxo">
+     <img mat-card-image src="xoxo.jpg" alt="xoxo">
+    </mat-card>
+  </div>
+</div>

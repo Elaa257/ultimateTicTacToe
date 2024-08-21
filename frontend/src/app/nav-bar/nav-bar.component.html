@@ -1,0 +1,47 @@
+<mat-toolbar>
+  <nav class="navbar">
+    <div class="nav-wrapper">
+      <div>
+        <img src="tic-tac-toe-logo.png" alt="Logo" height="50" width="50"/>
+      </div>
+
+      <!-- desktop -->
+      <ul class="nav-links large-screen">
+        <li><a [routerLink]="'/home'">Home</a></li>
+        <li><a href="#">Ranking list</a></li>
+      </ul>
+    </div>
+    <span class="spacer"></span>
+    <button mat-button class="login-btn large-screen" [routerLink]="'/auth'">Login</button>
+
+    <!-- mobile -->
+    <mat-sidenav-container>
+      <!-- Sidenav Panel -->
+      <mat-sidenav #sidenav position="end" mode="over" class="menu">
+        <!-- Close Button -->
+        <button mat-icon-button (click)="sidenav.close()" class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+        <!-- Menu Items -->
+        <button mat-button class="menu-item" [routerLink]="'/home'" (click)="handleClick($event)">
+          <span>Home</span>
+        </button>
+        <button mat-button class="menu-item" [routerLink]="'/ranking'" (click)="handleClick($event)">
+          <span>Ranking list</span>
+        </button>
+        <button mat-button class="login-btn" [routerLink]="'/auth'" (click)="handleClick($event)">
+          <span>Login</span>
+        </button>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <div class="menu-toggle">
+          <!-- Toggle Button to Open Sidenav -->
+          <button mat-icon-button (click)="sidenav.toggle()" class="menu">
+            <mat-icon>menu</mat-icon>
+          </button>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </nav>
+</mat-toolbar>

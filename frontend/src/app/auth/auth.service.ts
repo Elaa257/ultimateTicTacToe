@@ -3,38 +3,10 @@ import {HttpClient} from "@angular/common/http";
 import { Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
-
-interface RegisterDTO {
-  nickname: string;
-  email: string;
-  password: string;
-  role?: string;
-}
-
-interface LoginDTO {
-  email: string;
-  password: string;
-}
-
-interface LogOutDTO {
-  response: {
-    ok: boolean;
-    message: string;
-  };
-}
-
-interface ResponseDTO {
-  response: {
-    ok: boolean;
-    message: string;
-  };
-  user: {
-    id: number;
-    email: string;
-    nickname: string;
-    role: string; // Ensure the role property is included
-  };
-}
+import { RegisterDTO } from './DTOs/registerDto';
+import { ResponseDTO } from './DTOs/ResponseDTO';
+import { LoginDTO } from './DTOs/LoginDTO';
+import { LogOutDTO } from './DTOs/LogoutDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -111,8 +83,5 @@ export class AuthService {
       })
     );
   }
-
-
-
 }
 
