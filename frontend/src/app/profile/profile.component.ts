@@ -13,14 +13,14 @@ export class ProfileComponent {
   constructor(private authService: AuthService) {}
 
   logout() {
-    this.authService.logout().subscribe({
+    this.authService.logout().subscribe(response =>({
       next: () => {
         console.log('Logged out successfully');
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Logout failed', err);
       }
-    });
+    }));
   }
 
 }

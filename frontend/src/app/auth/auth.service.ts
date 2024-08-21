@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import { Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
-import { RegisterDTO } from './DTOs/registerDto';
+import { RegisterDTO } from './DTOs/RegisterDTO';
 import { ResponseDTO } from './DTOs/ResponseDTO';
 import { LoginDTO } from './DTOs/LoginDTO';
 import { LogOutDTO } from './DTOs/LogoutDTO';
@@ -20,7 +20,19 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   register(registerDTO: RegisterDTO): Observable<ResponseDTO> {
-    return this.http.post<ResponseDTO>(`${this.apiUrl}/register`, registerDTO);
+    return this.http.post<ResponseDTO>(`${this.apiUrl}/register`, registerDTO, { withCredentials: true }).pipe(
+      tap(response => {
+        if (response.response.ok) {
+          this.isAuthenticatedCache = true; // Update cache on successful register
+          this.authCheckTimestamp = Date.now(); // Update the timestamp on successful register
+          if (response.user.role === 'user') {
+            this.router.navigate(['/profile']);
+          } else if (response.user.role === 'admin') {
+            this.router.navigate(['/admin']);
+          }
+        }
+      })
+    );
   }
 
   isAuthenticated(): Observable<boolean> {
@@ -69,17 +81,17 @@ export class AuthService {
   logout(): Observable<LogOutDTO> {
     return this.http.post<LogOutDTO>(`${this.apiUrl}/logout`, {}, { withCredentials: true }).pipe(
       tap(response => {
-        if (response && response.response && response.response.ok) {
+        if (response && response.ok) {
           this.isAuthenticatedCache = null; // Invalidate cache on logout
           this.authCheckTimestamp = null;
           this.router.navigate(['/auth']); // Redirect to auth page on logout
         } else {
-          console.error('Logout response not OK:', response?.response?.message);
+          console.error('Logout response not OK:', response?.message);
         }
       }),
       catchError(error => {
         console.error('Logout failed:', error);
-        return of({ response: { ok: false, message: 'Logout failed' } } as LogOutDTO);
+        return of({ ok: false, message: 'Logout failed' } as LogOutDTO);
       })
     );
   }

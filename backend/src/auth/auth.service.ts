@@ -15,10 +15,12 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
-  async register(registerDTO: RegisterDTO): Promise<ResponseDTO> {
+  async register(
+    registerDTO: RegisterDTO
+  ): Promise<{ access_token?: string; response: ResponseDTO; user?: any }> {
     try {
       const user = this.userRepository.create({
         ...registerDTO,
@@ -26,9 +28,30 @@ export class AuthService {
         role: registerDTO.role,
       });
       await this.userRepository.save(user);
-      return new ResponseDTO(true, 'Successfully created new user');
+      const { password, ...userWithoutPassword } = user;
+      const payload = {
+        sub: user.id,
+        username: user.nickname,
+        email: user.email,
+        role: user.role,
+      };
+      const access_token = await this.jwtService.signAsync(payload);
+
+      return {
+        access_token,
+        response: new ResponseDTO(
+          true,
+          `User: ${user.nickname}, has successfully registered`
+        ),
+        user: userWithoutPassword,
+      };
     } catch (error) {
-      return new ResponseDTO(false, `New user could not be created ${error}`);
+      return {
+        response: new ResponseDTO(
+          false,
+          `User couldn't be registered ${error}`
+        ),
+      };
     }
   }
 
@@ -43,22 +66,32 @@ export class AuthService {
     return user;
   }
 
-    async login(loginDTO: LoginDTO): Promise<{ access_token?: string, response: ResponseDTO, user?: any }> {
-        try {
-            const user = await this.validateUser(loginDTO.email, loginDTO.password);
-            const { password, ...userWithoutPassword } = user;
-            const payload = { sub: user.id, username: user.nickname, email: user.email, role: user.role };
-            const access_token = await this.jwtService.signAsync(payload);
+  async login(
+    loginDTO: LoginDTO
+  ): Promise<{ access_token?: string; response: ResponseDTO; user?: any }> {
+    try {
+      const user = await this.validateUser(loginDTO.email, loginDTO.password);
+      const { password, ...userWithoutPassword } = user;
+      const payload = {
+        sub: user.id,
+        username: user.nickname,
+        email: user.email,
+        role: user.role,
+      };
+      const access_token = await this.jwtService.signAsync(payload);
 
-            return {
-                access_token,
-                response: new ResponseDTO(true, `User: ${user.nickname}, has successfully logged in`),
-                user: userWithoutPassword
-            };
-        } catch (error) {
-            return { response: new ResponseDTO(false, `Login failed ${error}`) };
-        }
+      return {
+        access_token,
+        response: new ResponseDTO(
+          true,
+          `User: ${user.nickname}, has successfully logged in`
+        ),
+        user: userWithoutPassword,
+      };
+    } catch (error) {
+      return { response: new ResponseDTO(false, `Login failed ${error}`) };
     }
+  }
 
   hashPassword(password: string): string {
     return crypto.createHmac('sha256', password).digest('hex');
@@ -66,7 +99,7 @@ export class AuthService {
 
   private comparePassword(
     password: string,
-    storedPasswordHash: string,
+    storedPasswordHash: string
   ): boolean {
     const hashedPassword = this.hashPassword(password);
     return hashedPassword === storedPasswordHash;
@@ -83,7 +116,7 @@ export class AuthService {
       });
       return new ResponseUserDTO(
         `User with the ID: ${user.id} is logged in`,
-        user,
+        user
       );
     } catch (error) {
       return new ResponseUserDTO(`user couldn't found ${error}`);
