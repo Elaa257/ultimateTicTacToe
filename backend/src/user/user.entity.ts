@@ -25,7 +25,7 @@ export class User {
   })
   role: string;
 
-  @Column({ default: 1200 })
+  @Column({ default: 1000 })
   elo: number;
 
   @Column({ type: 'blob', nullable: true })
