@@ -12,12 +12,11 @@
           <li><a [routerLink]="'/ranking'">Ranking list</a></li>
           <li><a [routerLink]="'/profile'">Profile</a></li>
         }
-
       </ul>
     </div>
     <span class="spacer"></span>
     @if(isLoggedIn){
-      <button mat-button class="login-btn" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
+      <button mat-button class="login-btn large-screen" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
     } @else {
       <button mat-button class="login-btn large-screen" [routerLink]="'/auth'">Login</button>
     }
