@@ -1,9 +1,7 @@
 export interface ResponseDTO {
-  response: {
-    ok: boolean;
-    message: string;
-  };
-  user: {
+  ok: boolean;
+  message: string;
+  user?: {
     id: number;
     email: string;
     nickname: string;

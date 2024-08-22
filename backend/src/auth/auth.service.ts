@@ -20,7 +20,7 @@ export class AuthService {
 
   async register(
     registerDTO: RegisterDTO
-  ): Promise<{ access_token?: string; response: ResponseDTO; user?: any }> {
+  ): Promise<{ access_token?: string; response: ResponseDTO }> {
     try {
       const user = this.userRepository.create({
         ...registerDTO,
@@ -41,9 +41,9 @@ export class AuthService {
         access_token,
         response: new ResponseDTO(
           true,
-          `User: ${user.nickname}, has successfully registered`
+          `User: ${user.nickname}, has successfully registered`,
+          userWithoutPassword
         ),
-        user: userWithoutPassword,
       };
     } catch (error) {
       return {
@@ -68,7 +68,7 @@ export class AuthService {
 
   async login(
     loginDTO: LoginDTO
-  ): Promise<{ access_token?: string; response: ResponseDTO; user?: any }> {
+  ): Promise<{ access_token?: string; response: ResponseDTO }> {
     try {
       const user = await this.validateUser(loginDTO.email, loginDTO.password);
       const { password, ...userWithoutPassword } = user;
@@ -84,9 +84,9 @@ export class AuthService {
         access_token,
         response: new ResponseDTO(
           true,
-          `User: ${user.nickname}, has successfully logged in`
+          `User: ${user.nickname}, has successfully logged in`,
+          userWithoutPassword
         ),
-        user: userWithoutPassword,
       };
     } catch (error) {
       return { response: new ResponseDTO(false, `Login failed ${error}`) };
