@@ -51,16 +51,6 @@
       </mat-tab>
 
       <mat-tab label="Queue">
-        <table mat-table [dataSource]="currentQueue" class="mat-elevation-z8 table">
-          <ng-container matColumnDef="currentQueue">
-            <th mat-header-cell *matHeaderCellDef> Current Queue </th>
-            <td mat-cell *matCellDef="let queue"> {{ queue }} </td>
-          </ng-container>
-
-          <!-- Header and Row Definitions -->
-          <tr mat-header-row *matHeaderRowDef="queueColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
       </mat-tab>
 
       <mat-tab label="Current Games"> Content 3 </mat-tab>
