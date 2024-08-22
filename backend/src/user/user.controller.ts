@@ -2,11 +2,8 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Put,
-  Session,
+  Get, Param, ParseIntPipe,
+  Put, Session,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt/auth.guard';
@@ -56,8 +53,9 @@ export class UserController {
     return await this.userService.getUser(Number(id));
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
+  @Roles(Role.Admin)
   @ApiResponse({ type: MultiUsersResponseDTO })
   async getAllUsers(): Promise<MultiUsersResponseDTO> {
     return await this.userService.getUsers();

@@ -18,13 +18,14 @@ export class AuthController {
     @Body() registerDTO: RegisterDTO,
     @Res() reply: FastifyReply
   ): Promise<void> {
-    const { access_token, response, user } =
+    const { access_token, response } =
       await this.userService.register(registerDTO);
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
+        path: '/', //Makes the cookie accessible by all routes
       })
-      .send({ response, user });
+      .send(response);
   }
 
   @Post('login')
@@ -33,21 +34,22 @@ export class AuthController {
     @Body() loginDto: LoginDTO,
     @Res() reply: FastifyReply
   ): Promise<void> {
-    const { access_token, response, user } =
+    const { access_token, response } =
       await this.userService.login(loginDto);
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
+        path: '/', //Makes the cookie accessible by all routes
       })
-      .send({ response, user });
+      .send(response);
   }
 
   @Post('logout')
   @ApiResponse({ type: ResponseDTO })
   async logout(@Res() reply: FastifyReply): Promise<void> {
-    console.log('enter logout');
+      console.log('enter logout');
     try {
-      reply.clearCookie('access_token', { path: '/backend/auth' });
+      reply.clearCookie('access_token', { path: '/' });
       console.log('Cookie cleared');
       reply.status(200).send(new ResponseDTO(true, `Logged out successfully`));
     } catch (error) {

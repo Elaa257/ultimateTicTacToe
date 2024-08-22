@@ -11,6 +11,8 @@ export class RolesGuard implements CanActivate {
     canActivate(
         context: ExecutionContext,
     ): boolean | Promise<boolean> {
+        console.log('JwtAuthGuard invoked');
+
         const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
             context.getHandler(),
             context.getClass()
