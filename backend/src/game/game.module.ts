@@ -8,6 +8,7 @@ import { UserModule } from '../user/user.module';
 
 import { User } from '../user/user.entity';
 
+
 @Module({
   imports: [TypeOrmModule.forFeature([Game, User]), UserModule],
   controllers: [GameController],

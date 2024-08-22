@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Warten auf Spieler...</h1>
+<div mat-dialog-content>
+  <p>Warte auf einen weiteren Spieler, um das Spiel zu starten...</p>
+</div>
+<div mat-dialog-actions>
+  <!-- Der Start Game Button ist initially disabled -->
+  <button mat-button [disabled]="!canStartGame" class="start-game-btn" (click)="startGame()">Start Game</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

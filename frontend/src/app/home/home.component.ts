@@ -10,6 +10,8 @@ import {
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { QueueModalComponent } from '../queue-modal/queue-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-home',
@@ -29,4 +31,10 @@ import { NgIf } from '@angular/common';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+
+  constructor(public dialog: MatDialog) {
+  }
+  openQueueModal(): void {
+    this.dialog.open(QueueModalComponent);
+  }
 }
