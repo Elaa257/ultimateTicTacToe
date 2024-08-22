@@ -35,7 +35,7 @@ import { MatCard, MatCardImage } from '@angular/material/card';
   styleUrl: './auth.component.css'
 })
 export class AuthComponent {
-  isLoginVisible = false;
+  isLoginVisible = true;
 
   nickname: string = '';
   registerPassword: string = '';
