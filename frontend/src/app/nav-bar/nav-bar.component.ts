@@ -7,6 +7,7 @@ import { MatNavList } from '@angular/material/list';
 import { NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -32,7 +33,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class NavBarComponent {
 
-  protected readonly close = close;
+  constructor(private authService: AuthService) {}
+
+  isLoggedIn$ = this.authService.isAuthenticated();
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 

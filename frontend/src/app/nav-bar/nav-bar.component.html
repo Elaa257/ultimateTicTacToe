@@ -8,7 +8,8 @@
       <!-- desktop -->
       <ul class="nav-links large-screen">
         <li><a [routerLink]="'/home'">Home</a></li>
-        <li><a href="#">Ranking list</a></li>
+        <li><a [routerLink]="'/ranking'">Ranking list</a></li>
+        <li><a [routerLink]="'/profile'">Profile</a></li>
       </ul>
     </div>
     <span class="spacer"></span>
@@ -28,6 +29,9 @@
         </button>
         <button mat-button class="menu-item" [routerLink]="'/ranking'" (click)="handleClick($event)">
           <span>Ranking list</span>
+        </button>
+        <button mat-button class="menu-item" [routerLink]="'/profile'" (click)="handleClick($event)">
+          <span>Profile</span>
         </button>
         <button mat-button class="login-btn" [routerLink]="'/auth'" (click)="handleClick($event)">
           <span>Login</span>
