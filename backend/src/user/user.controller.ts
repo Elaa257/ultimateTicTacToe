@@ -27,7 +27,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly authService: AuthService,
+    private readonly authService: AuthService
   ) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -35,7 +35,7 @@ export class UserController {
   @Delete('deleteUserProfile')
   @ApiResponse({ type: ResponseDTO })
   async deleteOwnProfile(
-    @Session() session: SessionData,
+    @Session() session: SessionData
   ): Promise<ResponseDTO> {
     const user = (await this.authService.getLoggedInUser(session)).user;
     return await this.userService.deleteUserProfile(user.id);
@@ -68,7 +68,7 @@ export class UserController {
   @ApiResponse({ type: ResponseDTO })
   async updateUser(
     @Session() session: SessionData,
-    @Body() updateUserDTO: UpdateUserDTO,
+    @Body() updateUserDTO: UpdateUserDTO
   ): Promise<ResponseDTO> {
     return await this.userService.updateUser(session, updateUserDTO);
   }

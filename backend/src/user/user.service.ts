@@ -14,7 +14,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   async getUser(id: number): Promise<ResponseUserDTO> {
