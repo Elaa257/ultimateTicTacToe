@@ -27,7 +27,7 @@
         <h1>Ready To Play?</h1>
       </mat-card-title>
       <mat-card-actions>
-        <button mat-button class="play-btn" [routerLink]="'/play'">Play</button>
+        <button mat-button class="play-btn" (click)="openQueueModal()">Play</button>
       </mat-card-actions>
     </mat-card>
 

@@ -24,7 +24,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly authService: AuthService,
+    private readonly authService: AuthService
   ) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
