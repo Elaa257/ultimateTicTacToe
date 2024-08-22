@@ -2,7 +2,7 @@
   @if(isLoginVisible) {
     <section id="login" class="form-container">
       <div class="form-content">
-        <h4>Login</h4>
+        <h2>Login</h2>
         <form (submit)="onLogin()">
           <mat-form-field appearance="fill">
             <input matInput type="email" placeholder="E-mail" id="loginEmail" [(ngModel)]="loginEmail" name="email">
@@ -25,7 +25,7 @@
   @if(!isLoginVisible) {
     <section id="register" class="form-container">
       <div class="form-content">
-      <h4>Register</h4>
+      <h2>Register</h2>
       <form (submit)="onRegister()">
         <mat-form-field appearance="fill">
           <input matInput type="text" placeholder="Nickname" [(ngModel)]="nickname" name="nickname">
