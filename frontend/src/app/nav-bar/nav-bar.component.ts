@@ -7,6 +7,8 @@ import { MatNavList } from '@angular/material/list';
 import { NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-nav-bar',
@@ -31,8 +33,23 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent {
+  isLoggedIn:boolean = false;
+  constructor(private authService: AuthService){}
 
-  protected readonly close = close;
+  ngDoCheck() {
+    this.authService.isAuthenticated().subscribe(
+      (isAuthenticated: boolean) => {
+        this.isLoggedIn = isAuthenticated;
+        console.log("check ngDoCheck", this.isLoggedIn);
+      },
+      (error) => {
+        console.error("Error checking authentication", error);
+        this.isLoggedIn = false;
+      }
+    );
+  }
+
+
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
@@ -53,5 +70,15 @@ export class NavBarComponent {
     if (this.sidenav) {
       this.sidenav.close();
     }
+  }
+  logout() {
+    this.authService.logout().subscribe(response =>({
+      next: () => {
+        console.log('Logged out successfully');
+      },
+      error: (err: any) => {
+        console.error('Logout failed', err);
+      }
+    }));
   }
 }
