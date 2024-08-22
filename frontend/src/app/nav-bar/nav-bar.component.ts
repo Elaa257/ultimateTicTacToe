@@ -33,12 +33,20 @@ import { Observable, of } from 'rxjs';
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent {
-  isLoggedIn:Observable<boolean> = of(false);
+  isLoggedIn:boolean = false;
   constructor(private authService: AuthService){}
 
-  ngDoCheck(){
-   this.isLoggedIn = this.authService.isAuthenticated()
-    console.log("check ngDoCheck");
+  ngDoCheck() {
+    this.authService.isAuthenticated().subscribe(
+      (isAuthenticated: boolean) => {
+        this.isLoggedIn = isAuthenticated;
+        console.log("check ngDoCheck", this.isLoggedIn);
+      },
+      (error) => {
+        console.error("Error checking authentication", error);
+        this.isLoggedIn = false;
+      }
+    );
   }
 
 
@@ -62,5 +70,15 @@ export class NavBarComponent {
     if (this.sidenav) {
       this.sidenav.close();
     }
+  }
+  logout() {
+    this.authService.logout().subscribe(response =>({
+      next: () => {
+        console.log('Logged out successfully');
+      },
+      error: (err: any) => {
+        console.error('Logout failed', err);
+      }
+    }));
   }
 }
