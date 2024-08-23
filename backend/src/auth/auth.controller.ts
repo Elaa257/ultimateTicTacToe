@@ -38,7 +38,7 @@ export class AuthController {
       await this.userService.login(loginDto);
     reply
       .setCookie('access_token', access_token, {
-
+        httpOnly: true, // Makes the cookie accessible only by the web server
         path: '/', //Makes the cookie accessible by all routes
       })
       .send(response);
