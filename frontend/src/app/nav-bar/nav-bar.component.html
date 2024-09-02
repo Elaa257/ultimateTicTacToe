@@ -8,11 +8,19 @@
       <!-- desktop -->
       <ul class="nav-links large-screen">
         <li><a [routerLink]="'/home'">Home</a></li>
-        <li><a href="#">Ranking list</a></li>
+        @if(isLoggedIn){
+          <li><a [routerLink]="'/ranking'">Ranking list</a></li>
+          <li><a [routerLink]="'/profile'">Profile</a></li>
+        }
       </ul>
     </div>
     <span class="spacer"></span>
-    <button mat-button class="login-btn large-screen" [routerLink]="'/auth'">Login</button>
+    @if(isLoggedIn){
+      <button mat-button class="login-btn large-screen" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
+    } @else {
+      <button mat-button class="login-btn large-screen" [routerLink]="'/auth'">Login</button>
+    }
+
 
     <!-- mobile -->
     <mat-sidenav-container>
@@ -26,12 +34,21 @@
         <button mat-button class="menu-item" [routerLink]="'/home'" (click)="handleClick($event)">
           <span>Home</span>
         </button>
-        <button mat-button class="menu-item" [routerLink]="'/ranking'" (click)="handleClick($event)">
-          <span>Ranking list</span>
-        </button>
-        <button mat-button class="login-btn" [routerLink]="'/auth'" (click)="handleClick($event)">
-          <span>Login</span>
-        </button>
+        @if(isLoggedIn){
+          <button mat-button class="menu-item" [routerLink]="'/ranking'" (click)="handleClick($event)">
+            <span>Ranking list</span>
+          </button>
+          <button mat-button class="menu-item" [routerLink]="'/profile'" (click)="handleClick($event)">
+            <span>Profile</span>
+          </button>
+          <button mat-button class="login-btn" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
+        }
+         @else {
+          <button mat-button class="login-btn" [routerLink]="'/auth'" (click)="handleClick($event)">
+            <span>Login</span>
+          </button>
+        }
+
       </mat-sidenav>
 
       <mat-sidenav-content>
