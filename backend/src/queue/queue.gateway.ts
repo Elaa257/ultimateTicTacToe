@@ -53,9 +53,11 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  @SubscribeMessage('leave-queue')
   handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
     this.queue = this.queue.filter((item) => item.clientId !== client.id);
+    this.broadcastQueueToAdmins();
   }
 
   @SubscribeMessage('join-queue')
@@ -110,6 +112,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
           `Current queue: ${this.queue.map((item) => item.username).join(', ')}`
         );
       }
+      this.broadcastQueueToAdmins();
     } catch (err) {
       console.log('Error during join-queue:', err.message);
       client.disconnect(); // Verbindung trennen bei Fehler
@@ -120,6 +123,19 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleStartGame(): void {
     console.log('Game started');
     this.server.emit('game-started');
+  }
+
+  //Get Queue Information's for the Admins
+  @SubscribeMessage('get-queue')
+  async handleGetQueue(client: Socket): Promise<void> {
+    const token = this.extractJwtFromSocket(client);
+    const payload = this.jwtService.verify(token);
+
+    if (payload.role === 'admin') {
+      client.emit('queue-data', this.queue);
+    } else {
+      client.emit('unauthorized');
+    }
   }
 
   private extractJwtFromSocket(client: Socket): string {
@@ -134,5 +150,19 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     return token;
+  }
+
+  private broadcastQueueToAdmins(): void {
+    console.log('Broadcasting updated queue to admins:', this.queue);
+    const adminClients = this.server.sockets.sockets;
+
+    adminClients.forEach((client) => {
+      const token = this.extractJwtFromSocket(client);
+      const payload = this.jwtService.verify(token);
+
+      if (payload.role === 'admin') {
+        client.emit('queue-data', this.queue);
+      }
+    });
   }
 }

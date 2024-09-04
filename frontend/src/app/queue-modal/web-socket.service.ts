@@ -9,7 +9,6 @@ export class WebSocketService {
   private socket: Socket;
 
   constructor() {
-    // Stellen Sie sicher, dass die URL der Ihres NestJS-Backends entspricht.
     this.socket = io('http://localhost:3000');
     console.log('WebSocket connection initialized');
   }

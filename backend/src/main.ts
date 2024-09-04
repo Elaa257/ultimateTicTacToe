@@ -25,13 +25,6 @@ async function bootstrap() {
     secret: 'my-secret', // for signed cookies
   });
 
-  /*
-  app.use(session({
-    secret: 'my-secret',
-    resave: false,
-    saveUninitialized: false,
-  }));
-  */
   app.setGlobalPrefix('backend');
 
   const config = new DocumentBuilder()

@@ -34,8 +34,7 @@ export class AuthController {
     @Body() loginDto: LoginDTO,
     @Res() reply: FastifyReply
   ): Promise<void> {
-    const { access_token, response } =
-      await this.userService.login(loginDto);
+    const { access_token, response } = await this.userService.login(loginDto);
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
@@ -47,7 +46,7 @@ export class AuthController {
   @Post('logout')
   @ApiResponse({ type: ResponseDTO })
   async logout(@Res() reply: FastifyReply): Promise<void> {
-      console.log('enter logout');
+    console.log('enter logout');
     try {
       reply.clearCookie('access_token', { path: '/' });
       console.log('Cookie cleared');
@@ -65,4 +64,13 @@ export class AuthController {
     console.log('auth check');
     return { isAuthenticated: true };
   }
+
+  /*
+  @Get('current-user')
+  @UseGuards(JwtAuthGuard) // Ensure this guard uses the JWT strategy
+  getCurrentUser(@Req() req: FastifyRequest) {
+    //return req.user;
+  }
+
+   */
 }
