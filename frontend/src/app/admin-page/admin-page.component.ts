@@ -17,6 +17,7 @@ import {
   MatTableModule,
 } from '@angular/material/table';
 import { AdminService } from './admin.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-page',
@@ -60,7 +61,7 @@ export class AdminPageComponent implements OnInit{
 
   queueColumns: string[] = ['clientId', 'username', 'elo'];
 
-  constructor(private userService: UserService, private adminService: AdminService) {}
+  constructor(private userService: UserService, private adminService: AdminService, private router: Router) {}
 
   ngOnInit(): void {
 
@@ -83,7 +84,7 @@ export class AdminPageComponent implements OnInit{
 
     this.adminService.listen('unauthorized')
       .subscribe(() => {
-        alert('Unauthorized access. Admin privileges required.');
+        this.router.navigate(['/profile']);
       });
   }
 

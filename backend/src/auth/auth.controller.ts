@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { RegisterDTO } from './DTOs/registerDTO';
 import { AuthService } from './auth.service';
 import { ResponseDTO } from '../DTOs/responseDTO';
@@ -65,12 +73,9 @@ export class AuthController {
     return { isAuthenticated: true };
   }
 
-  /*
+  @UseGuards(JwtAuthGuard)
   @Get('current-user')
-  @UseGuards(JwtAuthGuard) // Ensure this guard uses the JWT strategy
-  getCurrentUser(@Req() req: FastifyRequest) {
-    //return req.user;
+  getCurrentUser(@Req() req) {
+    return req.user;
   }
-
-   */
 }

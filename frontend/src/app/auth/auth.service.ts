@@ -95,5 +95,10 @@ export class AuthService {
       })
     );
   }
+
+  getCurrentUser(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/current-user`);
+  }
+
 }
 
