@@ -20,12 +20,12 @@
     }
 
     @if(selectedTab === 'players' && isSmallScreen) {
-      <div>
+      <div class="table-container">
         <table mat-table [dataSource]="users" class="mat-elevation-z8 table">
 
           <!-- ID Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell class="table" *matHeaderCellDef> ID </th>
+            <th mat-header-cell *matHeaderCellDef> ID </th>
             <td mat-cell *matCellDef="let user"> {{ user.id }} </td>
           </ng-container>
 
@@ -62,7 +62,7 @@
     }
 
     @if(selectedTab === 'queue') {
-      <div>
+      <div class="table-container">
         @if (currentQueue.length > 0) {
           <table mat-table [dataSource]="currentQueue" class="mat-elevation-z8 table">
 
@@ -98,8 +98,10 @@
     }
 
     @if(selectedTab === 'currentGames') {
-      <div class="info">
-        No current games.
+      <div class="table-container">
+        <div class="info">
+          No current games.
+        </div>
       </div>
     }
 

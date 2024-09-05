@@ -11,16 +11,14 @@
   padding: 20px;
   background: url("../assets/profile-background.jpg") repeat center center rgba(0, 0, 0, 0.3);
   background-size: cover;
-  box-sizing: border-box;
-  overflow-x: auto;
 }
 
 mat-card-title {
   color: yellow;
   font-family: 'Audiowide', sans-serif;
-  font-size: clamp(20px, 4vw, 30px);
-  margin-top: 5%;
-  margin-bottom: 5%;
+  font-size: clamp(24px, 4vw, 35px);
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 mat-card {
@@ -32,47 +30,53 @@ mat-card {
   background-color: #15072E;
   color: white;
   min-width: 90%;
-  max-width: 100%;
-  overflow-x: auto;
-  box-sizing: border-box;
-  font-size: clamp(15px, 3vw, 22px);
+  font-size: clamp(15px, 3vw, 20px);
+  border-radius: 20px;
 }
 
 mat-tab-group {
-  min-width: 100%;
-  overflow-x: auto;
-  box-sizing: border-box;
+  min-width: 90%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  flex: 1 1 auto;
+  margin: 5px;
+}
+
+table {
+  min-width: 100%;
+  overflow-x: auto;
+  flex: 1 1 auto;
+  display: block;
 }
 
 mat-tab {
-  flex: 1;
-  width: 100%;
-  overflow-x: auto;
-  box-sizing: border-box;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  width: auto;
 }
 
-ng-container {
-  min-width: 100%;
-  overflow-x: auto;
-  box-sizing: border-box;
+.table-container {
+  display: none;
 }
 
 th, td, tr {
   color: white;
-  max-width: 100%;
-  overflow-x: auto;
-  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 25%;
 }
 
 .info {
   margin-top: 3%;
   margin-bottom: 5%;
+  margin-left: 3%;
+  text-align: left;
+  font-size: clamp(15px, 3vw, 17px);
 }
 
 th, td {
-  font-size: clamp(15px, 3vw, 19px);
+  font-size: clamp(15px, 3vw, 17px);
 }
 
 .dropdown-tabs {
@@ -88,4 +92,56 @@ mat-form-field {
 
 mat-option {
   background-color: #15072E !important; /* Set background for options */
+}
+
+@media (max-width: 600px) {
+  table {
+    width: auto;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: block;
+  }
+
+  .admin-container {
+    width: auto;
+    box-sizing: border-box;
+    overflow-x: auto;
+  }
+
+  mat-card {
+    width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+  }
+
+  ng-container {
+    width: auto;
+    overflow-x: auto;
+    box-sizing: border-box;
+  }
+
+  mat-tab-group {
+    display: none;
+  }
+
+  mat-tab {
+    display: none;
+  }
+
+  .info {
+    margin-top: 3%;
+    margin-bottom: 5%;
+    margin-left: 0;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Container wrapping to enable scrolling on small screens */
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    white-space: nowrap;
+  }
 }
