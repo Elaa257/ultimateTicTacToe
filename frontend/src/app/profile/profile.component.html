@@ -1,5 +1,20 @@
 <div class="profile-page-container">
   <h1>Welcome to your profile!</h1>
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+    </mat-card-header>
+    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+
+    <mat-card-content>
+      <p>
+        User Infos
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>Edit</button>
+    </mat-card-actions>
+  </mat-card>
   <button (click)="logout()">Logout</button>
 </div>
 
