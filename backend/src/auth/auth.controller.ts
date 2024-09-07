@@ -47,7 +47,7 @@ export class AuthController {
   @Post('logout')
   @ApiResponse({ type: ResponseDTO })
   async logout(@Res() reply: FastifyReply): Promise<void> {
-      console.log('enter logout');
+    console.log('enter logout');
     try {
       reply.clearCookie('access_token', { path: '/' });
       console.log('Cookie cleared');

@@ -5,7 +5,9 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Put, Session,
+  Put,
+  Req,
+  Session,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt/auth.guard';
@@ -17,7 +19,6 @@ import { ResponseDTO } from '../DTOs/responseDTO';
 import { ResponseUserDTO } from './DTOs/responseUserDTO';
 import { MultiUsersResponseDTO } from './DTOs/multipleUsersResponseDTO';
 import { UpdateUserDTO } from './DTOs/updateUserDTO';
-import { AuthService } from '../auth/auth.service';
 import { UserService } from './user.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -26,9 +27,8 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly authService: AuthService
   ) {}
-
+  /*
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.User)
   @Delete('deleteUserProfile')
@@ -36,10 +36,11 @@ export class UserController {
   async deleteOwnProfile(
     @Session() session: SessionData
   ): Promise<ResponseDTO> {
-    const user = (await this.authService.getLoggedInUser(session)).user;
+    //kam vorher ausm authService
+    const user = (await this.getLoggedInUser(session)).user;
     return await this.userService.deleteUserProfile(user.id);
   }
-
+*/
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Delete('delete/:id')
@@ -71,5 +72,14 @@ export class UserController {
     @Body() updateUserDTO: UpdateUserDTO
   ): Promise<ResponseDTO> {
     return await this.userService.updateUser(session, updateUserDTO);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('current-user')
+  @ApiResponse({ type: ResponseUserDTO })
+  async getLoggedInUser(@Req() req): Promise<ResponseUserDTO> {
+    const user = req.user;
+    console.log('Backend current-user: ', user);
+    return new ResponseUserDTO('user fetched succesfully', user);
   }
 }

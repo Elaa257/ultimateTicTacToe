@@ -8,13 +8,15 @@ import { SessionData } from 'express-session';
 import { UpdateUserDTO } from './DTOs/updateUserDTO';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { AuthService } from '../auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private authService: AuthService
+    private authService: AuthService,
+    private jwtService: JwtService
   ) {}
 
   async getUser(id: number): Promise<ResponseUserDTO> {
@@ -31,7 +33,7 @@ export class UserService {
       const users = await this.userRepository.find();
       return new MultiUsersResponseDTO(
         'Successfully retrieved all avaible users',
-        users,
+        users
       );
     } catch (error) {
       return new MultiUsersResponseDTO(`Database error`);
@@ -40,10 +42,11 @@ export class UserService {
 
   async updateUser(
     session: SessionData,
-    updateUser: UpdateUserDTO,
+    updateUser: UpdateUserDTO
   ): Promise<ResponseDTO> {
     try {
-      const userResponse = await this.authService.getLoggedInUser(session);
+      //kam vorher ausm authservice
+      const userResponse = await this.getLoggedInUser(session);
       await this.userRepository.update(userResponse.user.id, {
         ...updateUser,
         password: this.authService.hashPassword(updateUser.password),
@@ -65,6 +68,20 @@ export class UserService {
       return new ResponseDTO(true, 'Account successfully deleted');
     } catch (error) {
       return new ResponseDTO(false, `User couldn't be deleted ${error}`);
+    }
+  }
+
+  async getLoggedInUser(user: any): Promise<ResponseUserDTO> {
+    try {
+      const foundUser = await this.userRepository.findOne({
+        where: { email: user.email },
+      });
+      if (!foundUser) {
+        return new ResponseUserDTO(`User with email ${user.email} not found`);
+      }
+      return new ResponseUserDTO('User fetched successfully', foundUser);
+    } catch (error) {
+      return new ResponseUserDTO(`Error fetching user: ${error.message}`);
     }
   }
 }

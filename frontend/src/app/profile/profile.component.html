@@ -1,5 +1,13 @@
 <div class="profile-page-container">
   <h1>Welcome to your profile!</h1>
+
+    <p>{{user.data.name}}</p>
+    <p>{{user.data.role}}</p>
+    <p>{{user.data.elo}}</p>
+    <p>{{user.data.id}}</p>
+
+  <p></p>
+  <!--
   <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
@@ -15,6 +23,7 @@
       <button mat-button>Edit</button>
     </mat-card-actions>
   </mat-card>
+   -->
   <button (click)="logout()">Logout</button>
 </div>
 
