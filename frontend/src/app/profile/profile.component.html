@@ -1,29 +1,88 @@
 <div class="profile-page-container">
-  <h1>Welcome to your profile!</h1>
-
-    <p>{{user.data.name}}</p>
-    <p>{{user.data.role}}</p>
-    <p>{{user.data.elo}}</p>
-    <p>{{user.data.id}}</p>
-
-  <p></p>
-  <!--
-  <mat-card class="example-card" appearance="outlined">
-    <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
-    </mat-card-header>
-    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-
-    <mat-card-content>
-      <p>
-        User Infos
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>Edit</button>
-    </mat-card-actions>
-  </mat-card>
-   -->
+  <!-- logout -->
   <button (click)="logout()">Logout</button>
+
+    <div class="profile-statistic-container">
+    <!-- Profilinformationen -->
+    <mat-card class="profile-card">
+      <div class="profile-image-container" (click)="openModal()">
+        <img class="profile-image" src="/profile-picture.jpg" alt="Profilbild" height="680" width="680">
+      </div>
+      <div class="profile-info">
+        <h2>{{ username }}</h2>
+        <p>Elo Points: {{ eloPoints }}</p>
+      </div>
+    </mat-card>
+      @if(isModalOpen){
+        <div class="modal-overlay">
+          <div class="modal-content">
+            <h2>Profile picture</h2>
+
+            <img class="large-profile-image" [src]="selectedImage || 'assets/profile-picture.jpg'" alt="Großes Profilbild">
+            <div class="upload-area"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDrop($event)">
+              <p>Drag & Drop ein neues Bild hierher oder</p>
+              <input type="file" (change)="onFileSelected($event)">
+            </div>
+            <button (click)="closeModal()">Close</button>
+          </div>
+        </div>
+      }
+
+    <!-- Statistik und Graphik -->
+    <mat-card class="statistics-card">
+      <h3>Spielstatistiken</h3>
+      <div class="stats">
+        <p>Gewonnen: {{ wins }}</p>
+        <p>Verloren: {{ losses }}</p>
+        <p>Unentschieden: {{ draws }}</p>
+        <p>Win Rate: {{ winRate }}</p>
+      </div>
+      <!-- Graphik -->
+      <canvas baseChart
+              [datasets]="chartData"
+              [labels]="chartLabels"
+              [options]="chartOptions"
+              [legend]="true"
+      >
+      </canvas>
+    </mat-card>
+    </div>
+
+  <!-- Game History
+  <div class="game-history">
+    @for (game of gameHistory; track $index) {
+      <mat-card class="game-card">
+        <h4>Gegner: {{ game.opponent }}</h4>
+        <p>Ergebnis: {{ game.result }}</p>
+        <p>Veränderte Elo-Punkte: {{ game.eloChange }}</p>
+      </mat-card>
+    }
+  </div>-->
+  <!-- Game History [ngClass]="{'win-panel': game.result === 'Win', 'lose-panel': game.result === 'Lose'}" -->
+  <mat-card class="game-history-card">
+    <h3>Game History</h3>
+    <div class="game-history-scroll">
+      <mat-accordion>
+        @for (game of gameHistory; track $index) {
+          <mat-expansion-panel
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Gegner: {{ game.opponent }} | Ergebnis: {{ game.result }}
+              </mat-panel-title>
+              <mat-panel-description>
+                Elo Änderung: {{ game.eloChange }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>Ergebnis: {{ game.result }}</p>
+            <p>Veränderte Elo-Punkte: {{ game.eloChange }}</p>
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    </div>
+  </mat-card>
+
 </div>
 

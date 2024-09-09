@@ -4,19 +4,17 @@ import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { ResponseUserDTO } from './DTOs/responseUserDTO';
 import { MultiUsersResponseDTO } from './DTOs/multipleUsersResponseDTO';
-import { SessionData } from 'express-session';
 import { UpdateUserDTO } from './DTOs/updateUserDTO';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { AuthService } from '../auth/auth.service';
-import { JwtService } from '@nestjs/jwt';
+import { UserDTO } from './DTOs/UserDTO';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private authService: AuthService,
-    private jwtService: JwtService
+    private authService: AuthService
   ) {}
 
   async getUser(id: number): Promise<ResponseUserDTO> {
@@ -41,13 +39,11 @@ export class UserService {
   }
 
   async updateUser(
-    session: SessionData,
+    user: UserDTO,
     updateUser: UpdateUserDTO
   ): Promise<ResponseDTO> {
     try {
-      //kam vorher ausm authservice
-      const userResponse = await this.getLoggedInUser(session);
-      await this.userRepository.update(userResponse.user.id, {
+      await this.userRepository.update(user.user.id, {
         ...updateUser,
         password: this.authService.hashPassword(updateUser.password),
       });
@@ -58,7 +54,7 @@ export class UserService {
     }
   }
 
-  async deleteUserProfile(id: number) {
+  async deleteUserProfile(id: number): Promise<ResponseDTO> {
     const user = await this.userRepository.findOne({ where: { id: id } });
     if (!user) {
       return new ResponseDTO(false, 'User not found');
@@ -68,20 +64,6 @@ export class UserService {
       return new ResponseDTO(true, 'Account successfully deleted');
     } catch (error) {
       return new ResponseDTO(false, `User couldn't be deleted ${error}`);
-    }
-  }
-
-  async getLoggedInUser(user: any): Promise<ResponseUserDTO> {
-    try {
-      const foundUser = await this.userRepository.findOne({
-        where: { email: user.email },
-      });
-      if (!foundUser) {
-        return new ResponseUserDTO(`User with email ${user.email} not found`);
-      }
-      return new ResponseUserDTO('User fetched successfully', foundUser);
-    } catch (error) {
-      return new ResponseUserDTO(`Error fetching user: ${error.message}`);
     }
   }
 }

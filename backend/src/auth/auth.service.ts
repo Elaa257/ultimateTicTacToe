@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/user.entity';
 import { SessionData } from 'express-session';
 import { ResponseUserDTO } from '../user/DTOs/responseUserDTO';
+import { UserDTO, UserWithoutPassword } from '../user/DTOs/UserDTO';
 @Injectable()
 export class AuthService {
   constructor(
@@ -29,12 +30,7 @@ export class AuthService {
       });
       await this.userRepository.save(user);
       const { password, ...userWithoutPassword } = user;
-      const payload = {
-        sub: user.id,
-        username: user.nickname,
-        email: user.email,
-        role: user.role,
-      };
+      const payload = new UserDTO(userWithoutPassword);
       const access_token = await this.jwtService.signAsync(payload);
 
       return {
@@ -72,12 +68,7 @@ export class AuthService {
     try {
       const user = await this.validateUser(loginDTO.email, loginDTO.password);
       const { password, ...userWithoutPassword } = user;
-      const payload = {
-        sub: user.id,
-        username: user.nickname,
-        email: user.email,
-        role: user.role,
-      };
+      const payload = new UserDTO(userWithoutPassword);
       const access_token = await this.jwtService.signAsync(payload);
 
       return {
@@ -103,24 +94,5 @@ export class AuthService {
   ): boolean {
     const hashedPassword = this.hashPassword(password);
     return hashedPassword === storedPasswordHash;
-  }
-
-  //won't work this way
-  async getLoggedInUser(session: SessionData): Promise<ResponseUserDTO> {
-    if (!session.isLoggedIn) {
-      return new ResponseUserDTO('Unauthorized');
-    }
-
-    try {
-      const user = await this.userRepository.findOne({
-        where: { email: session.email },
-      });
-      return new ResponseUserDTO(
-        `User with the ID: ${user.id} is logged in`,
-        user
-      );
-    } catch (error) {
-      return new ResponseUserDTO(`user couldn't found ${error}`);
-    }
   }
 }

@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseIntPipe, Post,
   Put,
   Req,
   Session,
@@ -25,9 +25,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
   /*
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.User)
@@ -63,23 +61,26 @@ export class UserController {
   async getAllUsers(): Promise<MultiUsersResponseDTO> {
     return await this.userService.getUsers();
   }
-
-  @UseGuards(JwtAuthGuard)
-  @Put('update')
-  @ApiResponse({ type: ResponseDTO })
-  async updateUser(
-    @Session() session: SessionData,
-    @Body() updateUserDTO: UpdateUserDTO
-  ): Promise<ResponseDTO> {
-    return await this.userService.updateUser(session, updateUserDTO);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('current-user')
-  @ApiResponse({ type: ResponseUserDTO })
-  async getLoggedInUser(@Req() req): Promise<ResponseUserDTO> {
-    const user = req.user;
-    console.log('Backend current-user: ', user);
-    return new ResponseUserDTO('user fetched succesfully', user);
-  }
+  /*
+    @UseGuards(JwtAuthGuard)
+    @Put('update')
+    @ApiResponse({ type: ResponseDTO })
+    async updateUser(
+      @Session() session: SessionData,
+      @Body() updateUserDTO: UpdateUserDTO
+    ): Promise<ResponseDTO> {
+      return await this.userService.updateUser(session, updateUserDTO);
+    }
+  
+    
+    @UseGuards(JwtAuthGuard)
+    @Get('current-user')
+    @ApiResponse({ type: ResponseUserDTO })
+    async getLoggedInUser(@Req() req): Promise<ResponseUserDTO> {
+      const user = req.user;
+      console.log('Backend current-user: ', user);
+      return ;
+    }
+  
+     */
 }
