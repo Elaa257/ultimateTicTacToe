@@ -6,6 +6,6 @@
   <div mat-dialog-actions>
     <!-- Der Start Game Button ist initially disabled -->
     <button mat-button [disabled]="!canStartGame" class="start game-btn" (click)="startGame()">Start Game</button>
-    <button mat-button mat-dialog-close class="leave game-btn">Cancel</button>
+    <button mat-button mat-dialog-close (click)="leaveQueue()" class="leave game-btn">Cancel</button>
   </div>
 </div>
