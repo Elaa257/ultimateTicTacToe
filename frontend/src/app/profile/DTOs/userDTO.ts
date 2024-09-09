@@ -8,5 +8,5 @@ export interface UserDTO {
 
 export interface UsersDTO {
   message: string;
-  users?: UserDTO[]; // Optional array of UserDTO
+  users?: UserDTO[];
 }

@@ -13,7 +13,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { RouterModule } from '@angular/router';
 import { LoadingComponent } from './loading/loading.component';
-
+import { BaseChartDirective } from 'ng2-charts';
 /**
  * Function to initialize the application.
  * Returns a function that returns a promise resolving after a delay.
@@ -42,7 +42,8 @@ export function initializeApp(): () => Promise<void> {
     NavBarComponent,
     AdminPageComponent,
     AuthComponent,
-    LoadingComponent
+    LoadingComponent,
+    BaseChartDirective
   ],
   providers: [
     {
