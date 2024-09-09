@@ -13,6 +13,10 @@ export class WebSocketService {
     console.log('WebSocket connection initialized');
   }
 
+  connect(gameId: string): void {
+    this.socket = io('http://localhost:3000');
+    this.socket.emit('join-game', {gameId : gameId});
+  }
   emit(event: string, data?: any): void {
     console.log(`Emitting event: ${event}`, data);
     this.socket.emit(event, data);

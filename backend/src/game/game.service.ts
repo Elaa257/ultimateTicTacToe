@@ -26,7 +26,7 @@ export class GameService {
     try {
       const newGame = this.gameRepo.create(createGameRequestDto);
       await this.gameRepo.save(newGame);
-      return new ResponseDTO(true, 'Game successfully created');
+      return new ResponseDTO(true, 'Game successfully created', newGame.id);
     } catch (error) {
       return new ResponseDTO(false, `Could not create new game. ${error}`);
     }
