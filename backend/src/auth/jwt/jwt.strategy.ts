@@ -5,7 +5,6 @@ import { AuthService } from '../auth.service';
 import { Request } from 'express';
 import { jwtConstants } from './constants';
 import { UserService } from '../../user/user.service';
-import { UserDTO } from '../../user/DTOs/UserDTO';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -30,6 +29,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     const user = await this.userService.getUser(payload.sub);
 
-    return new UserDTO(user.user);
+    return {
+      id: user.user.id,
+      email: user.user.email,
+      nickname: user.user.nickname,
+      role: user.user.role,
+      elo: user.user.elo,
+      profilePicture: user.user.profilePicture,
+      wins: user.user.wins,
+      loses: user.user.loses,
+      draw: user.user.draw,
+    };
   }
 }

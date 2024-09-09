@@ -43,7 +43,7 @@ export class UserService {
     updateUser: UpdateUserDTO
   ): Promise<ResponseDTO> {
     try {
-      await this.userRepository.update(user.user.id, {
+      await this.userRepository.update(user.id, {
         ...updateUser,
         password: this.authService.hashPassword(updateUser.password),
       });
