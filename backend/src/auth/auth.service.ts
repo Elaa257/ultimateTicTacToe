@@ -8,8 +8,7 @@ import * as crypto from 'crypto';
 import { LoginDTO } from './DTOs/loginDTO';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/user.entity';
-import { SessionData } from 'express-session';
-import { ResponseUserDTO } from '../user/DTOs/responseUserDTO';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -30,10 +29,15 @@ export class AuthService {
       await this.userRepository.save(user);
       const { password, ...userWithoutPassword } = user;
       const payload = {
-        sub: user.id,
-        username: user.nickname,
-        email: user.email,
-        role: user.role,
+        id: userWithoutPassword.id,
+        email: userWithoutPassword.email,
+        nickname: userWithoutPassword.nickname,
+        role: userWithoutPassword.role,
+        elo: userWithoutPassword.elo,
+        profilePicture: userWithoutPassword.profilePicture,
+        wins: userWithoutPassword.wins,
+        loses: userWithoutPassword.loses,
+        draw: userWithoutPassword.draw,
       };
       const access_token = await this.jwtService.signAsync(payload);
 
@@ -73,10 +77,15 @@ export class AuthService {
       const user = await this.validateUser(loginDTO.email, loginDTO.password);
       const { password, ...userWithoutPassword } = user;
       const payload = {
-        sub: user.id,
-        username: user.nickname,
-        email: user.email,
-        role: user.role,
+        id: userWithoutPassword.id,
+        email: userWithoutPassword.email,
+        nickname: userWithoutPassword.nickname,
+        role: userWithoutPassword.role,
+        elo: userWithoutPassword.elo,
+        profilePicture: userWithoutPassword.profilePicture,
+        wins: userWithoutPassword.wins,
+        loses: userWithoutPassword.loses,
+        draw: userWithoutPassword.draw,
       };
       const access_token = await this.jwtService.signAsync(payload);
 
@@ -103,24 +112,5 @@ export class AuthService {
   ): boolean {
     const hashedPassword = this.hashPassword(password);
     return hashedPassword === storedPasswordHash;
-  }
-
-  //won't work this way
-  async getLoggedInUser(session: SessionData): Promise<ResponseUserDTO> {
-    if (!session.isLoggedIn) {
-      return new ResponseUserDTO('Unauthorized');
-    }
-
-    try {
-      const user = await this.userRepository.findOne({
-        where: { email: session.email },
-      });
-      return new ResponseUserDTO(
-        `User with the ID: ${user.id} is logged in`,
-        user
-      );
-    } catch (error) {
-      return new ResponseUserDTO(`user couldn't found ${error}`);
-    }
   }
 }

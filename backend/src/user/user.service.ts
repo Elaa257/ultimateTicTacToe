@@ -4,17 +4,17 @@ import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { ResponseUserDTO } from './DTOs/responseUserDTO';
 import { MultiUsersResponseDTO } from './DTOs/multipleUsersResponseDTO';
-import { SessionData } from 'express-session';
 import { UpdateUserDTO } from './DTOs/updateUserDTO';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { AuthService } from '../auth/auth.service';
+import { UserDTO } from './DTOs/UserDTO';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   async getUser(id: number): Promise<ResponseUserDTO> {
@@ -31,7 +31,7 @@ export class UserService {
       const users = await this.userRepository.find();
       return new MultiUsersResponseDTO(
         'Successfully retrieved all avaible users',
-        users,
+        users
       );
     } catch (error) {
       return new MultiUsersResponseDTO(`Database error`);
@@ -39,12 +39,11 @@ export class UserService {
   }
 
   async updateUser(
-    session: SessionData,
-    updateUser: UpdateUserDTO,
+    user: UserDTO,
+    updateUser: UpdateUserDTO
   ): Promise<ResponseDTO> {
     try {
-      const userResponse = await this.authService.getLoggedInUser(session);
-      await this.userRepository.update(userResponse.user.id, {
+      await this.userRepository.update(user.id, {
         ...updateUser,
         password: this.authService.hashPassword(updateUser.password),
       });
@@ -55,7 +54,7 @@ export class UserService {
     }
   }
 
-  async deleteUserProfile(id: number) {
+  async deleteUserProfile(id: number): Promise<ResponseDTO> {
     const user = await this.userRepository.findOne({ where: { id: id } });
     if (!user) {
       return new ResponseDTO(false, 'User not found');

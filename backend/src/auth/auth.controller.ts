@@ -14,6 +14,7 @@ import { LoginDTO } from './DTOs/loginDTO';
 import { FastifyReply } from 'fastify';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from './jwt/auth.guard';
+import { ResponseUserDTO } from '../user/DTOs/responseUserDTO';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -75,7 +76,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('current-user')
-  getCurrentUser(@Req() req) {
-    return req.user;
+  getCurrentUser(@Req() req): ResponseUserDTO {
+    return new ResponseUserDTO('user fetched succesfully', req.user);
   }
 }
