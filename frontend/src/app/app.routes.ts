@@ -6,21 +6,14 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { NgModule } from '@angular/core';
 import { AuthGuard } from './auth/authGuard';
 import { AdminPageComponent } from './admin-page/admin-page.component';
-<<<<<<< Updated upstream
-import { RedirectGuard } from './auth/redirect.guard';
-
-export const routes: Routes = [
-  { path: 'auth', component: AuthComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard, RedirectGuard] },
-=======
 
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
+import { RedirectGuard } from './auth/redirect.guard';
 
 export const routes: Routes = [
   { path: 'auth', component: AuthComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'game/:id', component: TicTacToeComponent, canActivate: [AuthGuard] },
->>>>>>> Stashed changes
   { path: 'home', component: HomeComponent },
   { path: 'admin', component: AdminPageComponent , canActivate: [AuthGuard, RedirectGuard]},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
