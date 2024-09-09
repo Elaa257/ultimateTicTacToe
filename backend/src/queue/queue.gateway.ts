@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Injectable } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
 
 interface QueueUser {
   clientId: string;
@@ -77,7 +78,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       // Prüfe, ob es einen passenden Gegner in der Queue gibt
       const match = this.queue.find(
-        (queueUser) => Math.abs(queueUser.elo - user.elo) <= 99
+        (queueUser) => Math.abs(queueUser.elo - user.elo) <= 99 && queueUser.clientId !== client.id
       );
 
       if (match) {
@@ -86,21 +87,22 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
           `Matched ${user.nickname} (Elo: ${user.elo}) with ${match.username} (Elo: ${match.elo})`
         );
 
-        // Entferne die gematchten Benutzer aus der Queue
-        this.queue = this.queue.filter(
-          (item) =>
-            item.clientId !== client.id && item.clientId !== match.clientId
-        );
+        const param = uuidv4();
 
         // Spiel starten
         this.server
           .to(client.id)
-          .emit('player-joined', { opponent: match.username });
+          .emit('player-joined', { opponent: match.username, param: param  });
         this.server
           .to(match.clientId)
-          .emit('player-joined', { opponent: user.nickname });
+          .emit('player-joined', { opponent: user.nickname, param: param  });
 
         this.server.emit('game-started');
+
+        this.queue = this.queue.filter(
+          (item) =>
+            item.clientId !== client.id && item.clientId !== match.clientId
+        );
       } else {
         // Kein passender Gegner, Benutzer zur Queue hinzufügen
         this.queue.push({

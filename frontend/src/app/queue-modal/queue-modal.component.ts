@@ -8,6 +8,7 @@ import {
 } from '@angular/material/dialog';
 import { WebSocketService } from './web-socket.service';
 import { MatButton } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-queue-modal',
@@ -23,13 +24,13 @@ import { MatButton } from '@angular/material/button';
   ],
 })
 export class QueueModalComponent {
-  canStartGame = false; // Initially false
   timeInQueue: number = 0;
   timer:any;
 
   constructor(
     public dialogRef: MatDialogRef<QueueModalComponent>,
-    private webSocketService: WebSocketService
+    private webSocketService: WebSocketService,
+    private router: Router
   ) {
     // Listen for the "player-joined" event
     console.log('QueueModalComponent initialized');
@@ -37,19 +38,16 @@ export class QueueModalComponent {
     this.webSocketService.emit('join-queue');
 
 
-    this.webSocketService.listen('player-joined').subscribe(() => {
-      console.log('Received player-joined event');
-      this.canStartGame = true; // Enable the start game button
+    this.webSocketService.listen<{ param: string, opponent: string }>('player-joined').subscribe((data) => {
+      console.log('Received player-joined event', data);
+
+      this.startTimer();
+      this.dialogRef.close();
+      this.router.navigate(['/game', data.param]);   
+      this.webSocketService.connect(data.param);
     });
   }
 
-  startGame(): void {
-    console.log('Start Game button clicked');
-    this.stopTimer()
-    this.webSocketService.emit('start-game');
-    this.dialogRef.close();
-
-  }
   ngOnInit(){
     this.startTimer()
   }
