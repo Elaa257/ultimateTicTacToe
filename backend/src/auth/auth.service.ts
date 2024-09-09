@@ -29,15 +29,15 @@ export class AuthService {
       await this.userRepository.save(user);
       const { password, ...userWithoutPassword } = user;
       const payload = {
-        id: userWithoutPassword.id,
-        email: userWithoutPassword.email,
-        nickname: userWithoutPassword.nickname,
-        role: userWithoutPassword.role,
-        elo: userWithoutPassword.elo,
-        profilePicture: userWithoutPassword.profilePicture,
-        wins: userWithoutPassword.wins,
-        loses: userWithoutPassword.loses,
-        draw: userWithoutPassword.draw,
+        id: user.id,
+        email: user.email,
+        nickname: user.nickname,
+        role: user.role,
+        elo: user.elo,
+        profilePicture: user.profilePicture,
+        wins: user.wins,
+        loses: user.loses,
+        draw: user.draw,
       };
       const access_token = await this.jwtService.signAsync(payload);
 
@@ -77,16 +77,17 @@ export class AuthService {
       const user = await this.validateUser(loginDTO.email, loginDTO.password);
       const { password, ...userWithoutPassword } = user;
       const payload = {
-        id: userWithoutPassword.id,
-        email: userWithoutPassword.email,
-        nickname: userWithoutPassword.nickname,
-        role: userWithoutPassword.role,
-        elo: userWithoutPassword.elo,
-        profilePicture: userWithoutPassword.profilePicture,
-        wins: userWithoutPassword.wins,
-        loses: userWithoutPassword.loses,
-        draw: userWithoutPassword.draw,
+        id: user.id,
+        email: user.email,
+        nickname: user.nickname,
+        role: user.role,
+        elo: user.elo,
+        profilePicture: user.profilePicture,
+        wins: user.wins,
+        loses: user.loses,
+        draw: user.draw,
       };
+
       const access_token = await this.jwtService.signAsync(payload);
 
       return {
