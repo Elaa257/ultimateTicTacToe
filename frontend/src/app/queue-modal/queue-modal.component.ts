@@ -55,6 +55,7 @@ export class QueueModalComponent {
   }
   ngOnDestroy(){
     this.stopTimer();
+    this.leaveQueue();
   }
   startTimer(){
     this.timer = setInterval(()=>{
@@ -74,5 +75,10 @@ export class QueueModalComponent {
 
   pad(value:number){
     return value <10 ? `0${value}` : `${value}`;
+  }
+
+  leaveQueue(): void {
+    console.log('Emitting leave-queue event');
+    this.webSocketService.emit('leave-queue');
   }
 }

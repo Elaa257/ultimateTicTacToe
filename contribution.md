@@ -11,5 +11,13 @@
 ## Development
 
 If you make changes in the frontend while running the application via `localhost:3000`, you need to build the frontend again and restart the application in the `backend` directory.  
+The easiest way to this is:
+
+1. Run `npm run watch` in the `frontend` directory.
+2. Run `npm run start dev` in the `backend` directory.
+
+Now all changes that you make are displayed directly without rebuilding or restarting.
+
+
 If you are just trying to style the frontend without need for the backend, run `npm start` in the `frontend` directory.  
 You can now access the `frontend` via `localhost:4200`.

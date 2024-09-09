@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { RegisterDTO } from './DTOs/registerDTO';
 import { AuthService } from './auth.service';
 import { ResponseDTO } from '../DTOs/responseDTO';
@@ -34,8 +42,7 @@ export class AuthController {
     @Body() loginDto: LoginDTO,
     @Res() reply: FastifyReply
   ): Promise<void> {
-    const { access_token, response } =
-      await this.userService.login(loginDto);
+    const { access_token, response } = await this.userService.login(loginDto);
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
@@ -64,5 +71,11 @@ export class AuthController {
   async checkAuthStatus(): Promise<{ isAuthenticated: boolean }> {
     console.log('auth check');
     return { isAuthenticated: true };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('current-user')
+  getCurrentUser(@Req() req) {
+    return req.user;
   }
 }

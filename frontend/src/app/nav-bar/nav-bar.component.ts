@@ -8,7 +8,6 @@ import { NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-nav-bar',
@@ -33,7 +32,9 @@ import { Observable, of } from 'rxjs';
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent {
-  isLoggedIn:boolean = false;
+
+  isLoggedIn: boolean = false;
+
   constructor(private authService: AuthService){}
 
   ngDoCheck() {
@@ -48,8 +49,6 @@ export class NavBarComponent {
       }
     );
   }
-
-
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
@@ -71,6 +70,7 @@ export class NavBarComponent {
       this.sidenav.close();
     }
   }
+
   logout() {
     this.authService.logout().subscribe(response =>({
       next: () => {

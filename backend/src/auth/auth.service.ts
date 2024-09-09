@@ -104,7 +104,8 @@ export class AuthService {
     const hashedPassword = this.hashPassword(password);
     return hashedPassword === storedPasswordHash;
   }
-  /**
+
+  //won't work this way
   async getLoggedInUser(session: SessionData): Promise<ResponseUserDTO> {
     if (!session.isLoggedIn) {
       return new ResponseUserDTO('Unauthorized');
@@ -121,5 +122,5 @@ export class AuthService {
     } catch (error) {
       return new ResponseUserDTO(`user couldn't found ${error}`);
     }
-  }**/
+  }
 }
