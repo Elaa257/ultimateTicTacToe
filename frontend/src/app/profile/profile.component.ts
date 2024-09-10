@@ -12,6 +12,7 @@ import {
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
 import { NgOptimizedImage } from '@angular/common';
+import { UserDTO } from './DTOs/userDTO';
 
 @Component({
   selector: 'app-profile',
@@ -35,11 +36,9 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  user:any;
+  user: UserDTO | undefined;
   isModalOpen = false;
   selectedImage:string | ArrayBuffer | null = null;
-  username = 'JohnDoe';
-  eloPoints = 1500;
   wins = 20;
   losses = 13;
   draws = 4;
@@ -84,16 +83,7 @@ export class ProfileComponent {
     };
     reader.readAsDataURL(file);
   }
-  logout() {
-    this.authService.logout().subscribe(response =>({
-      next: () => {
-        console.log('Logged out successfully');
-      },
-      error: (err: any) => {
-        console.error('Logout failed', err);
-      }
-    }));
-  }
+
   gameHistory = [
     { opponent: 'JaneDoe', result: 'Win', eloChange: '+20' },
     { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },

@@ -37,27 +37,34 @@
 /*Profile and Statistic container */
 .profile-statistic-container{
   display: flex;
+  flex-direction: row; /* Nebeneinander in einer Zeile */
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch; /* Karten gleiche Höhe geben */
   width: 100%;
-  max-width: 1200px; /* Maximale Breite für den Container */
+  max-width: 1200px;
   gap: 20px; /* Abstand zwischen den beiden Karten */
   margin-bottom: 20px;
 }
 
 /* Profil-Card Styling */
-.profile-card {
-  flex: 1 1 30%; /* Nimmt 30% der Breite ein */
-  max-width: 350px; /* Maximale Breite für die Profilinformationen */
+.profile-card, .statistics-card {
+  flex: 1; /* Beide Karten sollen den verfügbaren Platz einnehmen */
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
   background-color: rgba(255, 255, 255, 0.2); /* Halbtransparentes Hintergrund */
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
-  color: #fff; /* Weißer Text */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Stellt sicher, dass beide Karten die gleiche Höhe haben */
+}
+.profile-card{
+  text-align: center;
+  max-width: 350px;
+}
+.statistics-card{
+  text-align: left;
 }
 
 /* Profilbild Styling */
@@ -88,15 +95,6 @@
   margin-top: 10px;
 }
 
-/* Statistik-Card Styling */
-.statistics-card {
-  flex: 1 1 70%; /* Nimmt 70% der Breite ein */
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.2); /* Halbtransparentes Hintergrund */
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
-  color: #fff;
-}
 
 /* Spielstatistiken Styling */
 .statistics-card h3 {
@@ -107,7 +105,6 @@
 .statistics-card .stats {
   display: flex;
   justify-content: space-between;
-  text-align: left;
   margin-bottom: 20px;
 }
 
@@ -121,11 +118,11 @@
   width: 100%;
   max-width: 800px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.2); /* Halbtransparentes Hintergrund */
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   color: #fff;
-  margin-bottom: 20px; /* Abstand nach unten */
+  margin-bottom: 20px;
 }
 .game-history-scroll {
   max-height: 300px; /* Maximal 5 Spiele anzeigen */
@@ -218,15 +215,13 @@ button:hover {
 /* Responsives Styling für kleinere Bildschirme */
 @media (max-width: 600px) {
   .profile-statistic-container {
-    flex-direction: column; /* Stellt die Karten untereinander */
+    flex-direction: column; /* Karten untereinander für mobile Geräte */
     align-items: center;
   }
 
-  .profile-card,
-  .statistics-card {
+  .profile-card, .statistics-card {
     width: 100%;
-    max-width: none;
+    max-width: none; /* Breitenbegrenzung für mobile Geräte aufheben */
   }
-
 }
 
