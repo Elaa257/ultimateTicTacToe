@@ -3,6 +3,7 @@ import { AuthService } from '../auth/auth.service';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardImage } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { UserService } from './user.service';
+import { MatDialog } from '@angular/material/dialog';
 import { BaseChartDirective } from 'ng2-charts';
 import {
   MatAccordion,
@@ -13,6 +14,7 @@ import {
 } from '@angular/material/expansion';
 import { NgOptimizedImage } from '@angular/common';
 import { UserDTO } from './DTOs/userDTO';
+import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -44,7 +46,7 @@ export class ProfileComponent {
   draws = 4;
   winRate = (this.wins / (this.wins + this.losses + this.draws)).toFixed(2);
 
-  constructor(private authService: AuthService, private userService: UserService) {}
+  constructor(private authService: AuthService, private userService: UserService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.userService.getProfile().subscribe((data) => {
@@ -82,6 +84,33 @@ export class ProfileComponent {
       this.selectedImage = reader.result; // Zeigt das hochgeladene Bild an
     };
     reader.readAsDataURL(file);
+  }
+  openChangePasswordDialog(): void {
+    const dialogRef = this.dialog.open(ChangePasswordDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.confirmPasswordChange(result.currentPassword, result.newPassword);
+      }
+    });
+  }
+  confirmPasswordChange(currentPassword: string, newPassword: string): void {
+    const email = this.user?.email;
+    if (email !== undefined) {
+      if (confirm('Möchten Sie Ihr Passwort wirklich ändern?')) {
+        this.userService.changePassword(currentPassword, newPassword, email).subscribe(
+          (response) => {
+            console.log('Passwort erfolgreich geändert');
+          },
+          (error) => {
+            console.error('Fehler beim Ändern des Passworts', error);
+          }
+        );
+      }else{
+        console.log('Email is undefined', email)
+      }
+    }
+
   }
 
   gameHistory = [

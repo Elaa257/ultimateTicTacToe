@@ -15,6 +15,13 @@
   text-align: center; /* Zentrierung des Textes */
   margin: 0; /* Entferne Standard-Margins */
 }
+.profile-page-container h1,h2,h3,h4,h5,h6 {
+  color:yellow;
+  font-family: 'Audiowide', sans-serif;
+}
+.profile-page-container p {
+  font-family: 'Helvetica', sans-serif;
+}
 
 /* Styling für den Button */
 .profile-page-container button {
@@ -37,34 +44,27 @@
 /*Profile and Statistic container */
 .profile-statistic-container{
   display: flex;
-  flex-direction: row; /* Nebeneinander in einer Zeile */
   justify-content: space-between;
-  align-items: stretch; /* Karten gleiche Höhe geben */
+  align-items: stretch; /* Karten werden gleich hoch gemacht */
   width: 100%;
-  max-width: 1200px;
+  max-width: 1200px; /* Maximale Breite für den Container */
   gap: 20px; /* Abstand zwischen den beiden Karten */
   margin-bottom: 20px;
 }
 
 /* Profil-Card Styling */
-.profile-card, .statistics-card {
-  flex: 1; /* Beide Karten sollen den verfügbaren Platz einnehmen */
+.profile-card {
+  flex: 1 1 30%; /* Nimmt 30% der Breite ein */
+  max-width: 350px; /* Maximale Breite für die Profilinformationen */
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   background-color: rgba(255, 255, 255, 0.2); /* Halbtransparentes Hintergrund */
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%; /* Stellt sicher, dass beide Karten die gleiche Höhe haben */
-}
-.profile-card{
-  text-align: center;
-  max-width: 350px;
-}
-.statistics-card{
-  text-align: left;
+  color: #fff; /* Weißer Text */
 }
 
 /* Profilbild Styling */
@@ -92,9 +92,50 @@
 /* Profilinformationen Styling */
 .profile-info {
   font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Buttons werden an den unteren Rand geschoben */
+  flex-grow: 1; /* Profilinfo füllt den restlichen Platz */
+  margin-top: auto;
+  align-items: center;
+}
+.profile-info h2{
+  margin-bottom: 5rem;
+}
+.profile-info p {
+  margin-bottom: 5rem; /* Abstand zwischen Elo und Update Button */
+}
+.profile-info button{
   margin-top: 10px;
 }
+.update-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #3f51b5; /* Blau für den Update Button */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
+  margin-bottom: 0; /* Kein Abstand mehr nach unten */
+}
 
+.update-btn:hover {
+  background-color: #303f9f; /* Dunkleres Blau beim Hover */
+}
+
+/* Statistik-Card Styling */
+.statistics-card {
+  flex: 1 1 70%; /* Nimmt 70% der Breite ein */
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.2); /* Halbtransparentes Hintergrund */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
 
 /* Spielstatistiken Styling */
 .statistics-card h3 {
@@ -105,6 +146,7 @@
 .statistics-card .stats {
   display: flex;
   justify-content: space-between;
+  text-align: left;
   margin-bottom: 20px;
 }
 
@@ -118,11 +160,11 @@
   width: 100%;
   max-width: 800px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2); /* Halbtransparentes Hintergrund */
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
   color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 20px; /* Abstand nach unten */
 }
 .game-history-scroll {
   max-height: 300px; /* Maximal 5 Spiele anzeigen */
@@ -212,16 +254,85 @@ button {
 button:hover {
   background-color: #0f6a9c;
 }
+/* Update Modal Overlay */
+.update-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Update Modal Content */
+.update-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
+}
+
+/* Input-Felder im Update-Modal */
+.update-modal-content .form-group {
+  margin-bottom: 20px;
+}
+
+.update-modal-content label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.update-modal-content input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Buttons im Update-Modal */
+.update-modal-content button {
+  padding: 10px 20px;
+  background-color: #1486ca;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.update-modal-content button[type="button"] {
+  background-color: #e53935; /* Rot für Cancel Button */
+}
+
+.update-modal-content button:hover {
+  background-color: #0f6a9c;
+}
+
+.update-modal-content button[type="button"]:hover {
+  background-color: #d32f2f; /* Dunkleres Rot für Cancel Button */
+}
 /* Responsives Styling für kleinere Bildschirme */
 @media (max-width: 600px) {
   .profile-statistic-container {
-    flex-direction: column; /* Karten untereinander für mobile Geräte */
+    flex-direction: column; /* Stellt die Karten untereinander */
     align-items: center;
   }
 
-  .profile-card, .statistics-card {
+  .profile-card,
+  .statistics-card {
     width: 100%;
-    max-width: none; /* Breitenbegrenzung für mobile Geräte aufheben */
+    max-width: none;
+    align-items: stretch;
   }
+
 }
 

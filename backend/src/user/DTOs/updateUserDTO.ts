@@ -22,7 +22,13 @@ export class UpdateUserDTO {
   @IsNotEmpty()
   @MinLength(8)
   @ApiProperty()
-  password?: string;
+  currentPassword?: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @MinLength(8)
+  @ApiProperty()
+  newPassword?: string;
 
   @IsInt()
   @ApiProperty()

@@ -8,6 +8,7 @@
       <div class="profile-info">
         <h2>{{ user?.nickname }}</h2>
         <p>Elo Points: {{ user?.elo }}</p>
+        <button mat-button color="primary" (click)="openChangePasswordDialog()">change password</button>
       </div>
     </mat-card>
 

@@ -4,23 +4,32 @@ import { Observable } from 'rxjs';
 import { UserDTO, UsersDTO } from './DTOs/userDTO';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
 
   private apiUrl = 'backend/user';
   private apiAuthUrl = 'backend/auth';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getAllUsers(): Observable<UsersDTO> {
-     const response = this.http.get<UsersDTO>(this.apiUrl, { withCredentials: true });
-    console.log("users: " + response);
+    const response = this.http.get<UsersDTO>(this.apiUrl, { withCredentials: true });
+    console.log('users: ' + response);
     return response;
   }
-  getProfile():Observable<any>{
+
+  getProfile(): Observable<any> {
     const response = this.http.get(`${this.apiAuthUrl}/current-user`);
     console.log('user from getProfile' + response);
     return response;
   }
+
+  changePassword(currentPassword: string, newPassword: string, email: string) {
+    const payload = { currentPassword, newPassword, email };
+    console.log(payload);
+    return this.http.put(`${this.apiUrl}/change-password`, payload);
+  }
 }
+
