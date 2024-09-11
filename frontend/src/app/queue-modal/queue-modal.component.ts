@@ -47,8 +47,9 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     this.startTimer(); // Start the timer when the component is initialized
 
     // Subscribe to the "player-joined" event
-    this.playerJoinedSubscription = this.webSocketService.listen('player-joined').subscribe(() => {
+    this.playerJoinedSubscription = this.webSocketService.listen<{opponent: string, param: string}>('player-joined').subscribe((data) => {
       console.log('Received player-joined event');
+      console.log(data);
       this.canStartGame = true;
       this.stopTimer(); // Stop the queue timer
       this.startCountdown(); // Start the 10-second countdown

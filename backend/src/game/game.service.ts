@@ -22,20 +22,26 @@
     ) {}
 
     //create new game
-    async create(
-      player1Id: number, player2Id: number,
-    ): Promise<ResponseDTO> {
+    async create(player1Id: number, player2Id: number): Promise<ResponseDTO> {
       try {
         const player1 = await this.userService.getUser(player1Id);
         const player2 = await this.userService.getUser(player2Id);
-        console.log(player1, player2);
+    
         if (!player1.user || !player2.user) {
           return new ResponseDTO(false, `Could not find one or both players: ${player1.message}, ${player2.message}`);
         }
-        const newGame = this.gameRepo.create( new CreateGameRequestDto(player1.user, player2.user));
-        console.log("newGame", newGame);
+    
+        const newGame = this.gameRepo.create(new CreateGameRequestDto(player1.user, player2.user));
+        console.log('Creating new game:', newGame);
+    
+        // Stelle sicher, dass auf das Ergebnis des Speicherns korrekt gewartet wird
         const saveGame = await this.gameRepo.save(newGame);
-        console.log("saveGame", saveGame);
+        console.log('Saved game ID:', saveGame.id);
+    
+        if (!saveGame.id) {
+          return new ResponseDTO(false, 'Failed to generate game ID');
+        }
+    
         return new ResponseDTO(true, 'Game successfully created', undefined, saveGame.id);
       } catch (error) {
         return new ResponseDTO(false, `Could not create new game. ${error}`);
