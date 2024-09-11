@@ -5,7 +5,6 @@ import { AuthService } from '../auth.service';
 import { Request } from 'express';
 import { jwtConstants } from './constants';
 import { UserService } from '../../user/user.service';
-import { UserDTO } from '../../user/DTOs/UserDTO';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -28,8 +27,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     this.logger.debug(`JWT Payload: ${JSON.stringify(payload)}`);
 
-    const user = await this.userService.getUser(payload.sub);
+    const user = await this.userService.getUser(payload.id);
 
-    return new UserDTO(user.user);
+    return {
+      id: user.user.id,
+      email: user.user.email,
+      nickname: user.user.nickname,
+      role: user.user.role,
+      elo: user.user.elo,
+      profilePicture: user.user.profilePicture,
+      wins: user.user.wins,
+      loses: user.user.loses,
+      draw: user.user.draw,
+    };
   }
 }

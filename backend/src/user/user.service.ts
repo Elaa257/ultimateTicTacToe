@@ -20,6 +20,9 @@ export class UserService {
   async getUser(id: number): Promise<ResponseUserDTO> {
     try {
       const user = await this.userRepository.findOne({ where: { id } });
+      if (!user) {
+        return new ResponseUserDTO(`User with id ${id} could not be found`);
+      }
       return new ResponseUserDTO(`User ${user.id} found successfully`, user);
     } catch (error) {
       return new ResponseUserDTO(`User with id ${id} could not be found`);
@@ -43,7 +46,7 @@ export class UserService {
     updateUser: UpdateUserDTO
   ): Promise<ResponseDTO> {
     try {
-      await this.userRepository.update(user.user.id, {
+      await this.userRepository.update(user.id, {
         ...updateUser,
         password: this.authService.hashPassword(updateUser.password),
       });

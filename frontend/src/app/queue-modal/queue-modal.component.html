@@ -1,15 +1,18 @@
 <div class="modal-container">
+
+  @if(!canStartGame){
   <div class="timer">
     <p>{{ formatTime(timeInQueue) }}</p>
   </div>
-  <h1 mat-dialog-title>Waiting for Match</h1>
+  }
+  <h1 mat-dialog-title>
+    {{ canStartGame ? 'Match Found! Game starting in ' + countdown + ' seconds' : 'Waiting for Match' }}
+  </h1>
+
+  @if(!canStartGame){
   <div mat-dialog-actions>
-    <!-- Der Start Game Button ist initially disabled -->
-<<<<<<< Updated upstream
-    <button mat-button [disabled]="!canStartGame" class="start game-btn" (click)="startGame()">Start Game</button>
+    <!-- Show cancel button during the search -->
     <button mat-button mat-dialog-close (click)="leaveQueue()" class="leave game-btn">Cancel</button>
-=======
-    <button mat-button mat-dialog-close class="leave game-btn">Cancel</button>
->>>>>>> Stashed changes
   </div>
+  }
 </div>

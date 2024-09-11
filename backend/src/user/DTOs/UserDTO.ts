@@ -1,6 +1,4 @@
-import { Game } from '../../game/game.entity';
-
-export interface UserWithoutPassword {
+export class UserDTO {
   id: number;
   email: string;
   nickname: string;
@@ -10,13 +8,4 @@ export interface UserWithoutPassword {
   wins: number;
   loses: number;
   draw: number;
-  games: Game[];
-}
-
-export class UserDTO {
-  user: UserWithoutPassword;
-
-  constructor(user: UserWithoutPassword) {
-    this.user = user;
-  }
 }

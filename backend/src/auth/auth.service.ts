@@ -8,9 +8,7 @@ import * as crypto from 'crypto';
 import { LoginDTO } from './DTOs/loginDTO';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/user.entity';
-import { SessionData } from 'express-session';
-import { ResponseUserDTO } from '../user/DTOs/responseUserDTO';
-import { UserDTO, UserWithoutPassword } from '../user/DTOs/UserDTO';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -30,7 +28,17 @@ export class AuthService {
       });
       await this.userRepository.save(user);
       const { password, ...userWithoutPassword } = user;
-      const payload = new UserDTO(userWithoutPassword);
+      const payload = {
+        id: user.id,
+        email: user.email,
+        nickname: user.nickname,
+        role: user.role,
+        elo: user.elo,
+        profilePicture: user.profilePicture,
+        wins: user.wins,
+        loses: user.loses,
+        draw: user.draw,
+      };
       const access_token = await this.jwtService.signAsync(payload);
 
       return {
@@ -68,7 +76,18 @@ export class AuthService {
     try {
       const user = await this.validateUser(loginDTO.email, loginDTO.password);
       const { password, ...userWithoutPassword } = user;
-      const payload = new UserDTO(userWithoutPassword);
+      const payload = {
+        id: user.id,
+        email: user.email,
+        nickname: user.nickname,
+        role: user.role,
+        elo: user.elo,
+        profilePicture: user.profilePicture,
+        wins: user.wins,
+        loses: user.loses,
+        draw: user.draw,
+      };
+
       const access_token = await this.jwtService.signAsync(payload);
 
       return {

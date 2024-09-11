@@ -22,6 +22,7 @@ import { JwtAuthGuard } from '../auth/jwt/auth.guard';
 import { RolesGuard } from '../auth/roles/roles.guard';
 import { Roles } from '../auth/roles/roles.decorator';
 import { Role } from '../auth/roles/enum.roles';
+import { CreateGameDto } from './DTOs/CreateGameDto';
 
 @ApiTags('game')
 @Controller('game')
@@ -53,9 +54,10 @@ export class GameController {
   @Post()
   @ApiResponse({ type: ResponseDTO })
   async createGame(
-    @Body() createGameRequestDto: CreateGameRequestDto,
+    @Body() createGameDto: CreateGameDto
   ): Promise<ResponseDTO> {
-    return await this.gameService.create(createGameRequestDto);
+    const { player1Id, player2Id } = createGameDto;
+    return await this.gameService.create(player1Id, player2Id);
   }
 
   //delete a specific game
