@@ -38,7 +38,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const token = this.extractJwtFromSocket(client);
       const payload = this.jwtService.verify(token);
       const user = await this.userRepository.findOne({
-        where: { id: payload.sub },
+        where: { id: payload.id },
       });
 
       if (!user) {
@@ -66,7 +66,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const token = this.extractJwtFromSocket(client);
       const payload = this.jwtService.verify(token);
       const user = await this.userRepository.findOne({
-        where: { id: payload.sub },
+        where: { id: payload.id },
       });
 
       if (!user) {
@@ -98,7 +98,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
         );
 
         // Notify both players that a match has been found (player-joined)
-        this.server.to(client.id).emit('player-joined', { opponent: match.username, param: param, game });
+        this.server.to(client.id).emit('player-joined', { opponent: match.username, param: param});
         this.server.to(match.clientId).emit('player-joined', { opponent: user.nickname, param: param });
       } else {
         // No match found, add user to the queue
