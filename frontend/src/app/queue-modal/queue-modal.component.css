@@ -1,3 +1,4 @@
+
 .modal-container {
   display: flex;
   flex-direction: column;
@@ -11,28 +12,40 @@
   margin: auto;
   text-align: center;
   color: white;
+  transition: all 0.3s ease; /* Add smooth transition for style changes */
 }
+
 .timer {
   margin-bottom: 30px;
   font-family: 'Audiowide', sans-serif;
   font-size: 1.5rem;
   color: yellow;
+  opacity: 1;
+  transition: opacity 0.3s ease; /* Smooth fading effect */
 }
+
+.timer.ng-hide {
+  opacity: 0;
+}
+
 h1 {
-  color: yellow !important; /* Goldene Farbe für eine angenehmere Darstellung */
+  color: yellow !important;
   font-family: 'Audiowide', sans-serif;
   font-size: 2.5rem !important;
   margin-bottom: 20px;
 }
-.start{
+
+.start {
   background-color: #ED4AB7;
   color: white !important;
 }
-.leave{
+
+.leave {
   background-color: grey;
   color: white !important;
 }
-.game-btn{
+
+.game-btn {
   justify-content: center;
   position: relative;
   border: none;
@@ -40,3 +53,6 @@ h1 {
   cursor: pointer;
   border-radius: 3px;
 }
+
+
+

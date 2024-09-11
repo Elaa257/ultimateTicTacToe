@@ -49,11 +49,10 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
     } catch (err) {
       console.log('Invalid token:', err.message);
-      client.disconnect(); // Wenn das Token ungültig ist, Verbindung trennen
+      client.disconnect();
     }
   }
 
-  @SubscribeMessage('leave-queue')
   handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
     this.queue = this.queue.filter((item) => item.clientId !== client.id);
@@ -75,54 +74,45 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       console.log(`User ${user.nickname} joined queue with Elo ${user.elo}`);
 
-      // Prüfe, ob es einen passenden Gegner in der Queue gibt
+      // Prevent duplicate queue entries
+      if (this.queue.find(queueUser => queueUser.clientId === client.id)) {
+        console.log(`User ${user.nickname} is already in the queue.`);
+        return;
+      }
+
+      // Try to match the user
       const match = this.queue.find(
-        (queueUser) => Math.abs(queueUser.elo - user.elo) <= 99
+        (queueUser) => Math.abs(queueUser.elo - user.elo) <= 99 && queueUser.clientId !== client.id
       );
 
       if (match) {
-        // Gegner gefunden, matchen und Spiel starten
-        console.log(
-          `Matched ${user.nickname} (Elo: ${user.elo}) with ${match.username} (Elo: ${match.elo})`
-        );
+        // Found a match
+        console.log(`Matched ${user.nickname} (Elo: ${user.elo}) with ${match.username} (Elo: ${match.elo})`);
 
-        // Entferne die gematchten Benutzer aus der Queue
+        // Remove matched users from the queue
         this.queue = this.queue.filter(
-          (item) =>
-            item.clientId !== client.id && item.clientId !== match.clientId
+          (item) => item.clientId !== client.id && item.clientId !== match.clientId
         );
 
-        // Spiel starten
-        this.server
-          .to(client.id)
-          .emit('player-joined', { opponent: match.username });
-        this.server
-          .to(match.clientId)
-          .emit('player-joined', { opponent: user.nickname });
-
-        this.server.emit('game-started');
+        // Notify both players that a match has been found (player-joined)
+        this.server.to(client.id).emit('player-joined', { opponent: match.username });
+        this.server.to(match.clientId).emit('player-joined', { opponent: user.nickname });
       } else {
-        // Kein passender Gegner, Benutzer zur Queue hinzufügen
+        // No match found, add user to the queue
         this.queue.push({
           clientId: client.id,
           username: user.nickname,
           elo: user.elo,
         });
-        console.log(
-          `Current queue: ${this.queue.map((item) => item.username).join(', ')}`
-        );
+        console.log(`Current queue: ${this.queue.map((item) => item.username).join(', ')}`);
       }
+
       this.broadcastQueueToAdmins();
     } catch (err) {
       console.log('Error during join-queue:', err.message);
-      client.disconnect(); // Verbindung trennen bei Fehler
-    }
-  }
+      client.disconnect();
 
-  @SubscribeMessage('start-game')
-  handleStartGame(): void {
-    console.log('Game started');
-    this.server.emit('game-started');
+    }
   }
 
   //Get Queue Information's for the Admins
@@ -137,6 +127,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.emit('unauthorized');
     }
   }
+
 
   private extractJwtFromSocket(client: Socket): string {
     const cookie = client.handshake.headers.cookie;
@@ -166,3 +157,4 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
   }
 }
+
