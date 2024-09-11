@@ -115,6 +115,19 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  //Get Queue Information's for the Admins
+  @SubscribeMessage('get-queue')
+  async handleGetQueue(client: Socket): Promise<void> {
+    const token = this.extractJwtFromSocket(client);
+    const payload = this.jwtService.verify(token);
+
+    if (payload.role === 'admin') {
+      client.emit('queue-data', this.queue);
+    } else {
+      client.emit('unauthorized');
+    }
+  }
+
 
   private extractJwtFromSocket(client: Socket): string {
     const cookie = client.handshake.headers.cookie;
