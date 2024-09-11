@@ -40,6 +40,18 @@ export class User {
   @Column({ default: 0 })
   draw: number;
 
-  @OneToMany(() => Game, (game) => game.users)
-  games: Game[];
+  @OneToMany(() => Game, (game) => game.player1)
+  gamesAsPlayer1: Game[];
+
+  @OneToMany(() => Game, (game) => game.player2)
+  gamesAsPlayer2: Game[];
+
+  @OneToMany(() => Game, (game) => game.turn)
+  gamesAsTurnPlayer: Game[];
+
+  @OneToMany(() => Game, (game) => game.winner)
+  gamesAsWinner: Game[];
+
+  @OneToMany(() => Game, (game) => game.loser)
+  gamesAsLoser: Game[];
 }

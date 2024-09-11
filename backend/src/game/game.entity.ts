@@ -1,14 +1,12 @@
 import {
   Column,
   Entity,
-  OneToOne,
   PrimaryGeneratedColumn,
   JoinColumn,
   CreateDateColumn,
   BeforeInsert,
   BeforeUpdate,
-  ManyToMany,
-  JoinTable, AfterInsert, getManager,
+  ManyToOne,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import {
@@ -36,24 +34,24 @@ export class Game {
   // 0 = Circle Player1 or 1 = Cross Player2
   board: number[];
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'turnId' })
   turn: User;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'player1Id' })
   player1: User;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'player2Id' })
   player2: User;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'winnerId' })
   winner: User;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'loserId' })
   loser: User;
 
   @CreateDateColumn({ type: 'date' })
@@ -70,10 +68,6 @@ export class Game {
 
   @Column({ nullable: true})
   player2EloAfter: number;
-
-  @ManyToMany(() => User, (user) => user.games)
-  @JoinTable()
-  users: User[];
 
   @BeforeInsert()
   @BeforeUpdate()

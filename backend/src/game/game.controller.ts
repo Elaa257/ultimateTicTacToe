@@ -8,10 +8,9 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put,
+  Put, Query,
   UseGuards,
 } from '@nestjs/common';
-import { CreateGameRequestDto } from './DTOs/createGameRequestDto';
 import { GameService } from './game.service';
 import { UpdateGameRequestDto } from './DTOs/updateGameRequestDto';
 import { GameResponseDto } from './DTOs/gameResponseDto';
@@ -22,7 +21,6 @@ import { JwtAuthGuard } from '../auth/jwt/auth.guard';
 import { RolesGuard } from '../auth/roles/roles.guard';
 import { Roles } from '../auth/roles/roles.decorator';
 import { Role } from '../auth/roles/enum.roles';
-import { CreateGameDto } from './DTOs/CreateGameDto';
 
 @ApiTags('game')
 @Controller('game')
@@ -44,7 +42,7 @@ export class GameController {
   @Get(':id')
   @ApiResponse({ type: GameResponseDto })
   async getGame(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: number
   ): Promise<GameResponseDto> {
     return await this.gameService.getGame(id);
   }
@@ -54,9 +52,9 @@ export class GameController {
   @Post()
   @ApiResponse({ type: ResponseDTO })
   async createGame(
-    @Body() createGameDto: CreateGameDto
+    @Query('player1Id', ParseIntPipe) player1Id: number,
+    @Query('player2Id', ParseIntPipe) player2Id: number
   ): Promise<ResponseDTO> {
-    const { player1Id, player2Id } = createGameDto;
     return await this.gameService.create(player1Id, player2Id);
   }
 
@@ -66,7 +64,7 @@ export class GameController {
   @Delete('delete')
   @ApiResponse({ type: ResponseDTO })
   async deleteGame(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: number
   ): Promise<ResponseDTO> {
     return await this.gameService.deleteGame(id);
   }
@@ -77,7 +75,7 @@ export class GameController {
   @ApiResponse({ type: GameResponseDto })
   async updateGame(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateGameRequestDTO: UpdateGameRequestDto,
+    @Body() updateGameRequestDTO: UpdateGameRequestDto
   ): Promise<GameResponseDto> {
     return this.gameService.makeMove(id, updateGameRequestDTO);
   }
