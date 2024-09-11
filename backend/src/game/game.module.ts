@@ -13,5 +13,6 @@ import { User } from '../user/user.entity';
   imports: [TypeOrmModule.forFeature([Game, User]), UserModule],
   controllers: [GameController],
   providers: [GameService, GameLogicService],
+  exports: [GameService],
 })
 export class GameModule {}

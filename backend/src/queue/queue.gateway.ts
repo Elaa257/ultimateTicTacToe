@@ -12,6 +12,7 @@ import { Repository } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
+import { GameService } from 'src/game/game.service';
 
 interface QueueUser {
   clientId: string;
@@ -30,7 +31,8 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private jwtService: JwtService,
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    private gameService: GameService
   ) {}
 
   async handleConnection(client: Socket) {
@@ -91,6 +93,16 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
         console.log(`Matched ${user.nickname} (Elo: ${user.elo}) with ${match.username} (Elo: ${match.elo})`);
 
         const param = uuidv4();
+
+        const matchClientId = (await this.userRepository.findOne({ where: { nickname: match.username } })).id;
+        const userClientId = (await this.userRepository.findOne({ where: { nickname: user.nickname } })).id;
+        console.log(`MatchClientId: ${matchClientId}, UserClientId: ${userClientId}`);
+        const newGame = await this.gameService.create(userClientId, matchClientId);
+        if (!newGame) {
+          throw new Error('Could not create game');
+        }
+        console.log(`Game created with ID ${newGame.id}`);
+
 
         // Remove matched users from the queue
         this.queue = this.queue.filter(

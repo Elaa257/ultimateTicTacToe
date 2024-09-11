@@ -16,7 +16,7 @@ export class CreateGameRequestDto {
         this.player2 = player2;
         this.player1EloBefore = player1.elo;
         this.player2EloBefore = player2.elo;
-        this.board = new Array(9).fill(null);
+        this.board = new Array(9).fill(-1);
         this.turn = Math.random() < 0.5 ? player1 : player2;
     }
 }

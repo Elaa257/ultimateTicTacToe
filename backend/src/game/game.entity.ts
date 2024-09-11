@@ -26,7 +26,7 @@ export class Game {
   @Column({ default: false })
   finished: boolean;
 
-  @Column()
+  @Column({ nullable: true})
   draw: boolean;
 
   @Column('simple-array')
@@ -65,10 +65,10 @@ export class Game {
   @Column()
   player2EloBefore: number;
 
-  @Column()
+  @Column({ nullable: true})
   player1EloAfter: number;
 
-  @Column()
+  @Column({ nullable: true})
   player2EloAfter: number;
 
   @ManyToMany(() => User, (user) => user.games)
