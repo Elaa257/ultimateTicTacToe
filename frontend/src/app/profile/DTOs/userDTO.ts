@@ -4,6 +4,10 @@ export interface UserDTO {
   nickname: string;
   role: string;
   elo: number;
+  profilePicture: string;
+  wins:number;
+  draws:number;
+  loses:number
 }
 
 export interface UsersDTO {

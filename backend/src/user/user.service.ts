@@ -8,13 +8,15 @@ import { UpdateUserDTO } from './DTOs/updateUserDTO';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { AuthService } from '../auth/auth.service';
 import { UserDTO } from './DTOs/UserDTO';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private authService: AuthService
+    private authService: AuthService,
+    private jwtService: JwtService
   ) {}
 
   async getUser(id: number): Promise<ResponseUserDTO> {
@@ -88,6 +90,74 @@ export class UserService {
       return new ResponseDTO(true, 'Password updated');
     } catch (error) {
       return new ResponseDTO(false, `User couldn't be updated ${error}`);
+    }
+  }
+
+  async changeImage(
+    email: string,
+    img: string
+  ): Promise<{ access_token?: string; response: ResponseDTO }> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      return { response: new ResponseDTO(false, 'User not found') };
+    }
+
+    try {
+      const mimeMatch = img.match(/^data:image\/(jpeg|png|gif|bmp);base64,/);
+      if (!mimeMatch) {
+        return { response: new ResponseDTO(false, 'Invalid image format') };
+      }
+
+      const base64Data = img.replace(/^data:image\/[a-z]+;base64,/, '');
+
+      if (base64Data === img) {
+        return {
+          response: new ResponseDTO(
+            false,
+            'MIME type was not removed correctly'
+          ),
+        };
+      }
+
+     const update = await this.userRepository.update(user.id, { profilePicture: base64Data });
+
+      console.log("update: " + update);
+
+      // Reload the user to get the updated profile picture
+      const updatedUser = await this.userRepository.findOne({
+        where: { email },
+      });
+
+      const payload = {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        nickname: updatedUser.nickname,
+        role: updatedUser.role,
+        elo: updatedUser.elo,
+        profilePicture: updatedUser.profilePicture,
+        wins: updatedUser.wins,
+        loses: updatedUser.loses,
+        draw: updatedUser.draw,
+      };
+
+      const newToken = await this.jwtService.signAsync(payload);
+
+      return {
+        access_token: newToken,
+        response: new ResponseDTO(
+          true,
+          `User: ${updatedUser.nickname}, has successfully updated`,
+          updatedUser
+        ),
+      };
+    } catch (error) {
+      return {
+        response: new ResponseDTO(
+          false,
+          `Image could not be updated: ${error}`
+        ),
+      };
     }
   }
 }

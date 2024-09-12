@@ -3,7 +3,7 @@
     <!-- Profilinformationen -->
     <mat-card class="profile-card">
       <div class="profile-image-container" (click)="openModal()">
-        <img class="profile-image" src="/profile-picture.jpg" alt="Profilbild" height="680" width="680">
+        <img class="profile-image" [src]="selectedImage" alt="Profilbild" height="680" width="680">
       </div>
       <div class="profile-info">
         <h2>{{ user?.nickname }}</h2>

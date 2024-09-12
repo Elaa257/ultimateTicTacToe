@@ -14,9 +14,8 @@ export class UpdateUserDTO {
   nickname?: string;
 
   @IsEmail()
-  @IsOptional()
   @ApiProperty()
-  email?: string;
+  email: string;
 
   @IsOptional()
   @IsNotEmpty()
@@ -35,7 +34,7 @@ export class UpdateUserDTO {
   elo?: number;
 
   @ApiProperty()
-  profilePicture?: Buffer;
+  profilePicture?: string;
 
   @ApiProperty()
   wins?: number;

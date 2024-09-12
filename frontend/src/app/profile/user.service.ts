@@ -21,7 +21,7 @@ export class UserService {
   }
 
   getProfile(): Observable<any> {
-    const response = this.http.get(`${this.apiAuthUrl}/current-user`);
+    const response = this.http.get(`${this.apiAuthUrl}/current-user`, { withCredentials: true });
     console.log('user from getProfile' + response);
     return response;
   }
@@ -30,6 +30,12 @@ export class UserService {
     const payload = { currentPassword, newPassword, email };
     console.log(payload);
     return this.http.put(`${this.apiUrl}/change-password`, payload);
+  }
+
+  changeProfilePicture(img: string, email:string){
+    const payload = { profilePicture: img, email: email};
+    console.log('sending payload: ', payload);
+    return this.http.put(`${this.apiAuthUrl}/newToken`, payload);
   }
 }
 

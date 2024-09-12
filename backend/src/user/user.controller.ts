@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Put,
+  Put, Res,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt/auth.guard';
@@ -18,6 +18,7 @@ import { MultiUsersResponseDTO } from './DTOs/multipleUsersResponseDTO';
 import { UserService } from './user.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDTO } from './DTOs/updateUserDTO';
+import { FastifyReply } from 'fastify';
 
 @ApiTags('user')
 @Controller('user')
@@ -94,5 +95,23 @@ export class UserController {
       updateUserDTO.currentPassword,
       updateUserDTO.newPassword
     );
+  }
+  @UseGuards(JwtAuthGuard)
+  @Put('change-img')
+  @ApiResponse({ type: ResponseUserDTO })
+  async changeImg(
+    @Body() updateUserDTO: UpdateUserDTO,
+    @Res() reply: FastifyReply
+  ): Promise<void> {
+    console.log('payload im Backend: ', updateUserDTO.profilePicture);
+    const { access_token, response } = await this.userService.changeImage( updateUserDTO.email, updateUserDTO.profilePicture);
+    reply.clearCookie('access_token', { path: '/' });
+    console.log('Cookie cleared');
+    reply
+      .setCookie('access_token', access_token, {
+        httpOnly: true, // Makes the cookie accessible only by the web server
+        path: '/', //Makes the cookie accessible by all routes
+      })
+      .send(response);
   }
 }

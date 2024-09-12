@@ -35,56 +35,85 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
     NgOptimizedImage,
   ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrl: './profile.component.css',
 })
 export class ProfileComponent {
   user: UserDTO | undefined;
   isModalOpen = false;
-  selectedImage:string | ArrayBuffer | null = null;
+  selectedImage: string | null ='';
   wins = 20;
   losses = 13;
   draws = 4;
   winRate = (this.wins / (this.wins + this.losses + this.draws)).toFixed(2);
 
-  constructor(private authService: AuthService, private userService: UserService, private dialog: MatDialog) {}
+  constructor(private authService: AuthService, private userService: UserService, private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
+    this.selectedImage = '/profile-picture.jpg'
     this.userService.getProfile().subscribe((data) => {
-      console.log('Message Profile:', data);
-      this.user = data;
-    },
-      (error) =>{
-      console.error("Error getting profile", error);
-      })
+        console.log('Message Profile:', data);
+        this.user = data;
+        if (this.user?.profilePicture) {
+          this.selectedImage ='data:image/jpeg;base64'+ this.user.profilePicture;
+        }
+      },
+      (error) => {
+        console.error('Error getting profile', error);
+      });
   }
-  openModal(){
+
+  openModal() {
     this.isModalOpen = true;
   }
-  closeModal(){
+
+  closeModal() {
     this.isModalOpen = false;
   }
-  onFileSelected(event:any){
-    const file = event.dataTransfer?.files[0];
-    this.uploadImage(file)
-  }
-  onDrop(event:DragEvent){
-    event.preventDefault();
-    const file = event.dataTransfer?.files[0];
-    if(file){
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file){
       this.uploadImage(file);
     }
   }
-  onDragOver(event: DragEvent){
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    const file = event.dataTransfer?.files[0];
+    if (file) {
+      this.uploadImage(file);
+    }
+  }
+
+  onDragOver(event: DragEvent) {
     event.preventDefault();
   }
 
   uploadImage(file: File) {
     const reader = new FileReader();
     reader.onload = () => {
-      this.selectedImage = reader.result; // Zeigt das hochgeladene Bild an
+      this.selectedImage = reader.result as string;  // Base64-String wird hier gespeichert
+      console.log(this.selectedImage);  // Zum Debuggen, um den Base64-String zu sehen
+
+      if (this.user?.email && this.selectedImage) {
+        // Sende das Bild an den Backend-Dienst
+        this.userService.changeProfilePicture(this.selectedImage, this.user.email).subscribe(
+          (response) => {
+            console.log('Bild erfolgreich ans Backend gesendet', response);
+          },
+          (error) => {
+            console.log('Fehler beim Hochladen des Bildes', error);
+          }
+        );
+      } else {
+        console.error('Email oder Bild fehlt');
+      }
     };
-    reader.readAsDataURL(file);
+
+    reader.readAsDataURL(file);  // Lies die Datei als Data URL (Base64-String)
   }
+
   openChangePasswordDialog(): void {
     const dialogRef = this.dialog.open(ChangePasswordDialogComponent);
 
@@ -94,6 +123,7 @@ export class ProfileComponent {
       }
     });
   }
+
   confirmPasswordChange(currentPassword: string, newPassword: string): void {
     const email = this.user?.email;
     if (email !== undefined) {
@@ -104,10 +134,10 @@ export class ProfileComponent {
           },
           (error) => {
             console.error('Fehler beim Ändern des Passworts', error);
-          }
+          },
         );
-      }else{
-        console.log('Email is undefined', email)
+      } else {
+        console.log('Email is undefined', email);
       }
     }
 
@@ -122,12 +152,12 @@ export class ProfileComponent {
     { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
     { opponent: 'Player123', result: 'Win', eloChange: '+25' },
     { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
-    { opponent: 'Player123', result: 'Win', eloChange: '+25' }
+    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
   ];
 
   // Daten für das Diagramm
   chartData = [
-    { data: [this.wins, this.losses, this.draws], label: 'Games' }
+    { data: [this.wins, this.losses, this.draws], label: 'Games' },
   ];
   chartLabels = ['Wins', 'Losses', 'Draws'];
   chartOptions = {

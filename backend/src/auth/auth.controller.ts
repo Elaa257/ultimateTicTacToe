@@ -14,11 +14,16 @@ import { LoginDTO } from './DTOs/loginDTO';
 import { FastifyReply } from 'fastify';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from './jwt/auth.guard';
+import { UpdateUserDTO } from '../user/DTOs/updateUserDTO';
+import { UserService } from '../user/user.service';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly userService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private userService: UserService
+  ) {}
 
   @Post('register')
   @ApiResponse({ type: ResponseDTO })
@@ -27,7 +32,7 @@ export class AuthController {
     @Res() reply: FastifyReply
   ): Promise<void> {
     const { access_token, response } =
-      await this.userService.register(registerDTO);
+      await this.authService.register(registerDTO);
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
@@ -42,7 +47,25 @@ export class AuthController {
     @Body() loginDto: LoginDTO,
     @Res() reply: FastifyReply
   ): Promise<void> {
-    const { access_token, response } = await this.userService.login(loginDto);
+    const { access_token, response } = await this.authService.login(loginDto);
+    reply
+      .setCookie('access_token', access_token, {
+        httpOnly: true, // Makes the cookie accessible only by the web server
+        path: '/', //Makes the cookie accessible by all routes
+      })
+      .send(response);
+  }
+
+  @Post('newToken')
+  @ApiResponse({ type: ResponseDTO })
+  async newToken(
+    @Body() updateUserDTO: UpdateUserDTO,
+    @Res() reply: FastifyReply
+  ): Promise<void> {
+    console.log('payload im Backend: ', updateUserDTO.profilePicture);
+    const { access_token, response } = await this.userService.changeImage( updateUserDTO.email, updateUserDTO.profilePicture);
+    reply.clearCookie('access_token', { path: '/' });
+    console.log('Cookie cleared');
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
@@ -76,6 +99,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('current-user')
   getCurrentUser(@Req() req) {
+    console.log('current user', req.user);
     return req.user;
   }
 }
