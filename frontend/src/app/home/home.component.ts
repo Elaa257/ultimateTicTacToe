@@ -35,6 +35,9 @@ export class HomeComponent {
   constructor(public dialog: MatDialog) {
   }
   openQueueModal(): void {
-    this.dialog.open(QueueModalComponent);
+    this.dialog.open(QueueModalComponent,{
+      disableClose: true,
+      hasBackdrop: true,
+    } );
   }
 }
