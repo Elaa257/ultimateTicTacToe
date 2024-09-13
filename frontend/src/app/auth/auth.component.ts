@@ -122,9 +122,15 @@ export class AuthComponent {
     this.authService.login({ email: this.loginEmail, password: this.loginPassword })
       .subscribe(response => {
         console.log('Login response:', response);
-        this.isError = false;
-        this.message = 'Login successful';
-        this.openSnackBar(this.message, 'Close', false);
+        if(response.ok){
+          this.isError = false;
+          this.message = 'Login successful';
+          this.openSnackBar(this.message, 'Close', false);
+        } else {
+          this.isError = true;
+          this.message = 'Login failed. Please check your credentials.';
+          this.openSnackBar(this.message, 'Close', true);
+        }
       }, error => {
         this.isError = true;
         this.message = 'Login failed. Please check your credentials.';
