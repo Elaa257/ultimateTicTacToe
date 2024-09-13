@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -8,13 +8,15 @@ import { UpdateUserDTO } from './DTOs/updateUserDTO';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { AuthService } from '../auth/auth.service';
 import { UserDTO } from './DTOs/UserDTO';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private authService: AuthService
+    private authService: AuthService,
+    private jwtService: JwtService
   ) {}
 
   async getUser(id: number): Promise<ResponseUserDTO> {
@@ -45,7 +47,7 @@ export class UserService {
     try {
       await this.userRepository.update(user.id, {
         ...updateUser,
-        password: this.authService.hashPassword(updateUser.password),
+        password: this.authService.hashPassword(updateUser.currentPassword),
       });
       return new ResponseDTO(true, 'updated Account successfully');
     } catch (error) {
@@ -64,6 +66,49 @@ export class UserService {
       return new ResponseDTO(true, 'Account successfully deleted');
     } catch (error) {
       return new ResponseDTO(false, `User couldn't be deleted ${error}`);
+    }
+  }
+
+  //check the validation for the new Password!
+  async updatePassword(
+    email: string,
+    password: string,
+    newPassword: string
+  ): Promise<ResponseDTO> {
+    const user = await this.userRepository.findOne({ where: { email } });
+    const hashedPassword = this.authService.hashPassword(password);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    if (user.password !== hashedPassword) {
+      return new ResponseDTO(false, 'Password not match');
+    }
+    const newHashedPassword = this.authService.hashPassword(newPassword);
+    try {
+      await this.userRepository.update(user.id, {
+        password: newHashedPassword,
+      });
+      return new ResponseDTO(true, 'Password updated');
+    } catch (error) {
+      return new ResponseDTO(false, `User couldn't be updated ${error}`);
+    }
+  }
+
+  async changeImage(email: string, img: string): Promise<ResponseDTO> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      return new ResponseDTO(false, 'User not found') ;
+    }
+
+    try {
+      user.profilePicture = img;
+
+      await this.userRepository.save(user);
+
+      return new ResponseDTO(true, 'Profile picture updated successfully');
+    } catch (error) {
+      return new ResponseDTO(false, 'An error occurred');
     }
   }
 }
