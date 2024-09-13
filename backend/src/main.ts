@@ -7,6 +7,7 @@ import {
 } from '@nestjs/platform-fastify';
 
 import fastifyCookie from '@fastify/cookie';
+import { NoCacheInterceptor } from './common/no-cache.interceptor';
 
 declare module 'express-session' {
   interface SessionData {
@@ -34,6 +35,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  app.useGlobalInterceptors(new NoCacheInterceptor());
 
   await app.listen(3000);
 }

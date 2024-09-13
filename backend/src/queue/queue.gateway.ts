@@ -37,7 +37,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const token = this.extractJwtFromSocket(client);
       const payload = this.jwtService.verify(token);
       const user = await this.userRepository.findOne({
-        where: { id: payload.sub },
+        where: { id: payload.id },
       });
 
       if (!user) {
@@ -65,7 +65,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const token = this.extractJwtFromSocket(client);
       const payload = this.jwtService.verify(token);
       const user = await this.userRepository.findOne({
-        where: { id: payload.sub },
+        where: { id: payload.id },
       });
 
       if (!user) {
