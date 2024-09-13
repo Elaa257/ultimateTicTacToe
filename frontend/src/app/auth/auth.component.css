@@ -5,15 +5,6 @@
   height: 100vh;
   background: linear-gradient(#15072e,#ED4AB7, #15072e );
 }
-::ng-deep .mat-mdc-snack-bar-container {
-  position: relative !important;
-  top: 80px !important;
-  width: auto;
-  max-width: 400px;
-  border-radius: 4px;
-  z-index: 1000;
-
-}
 
 ::ng-deep .snackbar-error {
   background-color: yellow !important;
@@ -25,20 +16,31 @@
   color: white !important;
 }
 
+::ng-deep .mat-mdc-snack-bar-container {
+  position: fixed !important;
+  top: 20% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  max-width: 400px;
+  width: auto;
+  border-radius: 4px;
+  z-index: 10000;
+}
+
 .form-container {
   display: flex;
-  align-items: stretch; /* Bild und Formular sollen dieselbe Höhe haben */
+  align-items: stretch;
   background-color: #15072E !important;
   color: lightgrey !important;
   padding-left: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 800px; /* Breiter, um Platz für Bild und Formular zu schaffen */
+  max-width: 800px;
   width: 100%;
 }
 
 .form-content {
-  flex: 1; /* Formular nimmt den verfügbaren Platz ein */
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -131,9 +133,9 @@ mat-form-field {
   button[type="submit"] {
     width: 100%;
   }
+
   ::ng-deep .mat-mdc-snack-bar-container {
-    position: relative !important;
-    max-width: fit-content;
-    width: 100%;
+    left: 0 !important;
+    transform: translateX(0%) !important;
   }
 }
