@@ -33,7 +33,7 @@ mat-toolbar {
   align-items: center;
   gap: 20px;
   padding: 0;
-  display: none; /* Hide menu on mobile */
+  display: none;
   margin-left: 20px;
 }
 
@@ -42,12 +42,8 @@ mat-toolbar {
   color: white;
 }
 
-.large-screen {
+.spacer-left, .spacer-right {
   display: none;
-}
-
-.spacer {
-  display: none; /* Hide spacer on mobile */
 }
 
 .menu-toggle {
@@ -60,7 +56,7 @@ mat-toolbar {
 }
 
 .menu {
-  background-color: black; /* Match navbar background */
+  background-color: black;
   color: white;
 }
 
@@ -122,24 +118,37 @@ mat-sidenav {
   margin: 20px;
 }
 
-.log-out-btn {
-  margin-right: 10%;
+.btn:hover {
+  background-color: #d43a9a;
 }
 
-.btn:hover {
-  background-color: #d43a9a; /* Slightly darker shade for hover effect */
+.menu-item:hover {
+  background-color: #120622;
+}
+
+.btn {
+  display: none;
+}
+
+@keyframes blink-mobile-nav {
+  0%, 100% {
+    background-color: #15072E;
+  }
+  50% {
+    background-color: deeppink;
+  }
+}
+
+.blinking-button-mobile-nav {
+  animation: blink-mobile-nav 3s infinite;
 }
 
 /* Styles for larger screens (tablet and above) */
-@media (min-width: 600px) {
-
-  .large-screen {
-    display: flex;
-    align-items: flex-end;
-  }
+@media (min-width: 750px) {
 
   .nav-links {
     display: flex;
+    align-items: flex-end;
   }
 
   .nav-links li {
@@ -147,12 +156,18 @@ mat-sidenav {
   }
 
   .menu-toggle {
-    display: none; /* Hide menu toggle on larger screens */
+    display: none;
   }
 
-  .spacer {
-    flex: 1 1 auto;
-    display: block; /* Show spacer on larger screens */
+  .spacer-left {
+    flex-grow: 0;
+    margin-right: 80px;
+    display: block;
+  }
+
+  .spacer-right {
+    flex-grow: 1;
+    display: block;
   }
 
   .btn {
@@ -164,6 +179,8 @@ mat-sidenav {
     border-radius: 3px;
     background-color: #ED4AB7;
     color: white !important;
-    width: 6%;
+    width: 90px;
+    display: flex;
+    align-items: flex-end;
   }
 }

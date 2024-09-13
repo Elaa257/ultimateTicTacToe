@@ -8,7 +8,7 @@
       </div>
 
       <!-- desktop -->
-      <ul class="nav-links large-screen">
+      <ul class="nav-links">
         <li><a [routerLink]="'/home'">Home</a></li>
         @if(isLoggedIn){
           <li><a [routerLink]="'/ranking'">Ranking list</a></li>
@@ -17,14 +17,14 @@
       </ul>
     </div>
 
-    <span class="spacer"></span>
-
     @if(isLoggedIn){
-      <button mat-button class="btn large-screen" (click)="openQueueModal()">Play</button>
-      <span class="spacer"></span>
-      <button mat-button class="btn large-screen" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
+      <span class="spacer-left"></span>
+      <button mat-button class="btn blinking-button" (click)="openQueueModal()">Play</button>
+      <span class="spacer-right"></span>
+      <button mat-button class="btn" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
     } @else {
-      <button mat-button class="btn large-screen" [routerLink]="'/auth'">Login</button>
+      <span class="spacer-right"></span>
+      <button mat-button class="btn" [routerLink]="'/auth'">Login</button>
     }
 
 
@@ -39,7 +39,7 @@
         <!-- Menu Items -->
 
         @if(isLoggedIn){
-          <button mat-button class="menu-item first-btn" (click)="openQueueModal()">Play</button>
+          <button mat-button class="menu-item first-btn blinking-button-mobile-nav" (click)="openQueueModal()">Play</button>
           <button mat-button class="menu-item" [routerLink]="'/home'" (click)="handleClick($event)">
             <span>Home</span>
           </button>

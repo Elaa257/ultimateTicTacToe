@@ -25,9 +25,9 @@
       </mat-card-title>
       <mat-card-actions>
         @if(isLoggedIn){
-          <button mat-button class="play-btn" (click)="openQueueModal()">Play</button>
+          <button mat-button class="play-btn blinking-button" (click)="openQueueModal()">Play</button>
         } @else {
-          <button mat-button class="play-btn" [routerLink]="'/auth'">Play</button>
+          <button mat-button class="play-btn blinking-button" [routerLink]="'/auth'">Play</button>
         }
       </mat-card-actions>
     </mat-card>
