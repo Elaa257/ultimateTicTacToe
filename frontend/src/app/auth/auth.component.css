@@ -5,6 +5,15 @@
   height: 100vh;
   background: linear-gradient(#15072e,#ED4AB7, #15072e );
 }
+::ng-deep .snackbar-error {
+  background-color: yellow !important; /* Rot für Fehler */
+  color: black !important;
+}
+
+::ng-deep .snackbar-success {
+  background-color: #4caf50 !important; /* Grün für Erfolg */
+  color: white !important;
+}
 
 .form-container {
   display: flex;
@@ -112,3 +121,4 @@ mat-form-field {
     width: 100%;
   }
 }
+
