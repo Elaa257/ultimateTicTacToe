@@ -37,19 +37,6 @@ export class HomeComponent {
 
   constructor(public dialog: MatDialog, private authService: AuthService) {}
 
-  ngDoCheck() {
-    this.authService.isAuthenticated().subscribe(
-      (isAuthenticated: boolean) => {
-        this.isLoggedIn = isAuthenticated;
-        console.log("check play button login", this.isLoggedIn);
-      },
-      (error) => {
-        console.error("Error checking authentication", error);
-        this.isLoggedIn = false;
-      }
-    );
-  }
-
   openQueueModal(): void {
     this.dialog.open(QueueModalComponent, {
       disableClose: true,

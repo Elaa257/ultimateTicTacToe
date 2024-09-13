@@ -8,6 +8,9 @@ import { NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { QueueModalComponent } from '../queue-modal/queue-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatChip, MatChipListbox, MatChipSet } from '@angular/material/chips';
 
 @Component({
   selector: 'app-nav-bar',
@@ -27,6 +30,9 @@ import { AuthService } from '../auth/auth.service';
     MatSidenav,
     MatSidenavModule,
     RouterLinkActive,
+    MatChip,
+    MatChipListbox,
+    MatChipSet,
   ],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
@@ -35,7 +41,7 @@ export class NavBarComponent {
 
   isLoggedIn: boolean = false;
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, public dialog: MatDialog){}
 
   ngDoCheck() {
     this.authService.isAuthenticated().subscribe(
@@ -69,6 +75,17 @@ export class NavBarComponent {
     if (this.sidenav) {
       this.sidenav.close();
     }
+  }
+
+  openQueueModal(): void {
+    if (this.sidenav) {
+      this.sidenav.close();
+    }
+
+    this.dialog.open(QueueModalComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+    });
   }
 
   logout() {

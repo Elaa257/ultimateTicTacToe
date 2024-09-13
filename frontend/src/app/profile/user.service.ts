@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserDTO, UsersDTO } from './DTOs/userDTO';
+import { UsersDTO } from './DTOs/userDTO';
+import { ResponseDTO } from './DTOs/responseDTO'
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,7 @@ export class UserService {
     return response;
   }
 
-  changePassword(currentPassword: string, newPassword: string, email: string) {
+  changePassword(currentPassword: string, newPassword: string, email: string):Observable<ResponseDTO> {
     const payload = { currentPassword, newPassword, email };
     console.log(payload);
     return this.http.put(`${this.apiUrl}/change-password`, payload);

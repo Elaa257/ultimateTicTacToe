@@ -16,11 +16,15 @@
         }
       </ul>
     </div>
+
     <span class="spacer"></span>
+
     @if(isLoggedIn){
-      <button mat-button class="login-btn large-screen" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
+      <button mat-button class="btn large-screen" (click)="openQueueModal()">Play</button>
+      <span class="spacer"></span>
+      <button mat-button class="btn large-screen" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
     } @else {
-      <button mat-button class="login-btn large-screen" [routerLink]="'/auth'">Login</button>
+      <button mat-button class="btn large-screen" [routerLink]="'/auth'">Login</button>
     }
 
 
@@ -33,24 +37,28 @@
           <mat-icon>close</mat-icon>
         </button>
         <!-- Menu Items -->
-        <button mat-button class="menu-item" [routerLink]="'/home'" (click)="handleClick($event)">
-          <span>Home</span>
-        </button>
+
         @if(isLoggedIn){
-          <button mat-button class="menu-item" [routerLink]="'/ranking'" (click)="handleClick($event)">
-            <span>Ranking list</span>
+          <button mat-button class="menu-item first-btn" (click)="openQueueModal()">Play</button>
+          <button mat-button class="menu-item" [routerLink]="'/home'" (click)="handleClick($event)">
+            <span>Home</span>
           </button>
           <button mat-button class="menu-item" [routerLink]="'/admin'" (click)="handleClick($event)">
             <span>Profile</span>
           </button>
-          <button mat-button class="login-btn" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
+          <button mat-button class="menu-item" [routerLink]="'/ranking'" (click)="handleClick($event)">
+            <span>Ranking list</span>
+          </button>
+          <button mat-button class="menu-item" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
         }
          @else {
-          <button mat-button class="login-btn" [routerLink]="'/auth'" (click)="handleClick($event)">
+          <button mat-button class="menu-item first-btn" [routerLink]="'/auth'" (click)="handleClick($event)">
             <span>Login</span>
           </button>
+           <button mat-button class="menu-item" [routerLink]="'/home'" (click)="handleClick($event)">
+             <span>Home</span>
+           </button>
         }
-
       </mat-sidenav>
 
       <mat-sidenav-content>

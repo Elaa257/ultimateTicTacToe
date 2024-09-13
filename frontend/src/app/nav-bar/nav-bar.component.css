@@ -83,16 +83,24 @@ mat-sidenav {
 }
 
 .menu-item {
-  text-align: left;
+  text-align: center;
   display: block;
-  padding: 20px;
-  border: 3px solid black;
-  border-top: 3px solid #ED4AB7;
-  margin-top: 10%;
-  margin-left: 5%;
+  background-color: #15072E;
+  color: white !important;
+  border: 1px solid deeppink !important;
+  cursor: pointer;
+  padding-top: 15px;
+  padding-bottom: 15px;
   margin-right: 5%;
-  width: 80%;
+  margin-left: 15%;
+  margin-top: 13%;
   font-size: clamp(15px, 4vw, 25px);
+  width: 70%;
+  border-radius: 50px;
+}
+
+.first-btn {
+  margin-top: 30%;
 }
 
 .highlighted {
@@ -114,20 +122,11 @@ mat-sidenav {
   margin: 20px;
 }
 
-.login-btn {
-  background-color: #ED4AB7;
-  color: white !important;
-  border: none;
-  padding: 20px 35px;
-  cursor: pointer;
-  border-radius: 3px;
-  margin-right: 10px;
-  margin-left: 30%;
-  margin-top: 35%;
-  font-size: clamp(15px, 4vw, 25px);
+.log-out-btn {
+  margin-right: 10%;
 }
 
-.login-btn:hover {
+.btn:hover {
   background-color: #d43a9a; /* Slightly darker shade for hover effect */
 }
 
@@ -156,11 +155,15 @@ mat-sidenav {
     display: block; /* Show spacer on larger screens */
   }
 
-  .login-btn {
+  .btn {
     margin-top: 0;
     margin-right: 20px;
     padding: 10px 20px;
     margin-left: 0;
     font-size: 16px;
+    border-radius: 3px;
+    background-color: #ED4AB7;
+    color: white !important;
+    width: 6%;
   }
 }
