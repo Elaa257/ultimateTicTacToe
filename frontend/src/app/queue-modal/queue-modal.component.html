@@ -5,9 +5,9 @@
     <p>{{ formatTime(timeInQueue) }}</p>
   </div>
   }
-  <h1 mat-dialog-title>
-    {{ canStartGame ? 'Match Found! Game starting in ' + countdown + ' seconds' : 'Waiting for Match' }}
-  </h1>
+
+  <h1 mat-dialog-title [innerHTML]="canStartGame ? 'Match Found!<br>Game starting in ' + countdown + ' seconds' : 'Waiting for Match'"></h1>
+
 
   @if(!canStartGame){
   <div mat-dialog-actions>
