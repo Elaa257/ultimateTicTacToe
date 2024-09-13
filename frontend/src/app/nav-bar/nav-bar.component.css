@@ -9,7 +9,7 @@
   left: 0;
   width: 100%;
   box-sizing: border-box;
-  z-index: 10000;
+  z-index: 1000;
 }
 
 mat-sidenav-content {
@@ -65,7 +65,7 @@ mat-toolbar {
 }
 
 mat-sidenav-container {
-  z-index: 100000;
+  z-index: 1000;
 }
 
 mat-sidenav {
