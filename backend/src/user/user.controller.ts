@@ -99,19 +99,10 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Put('change-img')
   @ApiResponse({ type: ResponseUserDTO })
-  async changeImg(
-    @Body() updateUserDTO: UpdateUserDTO,
-    @Res() reply: FastifyReply
-  ): Promise<void> {
-    console.log('payload im Backend: ', updateUserDTO.profilePicture);
-    const { access_token, response } = await this.userService.changeImage( updateUserDTO.email, updateUserDTO.profilePicture);
-    reply.clearCookie('access_token', { path: '/' });
-    console.log('Cookie cleared');
-    reply
-      .setCookie('access_token', access_token, {
-        httpOnly: true, // Makes the cookie accessible only by the web server
-        path: '/', //Makes the cookie accessible by all routes
-      })
-      .send(response);
+  async changeImg(@Body() updateUserDTO: UpdateUserDTO): Promise<ResponseDTO> {
+    return await this.userService.changeImage(
+      updateUserDTO.email,
+      updateUserDTO.profilePicture
+    );
   }
 }

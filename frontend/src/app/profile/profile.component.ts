@@ -41,10 +41,10 @@ export class ProfileComponent {
   user: UserDTO | undefined;
   isModalOpen = false;
   selectedImage: string | null ='';
-  wins = 20;
-  losses = 13;
-  draws = 4;
-  winRate = (this.wins / (this.wins + this.losses + this.draws)).toFixed(2);
+  wins = 0;
+  losses = 0;
+  draws = 0;
+  winRate = this.wins == 0 && this.losses == 0 ? '0' : (this.wins / (this.wins + this.losses)).toFixed(2);
 
   constructor(private authService: AuthService, private userService: UserService, private dialog: MatDialog) {
   }
@@ -52,11 +52,17 @@ export class ProfileComponent {
   ngOnInit(): void {
     this.selectedImage = '/profile-picture.jpg'
     this.userService.getProfile().subscribe((data) => {
-        console.log('Message Profile:', data);
-        this.user = data;
+        this.user = data.user;
+        console.log('WO IST DRAW: ', this.user);
+        if (this.user) {
+          this.wins = this.user.wins
+          this.losses = this.user.loses
+          this.draws = this.user.draw;
+        }
         if (this.user?.profilePicture) {
           this.selectedImage ='data:image/jpeg;base64'+ this.user.profilePicture;
         }
+
       },
       (error) => {
         console.error('Error getting profile', error);

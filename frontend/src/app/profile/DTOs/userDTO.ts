@@ -6,7 +6,7 @@ export interface UserDTO {
   elo: number;
   profilePicture: string;
   wins:number;
-  draws:number;
+  draw:number;
   loses:number
 }
 

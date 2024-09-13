@@ -68,6 +68,7 @@ export class UserService {
       return new ResponseDTO(false, `User couldn't be deleted ${error}`);
     }
   }
+
   //check the validation for the new Password!
   async updatePassword(
     email: string,
@@ -93,71 +94,21 @@ export class UserService {
     }
   }
 
-  async changeImage(
-    email: string,
-    img: string
-  ): Promise<{ access_token?: string; response: ResponseDTO }> {
+  async changeImage(email: string, img: string): Promise<ResponseDTO> {
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (!user) {
-      return { response: new ResponseDTO(false, 'User not found') };
+      return new ResponseDTO(false, 'User not found') ;
     }
 
     try {
-      const mimeMatch = img.match(/^data:image\/(jpeg|png|gif|bmp);base64,/);
-      if (!mimeMatch) {
-        return { response: new ResponseDTO(false, 'Invalid image format') };
-      }
+      user.profilePicture = img;
 
-      const base64Data = img.replace(/^data:image\/[a-z]+;base64,/, '');
+      await this.userRepository.save(user);
 
-      if (base64Data === img) {
-        return {
-          response: new ResponseDTO(
-            false,
-            'MIME type was not removed correctly'
-          ),
-        };
-      }
-
-     const update = await this.userRepository.update(user.id, { profilePicture: base64Data });
-
-      console.log("update: " + update);
-
-      // Reload the user to get the updated profile picture
-      const updatedUser = await this.userRepository.findOne({
-        where: { email },
-      });
-
-      const payload = {
-        id: updatedUser.id,
-        email: updatedUser.email,
-        nickname: updatedUser.nickname,
-        role: updatedUser.role,
-        elo: updatedUser.elo,
-        profilePicture: updatedUser.profilePicture,
-        wins: updatedUser.wins,
-        loses: updatedUser.loses,
-        draw: updatedUser.draw,
-      };
-
-      const newToken = await this.jwtService.signAsync(payload);
-
-      return {
-        access_token: newToken,
-        response: new ResponseDTO(
-          true,
-          `User: ${updatedUser.nickname}, has successfully updated`,
-          updatedUser
-        ),
-      };
+      return new ResponseDTO(true, 'Profile picture updated successfully');
     } catch (error) {
-      return {
-        response: new ResponseDTO(
-          false,
-          `Image could not be updated: ${error}`
-        ),
-      };
+      return new ResponseDTO(false, 'An error occurred');
     }
   }
 }

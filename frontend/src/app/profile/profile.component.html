@@ -32,11 +32,11 @@
 
     <!-- Statistik und Graphik -->
     <mat-card class="statistics-card">
-      <h3>Spielstatistiken</h3>
+      <h3>Game Statistic</h3>
       <div class="stats">
-        <p>Gewonnen: {{ wins }}</p>
-        <p>Verloren: {{ losses }}</p>
-        <p>Unentschieden: {{ draws }}</p>
+        <p>Wins: {{ user?.wins }}</p>
+        <p>loses: {{ user?.loses }}</p>
+        <p>Draws: {{ user?.draw }}</p>
         <p>Win Rate: {{ winRate }}</p>
       </div>
       <!-- Graphik -->

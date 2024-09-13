@@ -56,24 +56,6 @@ export class AuthController {
       .send(response);
   }
 
-  @Post('newToken')
-  @ApiResponse({ type: ResponseDTO })
-  async newToken(
-    @Body() updateUserDTO: UpdateUserDTO,
-    @Res() reply: FastifyReply
-  ): Promise<void> {
-    console.log('payload im Backend: ', updateUserDTO.profilePicture);
-    const { access_token, response } = await this.userService.changeImage( updateUserDTO.email, updateUserDTO.profilePicture);
-    reply.clearCookie('access_token', { path: '/' });
-    console.log('Cookie cleared');
-    reply
-      .setCookie('access_token', access_token, {
-        httpOnly: true, // Makes the cookie accessible only by the web server
-        path: '/', //Makes the cookie accessible by all routes
-      })
-      .send(response);
-  }
-
   @Post('logout')
   @ApiResponse({ type: ResponseDTO })
   async logout(@Res() reply: FastifyReply): Promise<void> {
@@ -98,8 +80,9 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('current-user')
-  getCurrentUser(@Req() req) {
+  async getCurrentUser(@Req() req) {
     console.log('current user', req.user);
-    return req.user;
+    const user = req.user;
+    return await this.authService.getCurrentUser(user.id);
   }
 }

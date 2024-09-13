@@ -35,7 +35,7 @@ export class UserService {
   changeProfilePicture(img: string, email:string){
     const payload = { profilePicture: img, email: email};
     console.log('sending payload: ', payload);
-    return this.http.put(`${this.apiAuthUrl}/newToken`, payload);
+    return this.http.put(`${this.apiUrl}/change-img`, payload);
   }
 }
 
