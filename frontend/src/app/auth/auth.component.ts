@@ -12,7 +12,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgOptimizedImage } from '@angular/common';
 import { MatCard, MatCardImage } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { config } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
