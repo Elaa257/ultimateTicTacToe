@@ -50,12 +50,14 @@ export class AuthComponent {
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar) {}
 
-  openSnackBar(message: string, action: string, isError: boolean) {
+  openSnackBar(message: string, action:string, isError: boolean) {
     const config = new MatSnackBarConfig();
-    config.duration = 3000;
+    config.duration = 4500;
+    config.verticalPosition = 'top';
+    config.horizontalPosition = 'center'
     config.panelClass = isError ? ['snackbar-error'] : ['snackbar-success']; // Verwende die entsprechenden Klassen
 
-    this.snackBar.open(message, 'Close', config);
+    this.snackBar.open(message, 'close',config);
   }
   onRegister() {
     console.log(this.nickname, this.registerPassword, this.registerEmail);
@@ -63,35 +65,35 @@ export class AuthComponent {
     if (this.registerEmail === '' || this.registerPassword === '' || this.nickname === '') {
       this.isError = true;
       this.message = 'The input fields are required.';
-      this.openSnackBar(this.message, 'Close', true); // Fehler: Snackbar rot
+      this.openSnackBar(this.message,'close', true);
       return;
     }
 
     if (this.nickname.trim().length <= 0) {
       this.isError = true;
       this.message = 'Please enter a valid nickname';
-      this.openSnackBar(this.message, 'Close', true); // Fehler: Snackbar rot
+      this.openSnackBar(this.message,'close', true);
       return;
     }
 
     if (this.registerEmail.trim().length <= 0 || !this.registerEmail.includes('@')) {
       this.isError = true;
       this.message = 'Please enter a valid email';
-      this.openSnackBar(this.message, 'Close', true); // Fehler: Snackbar rot
+      this.openSnackBar(this.message,'close', true);
       return;
     }
 
     if (this.registerPassword !== this.confirmPassword) {
       this.isError = true;
       this.message = 'The passwords must match';
-      this.openSnackBar(this.message, 'Close', true); // Fehler: Snackbar rot
+      this.openSnackBar(this.message, 'Close', true);
       return;
     }
 
     if (this.registerPassword.length < 8) {
       this.isError = true;
       this.message = 'The password must be at least 8 characters long';
-      this.openSnackBar(this.message, 'Close', true); // Fehler: Snackbar rot
+      this.openSnackBar(this.message, 'Close', true);
       return;
     }
 
@@ -100,11 +102,11 @@ export class AuthComponent {
         console.log(response);
         this.isError = false;
         this.message = 'Successfully registered';
-        this.openSnackBar(this.message, 'Close', false); // Erfolg: Snackbar grün
+        this.openSnackBar(this.message, 'Close', false);
       }, error => {
         this.isError = true;
         this.message = 'Registration failed. Try again.';
-        this.openSnackBar(this.message, 'Close', true); // Fehler: Snackbar rot
+        this.openSnackBar(this.message, 'Close', true);
       });
   }
 
@@ -122,11 +124,11 @@ export class AuthComponent {
         console.log('Login response:', response);
         this.isError = false;
         this.message = 'Login successful';
-        this.openSnackBar(this.message, 'Close', false); // Erfolg: Snackbar grün
+        this.openSnackBar(this.message, 'Close', false);
       }, error => {
         this.isError = true;
         this.message = 'Login failed. Please check your credentials.';
-        this.openSnackBar(this.message, 'Close', true); // Fehler: Snackbar rot
+        this.openSnackBar(this.message, 'Close', true);
       });
   }
 

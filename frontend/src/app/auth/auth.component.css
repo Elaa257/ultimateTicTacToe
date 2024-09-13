@@ -5,13 +5,23 @@
   height: 100vh;
   background: linear-gradient(#15072e,#ED4AB7, #15072e );
 }
+::ng-deep .mat-mdc-snack-bar-container {
+  position: relative !important;
+  top: 80px !important;
+  width: auto;
+  max-width: 400px;
+  border-radius: 4px;
+  z-index: 1000;
+
+}
+
 ::ng-deep .snackbar-error {
-  background-color: yellow !important; /* Rot für Fehler */
+  background-color: yellow !important;
   color: black !important;
 }
 
 ::ng-deep .snackbar-success {
-  background-color: #4caf50 !important; /* Grün für Erfolg */
+  background-color: #4caf50 !important;
   color: white !important;
 }
 
@@ -35,20 +45,20 @@
 }
 
 .image-card {
-  flex: 1; /* Bild nimmt ebenfalls den verfügbaren Platz ein */
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 1rem; /* Abstand zwischen Formular und Bild */
-  box-shadow: none; /* Entfernen des Card-Schatten */
-  border: none; /* Entfernen des Card-Randes */
+  padding-left: 1rem;
+  box-shadow: none;
+  border: none;
 }
 
 .image-card img {
-  width: 100%; /* Bild füllt den Platz innerhalb der Card */
-  height: 100%; /* Bild füllt die Höhe */
-  object-fit: cover; /* Bild passt sich an, ohne verzerrt zu werden */
-  border-radius: 8px; /* Abrunden der Ecken, passend zur Form */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 h2 {
@@ -96,6 +106,7 @@ a {
 mat-form-field {
   width: 100%;
 }
+
 @media (max-width: 768px) {
   .image-card {
     display: none;
@@ -120,5 +131,9 @@ mat-form-field {
   button[type="submit"] {
     width: 100%;
   }
+  ::ng-deep .mat-mdc-snack-bar-container {
+    position: relative !important;
+    max-width: fit-content;
+    width: 100%;
+  }
 }
-
