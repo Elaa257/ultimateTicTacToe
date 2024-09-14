@@ -4,9 +4,13 @@ export interface UserDTO {
   nickname: string;
   role: string;
   elo: number;
+  profilePicture: string;
+  wins:number;
+  draw:number;
+  loses:number
 }
 
 export interface UsersDTO {
   message: string;
-  users?: UserDTO[]; // Optional array of UserDTO
+  users?: UserDTO[];
 }

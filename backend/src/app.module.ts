@@ -10,7 +10,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { GameModule } from './game/game.module';
 import { UserModule } from './user/user.module';
-import { QueueGateway } from './queue/queue.gateway';
 import { QueueModule } from './queue/queue.module';
 
 @Module({

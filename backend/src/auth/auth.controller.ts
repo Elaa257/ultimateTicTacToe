@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { RegisterDTO } from './DTOs/registerDTO';
 import { AuthService } from './auth.service';
 import { ResponseDTO } from '../DTOs/responseDTO';
@@ -6,11 +14,16 @@ import { LoginDTO } from './DTOs/loginDTO';
 import { FastifyReply } from 'fastify';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from './jwt/auth.guard';
+import { UpdateUserDTO } from '../user/DTOs/updateUserDTO';
+import { UserService } from '../user/user.service';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly userService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private userService: UserService
+  ) {}
 
   @Post('register')
   @ApiResponse({ type: ResponseDTO })
@@ -19,7 +32,7 @@ export class AuthController {
     @Res() reply: FastifyReply
   ): Promise<void> {
     const { access_token, response } =
-      await this.userService.register(registerDTO);
+      await this.authService.register(registerDTO);
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
@@ -34,8 +47,7 @@ export class AuthController {
     @Body() loginDto: LoginDTO,
     @Res() reply: FastifyReply
   ): Promise<void> {
-    const { access_token, response } =
-      await this.userService.login(loginDto);
+    const { access_token, response } = await this.authService.login(loginDto);
     reply
       .setCookie('access_token', access_token, {
         httpOnly: true, // Makes the cookie accessible only by the web server
@@ -47,7 +59,7 @@ export class AuthController {
   @Post('logout')
   @ApiResponse({ type: ResponseDTO })
   async logout(@Res() reply: FastifyReply): Promise<void> {
-      console.log('enter logout');
+    console.log('enter logout');
     try {
       reply.clearCookie('access_token', { path: '/' });
       console.log('Cookie cleared');
@@ -64,5 +76,13 @@ export class AuthController {
   async checkAuthStatus(): Promise<{ isAuthenticated: boolean }> {
     console.log('auth check');
     return { isAuthenticated: true };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('current-user')
+  async getCurrentUser(@Req() req) {
+    console.log('current user', req.user);
+    const user = req.user;
+    return await this.authService.getCurrentUser(user.id);
   }
 }

@@ -13,11 +13,12 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { RouterModule } from '@angular/router';
 import { LoadingComponent } from './loading/loading.component';
+import { BaseChartDirective } from 'ng2-charts';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
 
-/**
- * Function to initialize the application.
- * Returns a function that returns a promise resolving after a delay.
- */
 export function initializeApp(): () => Promise<void> {
   return (): Promise<void> => {
     return new Promise((resolve) => {
@@ -42,7 +43,12 @@ export function initializeApp(): () => Promise<void> {
     NavBarComponent,
     AdminPageComponent,
     AuthComponent,
-    LoadingComponent
+    LoadingComponent,
+    BaseChartDirective,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule
   ],
   providers: [
     {

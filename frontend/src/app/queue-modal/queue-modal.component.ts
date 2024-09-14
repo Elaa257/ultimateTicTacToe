@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -8,6 +8,8 @@ import {
 } from '@angular/material/dialog';
 import { WebSocketService } from './web-socket.service';
 import { MatButton } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-queue-modal',
@@ -22,57 +24,100 @@ import { MatButton } from '@angular/material/button';
     MatDialogTitle,
   ],
 })
-export class QueueModalComponent {
-  canStartGame = false; // Initially false
+export class QueueModalComponent implements OnInit, OnDestroy {
+  canStartGame = false;
   timeInQueue: number = 0;
-  timer:any;
+  countdown: number = 10;
+  timer: any;
+  countdownTimer: any;
+
+  private playerJoinedSubscription!: Subscription;
 
   constructor(
     public dialogRef: MatDialogRef<QueueModalComponent>,
-    private webSocketService: WebSocketService
+    private webSocketService: WebSocketService,
+    private router: Router
   ) {
-    // Listen for the "player-joined" event
-    console.log('QueueModalComponent initialized');
 
     this.webSocketService.emit('join-queue');
+  }
 
+  ngOnInit() {
+    this.startTimer();
 
-    this.webSocketService.listen('player-joined').subscribe(() => {
+    this.playerJoinedSubscription = this.webSocketService.listen('player-joined').subscribe(() => {
       console.log('Received player-joined event');
-      this.canStartGame = true; // Enable the start game button
+      this.canStartGame = true;
+      this.stopTimer();
+      this.startCountdown();
     });
   }
 
-  startGame(): void {
-    console.log('Start Game button clicked');
-    this.stopTimer()
-    this.webSocketService.emit('start-game');
-    this.dialogRef.close();
-
-  }
-  ngOnInit(){
-    this.startTimer()
-  }
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.stopTimer();
+    this.leaveQueue();
+    this.stopCountdown();
+    this.unsubscribeEvents();
   }
-  startTimer(){
-    this.timer = setInterval(()=>{
-      this.timeInQueue++
-    },1000)
+
+  unsubscribeEvents() {
+    if (this.playerJoinedSubscription) {
+      this.playerJoinedSubscription.unsubscribe();
+    }
   }
-  stopTimer(){
-    if(this.timer){
+
+  startTimer() {
+    this.timer = setInterval(() => {
+      this.timeInQueue++;
+    }, 1000);
+  }
+
+  stopTimer() {
+    if (this.timer) {
       clearInterval(this.timer);
     }
   }
-  formatTime(sec:number){
-    const minutes = Math.floor((sec/60));
-    const seconds = sec%60;
-    return `${this.pad(minutes)}:${this.pad(seconds)}`
+
+  startCountdown() {
+    this.countdownTimer = setInterval(() => {
+      this.countdown--;
+      if (this.countdown <= 0) {
+        this.stopCountdown();
+        this.emitStartGame();
+      }
+    }, 1000);
   }
 
-  pad(value:number){
-    return value <10 ? `0${value}` : `${value}`;
+  stopCountdown() {
+    if (this.countdownTimer) {
+      clearInterval(this.countdownTimer);
+    }
+  }
+
+  emitStartGame(): void {
+    console.log('Emitting start-game event after countdown');
+    this.dialogRef.close();
+    this.leaveQueue();
+    this.redirectToGame();
+  }
+
+  redirectToGame(): void {
+    console.log('Redirecting to /game');
+    this.router.navigate(['/game']);
+  }
+
+  formatTime(sec: number) {
+    const minutes = Math.floor(sec / 60);
+    const seconds = sec % 60;
+    return `${this.pad(minutes)}:${this.pad(seconds)}`;
+  }
+
+  pad(value: number) {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
+
+  leaveQueue(): void {
+    console.log('Leaving the queue');
+    this.webSocketService.emit('leave-queue');
   }
 }

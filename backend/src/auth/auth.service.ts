@@ -1,5 +1,10 @@
 // auth.service.ts
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ResponseDTO } from '../DTOs/responseDTO';
@@ -8,8 +13,8 @@ import * as crypto from 'crypto';
 import { LoginDTO } from './DTOs/loginDTO';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/user.entity';
-import { SessionData } from 'express-session';
 import { ResponseUserDTO } from '../user/DTOs/responseUserDTO';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -30,9 +35,9 @@ export class AuthService {
       await this.userRepository.save(user);
       const { password, ...userWithoutPassword } = user;
       const payload = {
-        sub: user.id,
-        username: user.nickname,
+        id: user.id,
         email: user.email,
+        nickname: user.nickname,
         role: user.role,
       };
       const access_token = await this.jwtService.signAsync(payload);
@@ -73,11 +78,12 @@ export class AuthService {
       const user = await this.validateUser(loginDTO.email, loginDTO.password);
       const { password, ...userWithoutPassword } = user;
       const payload = {
-        sub: user.id,
-        username: user.nickname,
+        id: user.id,
         email: user.email,
+        nickname: user.nickname,
         role: user.role,
       };
+
       const access_token = await this.jwtService.signAsync(payload);
 
       return {
@@ -104,22 +110,14 @@ export class AuthService {
     const hashedPassword = this.hashPassword(password);
     return hashedPassword === storedPasswordHash;
   }
-
-  async getLoggedInUser(session: SessionData): Promise<ResponseUserDTO> {
-    if (!session.isLoggedIn) {
-      return new ResponseUserDTO('Unauthorized');
+  async getCurrentUser(userID: string): Promise<ResponseUserDTO> {
+    const user = await this.userRepository.findOne({
+      where: { id: Number(userID) },
+    });
+    if (!user) {
+      throw new BadRequestException('User not found');
     }
-
-    try {
-      const user = await this.userRepository.findOne({
-        where: { email: session.email },
-      });
-      return new ResponseUserDTO(
-        `User with the ID: ${user.id} is logged in`,
-        user
-      );
-    } catch (error) {
-      return new ResponseUserDTO(`user couldn't found ${error}`);
-    }
+    console.log('user in getCurrentUser service: ', user);
+    return new ResponseUserDTO('Current User is: ', user);
   }
 }

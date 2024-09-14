@@ -14,22 +14,27 @@ export class UpdateUserDTO {
   nickname?: string;
 
   @IsEmail()
-  @IsOptional()
   @ApiProperty()
-  email?: string;
+  email: string;
 
   @IsOptional()
   @IsNotEmpty()
   @MinLength(8)
   @ApiProperty()
-  password?: string;
+  currentPassword?: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @MinLength(8)
+  @ApiProperty()
+  newPassword?: string;
 
   @IsInt()
   @ApiProperty()
   elo?: number;
 
   @ApiProperty()
-  profilePicture?: Buffer;
+  profilePicture?: string;
 
   @ApiProperty()
   wins?: number;

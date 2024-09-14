@@ -4,13 +4,16 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AuthService } from '../auth.service';
 import { Request } from 'express';
 import { jwtConstants } from './constants';
+import { UserService } from '../../user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-
   private readonly logger = new Logger(JwtStrategy.name);
 
-  constructor(private readonly userService: AuthService) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
@@ -23,11 +26,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     this.logger.debug(`JWT Payload: ${JSON.stringify(payload)}`);
+
+    const user = await this.userService.getUser(payload.id);
+
     return {
-      userId: payload.sub,
-      username: payload.username,
-      email: payload.email,
-      role: payload.role,
+      id: user.user.id,
+      email: user.user.email,
+      nickname: user.user.nickname,
+      role: user.user.role,
     };
   }
 }

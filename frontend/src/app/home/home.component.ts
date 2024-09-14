@@ -12,6 +12,7 @@ import { RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { QueueModalComponent } from '../queue-modal/queue-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -32,9 +33,27 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class HomeComponent {
 
-  constructor(public dialog: MatDialog) {
+  isLoggedIn: boolean = false;
+
+  constructor(public dialog: MatDialog, private authService: AuthService) {}
+
+  ngDoCheck() {
+    this.authService.isAuthenticated().subscribe(
+      (isAuthenticated: boolean) => {
+        this.isLoggedIn = isAuthenticated;
+        console.log("check ngDoCheck", this.isLoggedIn);
+      },
+      (error: any) => {
+        console.error("Error checking authentication", error);
+        this.isLoggedIn = false;
+      }
+    );
   }
+
   openQueueModal(): void {
-    this.dialog.open(QueueModalComponent);
+    this.dialog.open(QueueModalComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+    });
   }
 }

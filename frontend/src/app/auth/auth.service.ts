@@ -4,7 +4,7 @@ import { Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
 import { RegisterDTO } from './DTOs/RegisterDTO';
-import { ResponseDTO } from './DTOs/ResponseDTO';
+import { UserResponseDTO } from './DTOs/UserResponseDTO';
 import { LoginDTO } from './DTOs/LoginDTO';
 import { LogOutDTO } from './DTOs/LogoutDTO';
 
@@ -16,15 +16,15 @@ export class AuthService {
   private isAuthenticatedCache: boolean | null = null;
   private authCheckTimestamp: number | null = null;
   private readonly cacheDuration = 5 * 60 * 1000; // Cache duration 5min
-
   constructor(private http: HttpClient, private router: Router) { }
 
-  register(registerDTO: RegisterDTO): Observable<ResponseDTO> {
-    return this.http.post<ResponseDTO>(`${this.apiUrl}/register`, registerDTO, { withCredentials: true }).pipe(
+  register(registerDTO: RegisterDTO): Observable<UserResponseDTO> {
+    return this.http.post<UserResponseDTO>(`${this.apiUrl}/register`, registerDTO, { withCredentials: true }).pipe(
       tap(response => {
         if (response.ok) {
           this.isAuthenticatedCache = true; // Update cache on successful register
           this.authCheckTimestamp = Date.now(); // Update the timestamp on successful register
+
           if (response.user?.role === 'user') {
             this.router.navigate(['/profile']);
           } else if (response.user?.role === 'admin') {
@@ -62,8 +62,8 @@ export class AuthService {
     );
   }
 
-  login(loginDTO: LoginDTO): Observable<ResponseDTO> {
-    return this.http.post<ResponseDTO>(`${this.apiUrl}/login`, loginDTO, { withCredentials: true }).pipe(
+  login(loginDTO: LoginDTO): Observable<UserResponseDTO> {
+    return this.http.post<UserResponseDTO>(`${this.apiUrl}/login`, loginDTO, { withCredentials: true }).pipe(
       tap(response => {
         if (response.ok) {
           this.isAuthenticatedCache = true; // Update cache on successful login
@@ -94,6 +94,10 @@ export class AuthService {
         return of({ ok: false, message: 'Logout failed' } as LogOutDTO);
       })
     );
+  }
+
+  getCurrentUser(): Observable<any>{
+    return this.http.get(`${this.apiUrl}/current-user`);
   }
 }
 
