@@ -4,12 +4,10 @@ import { WebSocketService } from '../queue-modal/web-socket.service';
 import { AuthService } from '../auth/auth.service';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
-import { UserService } from '../profile/user.service';
 import { UserDTO } from '../profile/DTOs/userDTO';
 import { NgClass } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { QueueModalComponent } from '../queue-modal/queue-modal.component';
-import { UserDTO } from '../profile/DTOs/userDTO';
 
 @Component({
   selector: 'app-tic-tac-toe',
@@ -20,7 +18,6 @@ import { UserDTO } from '../profile/DTOs/userDTO';
     MatCard,
     NgClass,
   ],
-  styleUrls: ['./tic-tac-toe.component.css'],
   styleUrls: ['./tic-tac-toe.component.css'],
 })
 export class TicTacToeComponent implements OnInit {

@@ -1,5 +1,6 @@
 <div class="container">
   <!-- Profilinformationen -->
+
   <mat-card class="profile-card" [ngClass]="{ 'active': currentPlayerId === player1?.id }">
     <div class="profile-image-container">
       <img class="profile-image" [src]="player1Image" alt="Profilbild" height="100" width="100">
@@ -9,7 +10,6 @@
       <p>Elo Points: {{ player1?.elo }}</p>
     </div>
   </mat-card>
-
 
   <div class="outer-edges">
     <div class="inner-edges">
@@ -24,6 +24,7 @@
   </div>
 
   <!-- Profilinformationen -->
+
   <mat-card class="profile-card" [ngClass]="{ 'active': currentPlayerId === player2?.id }">
     <div class="profile-image-container">
       <img class="profile-image" [src]="player2Image" alt="Profilbild" height="100" width="100">
@@ -33,4 +34,5 @@
       <p>Elo Points: {{ player2?.elo }}</p>
     </div>
   </mat-card>
+
 </div>
