@@ -97,13 +97,42 @@
       </div>
     }
 
+    <!-- Current Games Tab for Small Screens -->
     @if(selectedTab === 'currentGames') {
       <div class="table-container">
-        <div class="info">
-          No current games.
-        </div>
+        @if (activeGames.length > 0) {
+          <!-- Active Games Table -->
+          <table mat-table [dataSource]="activeGames" class="mat-elevation-z8 table">
+            <!-- Game ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> Game ID </th>
+              <td mat-cell *matCellDef="let game"> {{ game.id }} </td>
+            </ng-container>
+
+            <!-- Player 1 Column -->
+            <ng-container matColumnDef="player1">
+              <th mat-header-cell *matHeaderCellDef> Player 1 </th>
+              <td mat-cell *matCellDef="let game"> {{ game.player1.nickname }} </td>
+            </ng-container>
+
+            <!-- Player 2 Column -->
+            <ng-container matColumnDef="player2">
+              <th mat-header-cell *matHeaderCellDef> Player 2 </th>
+              <td mat-cell *matCellDef="let game"> {{ game.player2.nickname }} </td>
+            </ng-container>
+
+            <!-- Header and Row Definitions -->
+            <tr mat-header-row *matHeaderRowDef="gameColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: gameColumns;"></tr>
+          </table>
+        }
+        @else {
+          <div class="info">
+            No current games.
+          </div>
+        }
       </div>
-    }
+        }
 
     @if(!isSmallScreen) {
       <mat-tab-group [(selectedIndex)]="tabIndex">
@@ -182,12 +211,39 @@
           }
         </mat-tab>
 
-        <mat-tab label="Current Games">
-          <div class="info">
-            No current games.
-          </div>
-        </mat-tab>
+        <mat-tab label="Current games">
+          @if (activeGames.length > 0) {
+            <!-- Active Games Table -->
+            <table mat-table [dataSource]="activeGames" class="mat-elevation-z8 table">
+              <!-- Game ID Column -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> Game ID </th>
+                <td mat-cell *matCellDef="let game"> {{ game.id }} </td>
+              </ng-container>
 
+              <!-- Player 1 Column -->
+              <ng-container matColumnDef="player1">
+                <th mat-header-cell *matHeaderCellDef> Player 1 </th>
+                <td mat-cell *matCellDef="let game"> {{ game.player1.nickname }} </td>
+              </ng-container>
+
+              <!-- Player 2 Column -->
+              <ng-container matColumnDef="player2">
+                <th mat-header-cell *matHeaderCellDef> Player 2 </th>
+                <td mat-cell *matCellDef="let game"> {{ game.player2.nickname }} </td>
+              </ng-container>
+
+              <!-- Header and Row Definitions -->
+              <tr mat-header-row *matHeaderRowDef="gameColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: gameColumns;"></tr>
+            </table>
+          }
+          @else {
+            <div class="info">
+              No current games.
+            </div>
+          }
+        </mat-tab>
       </mat-tab-group>
     }
 
