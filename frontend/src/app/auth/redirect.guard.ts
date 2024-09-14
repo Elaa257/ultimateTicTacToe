@@ -15,12 +15,12 @@ export class RedirectGuard implements CanActivate {
     return this.authService.getCurrentUser().pipe(
       map(user => {
         // If the user is an admin and tries to access the profile page
-        if (user && user.user?.role === 'admin' && state.url === '/profile') {
+        if (user && user.role === 'admin' && state.url === '/profile') {
           this.router.navigate(['/admin']);
           return false;
         }
         // If the user is a normal user and tries to access the admin page
-        if (user && user.user?.role === 'user' && state.url === '/admin') {
+        if (user && user.role  === 'user' && state.url === '/admin') {
           this.router.navigate(['/profile']);
           return false;
         }

@@ -7,12 +7,12 @@ import { Game } from './game.entity';
 import { UserModule } from '../user/user.module';
 
 import { User } from '../user/user.entity';
-
+import { GameGateWay } from './game.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Game, User]), UserModule],
   controllers: [GameController],
-  providers: [GameService, GameLogicService],
+  providers: [GameService, GameLogicService, GameModule, GameGateWay],
   exports: [GameService],
 })
 export class GameModule {}

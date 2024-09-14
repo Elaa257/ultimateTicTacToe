@@ -14,6 +14,9 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
 import { RouterModule } from '@angular/router';
 import { LoadingComponent } from './loading/loading.component';
 import { BaseChartDirective } from 'ng2-charts';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { LayoutModule } from '@angular/cdk/layout';
+
 /**
  * Function to initialize the application.
  * Returns a function that returns a promise resolving after a delay.
@@ -43,7 +46,9 @@ export function initializeApp(): () => Promise<void> {
     AdminPageComponent,
     AuthComponent,
     LoadingComponent,
-    BaseChartDirective
+    BaseChartDirective,
+    MatGridListModule,
+    LayoutModule
   ],
   providers: [
     {

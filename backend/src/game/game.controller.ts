@@ -38,7 +38,6 @@ export class GameController {
 
   //get specific game
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
   @Get(':id')
   @ApiResponse({ type: GameResponseDto })
   async getGame(
@@ -75,8 +74,8 @@ export class GameController {
   @ApiResponse({ type: GameResponseDto })
   async updateGame(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateGameRequestDTO: UpdateGameRequestDto
+    @Param('board index', ParseIntPipe) boardIndex: number,
   ): Promise<GameResponseDto> {
-    return this.gameService.makeMove(id, updateGameRequestDTO);
+    return this.gameService.makeMove(id, boardIndex);
   }
 }

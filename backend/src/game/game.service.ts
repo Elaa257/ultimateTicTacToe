@@ -5,12 +5,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Game } from './game.entity';
 import { Repository } from 'typeorm';
 import { CreateGameRequestDto } from './DTOs/createGameRequestDto';
-import { UpdateGameRequestDto } from './DTOs/updateGameRequestDto';
 import { GameLogicService } from './game-logic.service';
 import { GameResponseDto } from './DTOs/gameResponseDto';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { MultiGamesResponseDTO } from './DTOs/multiGamesResponseDTO';
 import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class GameService {
@@ -37,19 +37,18 @@ export class GameService {
       const newGame = await this.gameRepo.create(
         new CreateGameRequestDto(player1.user, player2.user)
       );
-      console.log('Creating new game:', newGame);
-
-      // Stelle sicher, dass auf das Ergebnis des Speicherns korrekt gewartet wird
       const saveGame = await this.gameRepo.save(newGame);
-      console.log('Saved game ID:', saveGame.id);
 
       if (!saveGame.id) {
         return new ResponseDTO(false, 'Failed to generate game ID');
       }
 
+      console.log('gameID: ', saveGame.id);
+
       return new ResponseDTO(
         true,
         'Game successfully created',
+        undefined,
         saveGame.id
       );
     } catch (error) {
@@ -60,14 +59,16 @@ export class GameService {
   //get all games
   async getGames(): Promise<MultiGamesResponseDTO> {
     try {
-      const games = await this.gameRepo.find();
+      const games = await this.gameRepo.find({
+        relations: ['player1', 'player2', 'turn', 'winner', 'loser'],
+      });
       return new MultiGamesResponseDTO(
         `Successfully retrieved all available games.`,
         games
       );
     } catch (error) {
       return new MultiGamesResponseDTO(
-        `There was an error queueing games: ${error}`
+        `There was an error retrieving games: ${error}`
       );
     }
   }
@@ -75,7 +76,10 @@ export class GameService {
   //get specific game
   async getGame(id: number): Promise<GameResponseDto> {
     try {
-      const game = await this.gameRepo.findOne({ where: { id: id } });
+      const game = await this.gameRepo.findOne({
+        where: { id: id },
+        relations: ['player1', 'player2', 'turn', 'winner', 'loser'],
+      });
       if (game === null) {
         return new GameResponseDto(
           `Game with id ${id} could not be found.`,
@@ -88,7 +92,7 @@ export class GameService {
       );
     } catch (error) {
       return new GameResponseDto(
-        `There was an error queueing game with id ${id}: ${error}`
+        `There was an error retrieving game with id ${id}: ${error}`
       );
     }
   }
@@ -115,22 +119,21 @@ export class GameService {
   }
 
   //make a move
-  async makeMove(
-    id: number,
-    updateGameRequestDTO: UpdateGameRequestDto
-  ): Promise<GameResponseDto> {
-    let game: Game = await this.gameRepo.findOne({
-      where: {
-        id: id,
-      },
+  async makeMove(id: number, boardIndex: number): Promise<GameResponseDto> {
+    console.log('id: ', id);
+    console.log('type id: ', typeof id);
+    let game = await this.gameRepo.findOne({
+      where: { id: id },
+      relations: ['player1', 'player2', 'turn', 'winner', 'loser'],
     });
-
     if (game === null) {
       return new GameResponseDto(`Game with id ${id} could not be found`);
     }
 
+    this;
     try {
-      Object.assign(game, updateGameRequestDTO);
+      const player = (await this.userService.getUser(game.turn.id)).user;
+      this.updateGame(game, boardIndex, player);
       game = await this.gameRepo.save(game);
 
       const gameOutcome =
@@ -145,5 +148,31 @@ export class GameService {
         `An error occured while making the move: ${error}`
       );
     }
+  }
+
+  private updateGame(game: Game, index: number, player: User): void {
+    if (game.turn.id !== player.id) {
+      throw new Error(`Es ist nicht der Zug von Spieler ${player.id}`);
+    }
+
+    if (index < 0 || index >= game.board.length) {
+      throw new Error(`Index ${index} liegt außerhalb des gültigen Bereichs`);
+    }
+
+    if (
+      game.board[index] !== null &&
+      game.board[index] !== undefined &&
+      Number(game.board[index]) !== -1
+    ) {
+      throw new Error(`Feld an Index ${index} ist bereits belegt`);
+    }
+
+    const PLAYER1_SYMBOL = 0;
+    const PLAYER2_SYMBOL = 1;
+    const playerSymbol =
+      player.id === game.player1.id ? PLAYER1_SYMBOL : PLAYER2_SYMBOL;
+    game.board[index] = playerSymbol;
+
+    game.turn = player.id === game.player1.id ? game.player2 : game.player1;
   }
 }

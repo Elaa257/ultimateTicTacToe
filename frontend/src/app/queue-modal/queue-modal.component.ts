@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -10,6 +10,7 @@ import { WebSocketService } from './web-socket.service';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';  // Import the Router
 import { Subscription } from 'rxjs';  // Import Subscription
+import { TicTacToeService } from '../tic-tac-toe/tic-tac-toe.service';
 
 @Component({
   selector: 'app-queue-modal',
@@ -33,11 +34,12 @@ export class QueueModalComponent implements OnInit, OnDestroy {
 
   // Add subscriptions for the WebSocket events
   private playerJoinedSubscription!: Subscription;
-
+  protected urlParam!: string;
   constructor(
     public dialogRef: MatDialogRef<QueueModalComponent>,
     private webSocketService: WebSocketService,
-    private router: Router
+    private router: Router,
+    private tictactoeService: TicTacToeService,
   ) {
     // Join the queue when the component is initialized
     this.webSocketService.emit('join-queue');
@@ -47,10 +49,12 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     this.startTimer(); // Start the timer when the component is initialized
 
     // Subscribe to the "player-joined" event
-    this.playerJoinedSubscription = this.webSocketService.listen<{opponent: string, param: string}>('player-joined').subscribe((data) => {
+    this.playerJoinedSubscription = this.webSocketService.listen<{opponent: string, param: string, gameId: number}>('player-joined').subscribe((data) => {
       console.log('Received player-joined event');
       console.log(data);
       this.canStartGame = true;
+      this.tictactoeService.gameId = data.gameId;
+      this.urlParam = data.param;
       this.stopTimer(); // Stop the queue timer
       this.startCountdown(); // Start the 10-second countdown
     });
@@ -70,7 +74,7 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  startTimer() {
+    startTimer() {
     this.timer = setInterval(() => {
       this.timeInQueue++;
     }, 1000);
@@ -110,7 +114,7 @@ export class QueueModalComponent implements OnInit, OnDestroy {
   // Redirect to the '/game' route when the server emits the game-started event
   redirectToGame(): void {
     console.log('Redirecting to /game');
-    this.router.navigate(['/game']);
+    this.router.navigate(['/game/'+ this.urlParam]);
   }
 
   formatTime(sec: number) {

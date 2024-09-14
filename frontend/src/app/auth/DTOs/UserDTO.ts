@@ -4,7 +4,7 @@ export interface UserDTO{
     nickname:string;
     role:string;
     eloPoints:number;
-    profilePicture:Buffer;
+    profilePicture:string;
     wins:number;
     losses:number;
     draw:number;

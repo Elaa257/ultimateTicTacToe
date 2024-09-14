@@ -78,40 +78,66 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       console.log(`User ${user.nickname} joined queue with Elo ${user.elo}`);
 
       // Prevent duplicate queue entries
-      if (this.queue.find(queueUser => queueUser.clientId === client.id)) {
+      if (this.queue.find((queueUser) => queueUser.clientId === client.id)) {
         console.log(`User ${user.nickname} is already in the queue.`);
         return;
       }
 
       // Try to match the user
       const match = this.queue.find(
-        (queueUser) => Math.abs(queueUser.elo - user.elo) <= 99 && queueUser.clientId !== client.id
+        (queueUser) =>
+          Math.abs(queueUser.elo - user.elo) <= 99 &&
+          queueUser.clientId !== client.id
       );
 
       if (match) {
         // Found a match
-        console.log(`Matched ${user.nickname} (Elo: ${user.elo}) with ${match.username} (Elo: ${match.elo})`);
+        console.log(
+          `Matched ${user.nickname} (Elo: ${user.elo}) with ${match.username} (Elo: ${match.elo})`
+        );
 
         const param = uuidv4();
 
-        const matchClientId = (await this.userRepository.findOne({ where: { nickname: match.username } })).id;
-        const userClientId = (await this.userRepository.findOne({ where: { nickname: user.nickname } })).id;
-        console.log(`MatchClientId: ${matchClientId}, UserClientId: ${userClientId}`);
-        const newGame = await this.gameService.create(userClientId, matchClientId);
+        const matchClientId = (
+          await this.userRepository.findOne({
+            where: { nickname: match.username },
+          })
+        ).id;
+        const userClientId = (
+          await this.userRepository.findOne({
+            where: { nickname: user.nickname },
+          })
+        ).id;
+        console.log(
+          `MatchClientId: ${matchClientId}, UserClientId: ${userClientId}`
+        );
+        const newGame = await this.gameService.create(
+          userClientId,
+          matchClientId
+        );
         if (!newGame) {
           throw new Error('Could not create game');
         }
+        console.log(newGame);
         console.log(`Game created with ID ${newGame.id}`);
-
 
         // Remove matched users from the queue
         this.queue = this.queue.filter(
-          (item) => item.clientId !== client.id && item.clientId !== match.clientId
+          (item) =>
+            item.clientId !== client.id && item.clientId !== match.clientId
         );
 
         // Notify both players that a match has been found (player-joined)
-        this.server.to(client.id).emit('player-joined', { opponent: match.username, param: param});
-        this.server.to(match.clientId).emit('player-joined', { opponent: user.nickname, param: param });
+        this.server.to(client.id).emit('player-joined', {
+          opponent: match.username,
+          param: param,
+          gameId: newGame.id,
+        });
+        this.server.to(match.clientId).emit('player-joined', {
+          opponent: user.nickname,
+          param: param,
+          gameId: newGame.id,
+        });
       } else {
         // No match found, add user to the queue
         this.queue.push({
@@ -119,14 +145,15 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
           username: user.nickname,
           elo: user.elo,
         });
-        console.log(`Current queue: ${this.queue.map((item) => item.username).join(', ')}`);
+        console.log(
+          `Current queue: ${this.queue.map((item) => item.username).join(', ')}`
+        );
       }
 
       this.broadcastQueueToAdmins();
     } catch (err) {
       console.log('Error during join-queue:', err.message);
       client.disconnect();
-
     }
   }
 
@@ -142,7 +169,6 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.emit('unauthorized');
     }
   }
-
 
   private extractJwtFromSocket(client: Socket): string {
     const cookie = client.handshake.headers.cookie;
@@ -172,4 +198,3 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
   }
 }
-

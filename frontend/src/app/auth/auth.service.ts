@@ -7,6 +7,7 @@ import { RegisterDTO } from './DTOs/RegisterDTO';
 import { UserResponseDTO } from './DTOs/UserResponseDTO';
 import { LoginDTO } from './DTOs/LoginDTO';
 import { LogOutDTO } from './DTOs/LogoutDTO';
+import { UserDTO } from './DTOs/UserDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -96,8 +97,8 @@ export class AuthService {
     );
   }
 
-  getCurrentUser(): Observable<any>{
-    return this.http.get(`${this.apiUrl}/current-user`);
+  getCurrentUser(): Observable<UserDTO>{
+    return this.http.get<UserDTO>(`${this.apiUrl}/current-user`);
   }
 }
 

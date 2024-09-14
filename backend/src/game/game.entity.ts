@@ -1,77 +1,78 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-  CreateDateColumn,
-  BeforeInsert,
-  BeforeUpdate,
-  ManyToOne,
-} from 'typeorm';
-import { User } from '../user/user.entity';
-import {
-  validateOrReject,
-  IsArray,
-  ArrayMaxSize,
-  ArrayMinSize,
-} from 'class-validator';
+  // game.entity.ts
 
-@Entity()
-export class Game {
-  @PrimaryGeneratedColumn()
-  id: number;
+  import {
+    Entity,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    JoinColumn,
+    Column,
+    CreateDateColumn,
+    BeforeInsert,
+    BeforeUpdate,
+  } from 'typeorm';
+  import { User } from '../user/user.entity';
+  import {
+    validateOrReject,
+    IsArray,
+    ArrayMaxSize,
+    ArrayMinSize,
+  } from 'class-validator';
 
-  @Column({ default: false })
-  finished: boolean;
+  @Entity()
+  export class Game {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column({ nullable: true})
-  draw: boolean;
+    @Column({ default: false })
+    finished: boolean;
 
-  @Column('simple-array')
-  @IsArray()
-  @ArrayMaxSize(9)
-  @ArrayMinSize(9)
-  // 0 = Circle Player1 or 1 = Cross Player2
-  board: number[];
+    @Column({ nullable: true })
+    draw: boolean;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'turnId' })
-  turn: User;
+    @Column('simple-array')
+    @IsArray()
+    @ArrayMaxSize(9)
+    @ArrayMinSize(9)
+    board: number[];
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'player1Id' })
-  player1: User;
+    @ManyToOne(() => User, (user) => user.gamesAsPlayer1)
+    @JoinColumn({ name: 'player1Id' })
+    player1: User;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'player2Id' })
-  player2: User;
+    @ManyToOne(() => User, (user) => user.gamesAsPlayer2)
+    @JoinColumn({ name: 'player2Id' })
+    player2: User;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'winnerId' })
-  winner: User;
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'turnId' })
+    turn: User;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'loserId' })
-  loser: User;
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'winnerId' })
+    winner: User;
 
-  @CreateDateColumn({ type: 'date' })
-  time: Date;
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'loserId' })
+    loser: User;
 
-  @Column()
-  player1EloBefore: number;
+    @CreateDateColumn({ type: 'date' })
+    time: Date;
 
-  @Column()
-  player2EloBefore: number;
+    @Column()
+    player1EloBefore: number;
 
-  @Column({ nullable: true})
-  player1EloAfter: number;
+    @Column()
+    player2EloBefore: number;
 
-  @Column({ nullable: true})
-  player2EloAfter: number;
+    @Column({ nullable: true })
+    player1EloAfter: number;
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  async validate() {
-    await validateOrReject(this);
+    @Column({ nullable: true })
+    player2EloAfter: number;
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    async validate() {
+      await validateOrReject(this);
+    }
   }
-}

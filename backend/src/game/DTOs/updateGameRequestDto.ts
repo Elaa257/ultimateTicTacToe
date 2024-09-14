@@ -2,9 +2,10 @@ import {ApiProperty} from "@nestjs/swagger";
 
 export class UpdateGameRequestDto {
     @ApiProperty()
-    board: number[]
+    index: number;
+    
 
-    constructor(board: number[]) {
-        this.board = board
+    constructor(index: number) {
+        this.index = index;
     }
 }

@@ -11,6 +11,15 @@ import { ResponseDTO } from './DTOs/ResponseDTO';
 })
 export class TicTacToeService {
   private apiUrl = 'backend/game'; // URL of your backend API
+  private _gameId: number | null = null; // Private variable to store gameId
+
+  get gameId(): number | null {
+    return this._gameId;
+  }
+  
+  set gameId(id: number | null) {
+    this._gameId = id;
+  }
 
   constructor(private http: HttpClient) {}
 
@@ -20,8 +29,8 @@ export class TicTacToeService {
   }
 
   // Get a specific game
-  getGame(id: number): Observable<TicTacToeResponseDTO> {
-    return this.http.get<TicTacToeResponseDTO>(`${this.apiUrl}/${id}`);
+  getGame(gameId: number|null = this.gameId): Observable<TicTacToeResponseDTO> {
+    return this.http.get<TicTacToeResponseDTO>(`${this.apiUrl}/${gameId}`);
   }
 
   // Create a new game
