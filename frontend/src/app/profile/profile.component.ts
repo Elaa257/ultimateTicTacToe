@@ -18,6 +18,7 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { GameWithResult } from './DTOs/gamesDTO';
 import { MultiGamesResponseDTO } from './DTOs/gamesDTO';
+import { QueueModalComponent } from '../queue-modal/queue-modal.component';
 
 @Component({
   selector: 'app-profile',
@@ -231,6 +232,24 @@ export class ProfileComponent {
     this.winRate = this.wins === 0 && this.losses === 0 ? '0' : (this.wins / (this.wins + this.losses)).toFixed(2);
   }
 
+  openQueueModal(): void {
+    this.dialog.open(QueueModalComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+    });
+  }
+
+  gameHistory = [
+    { opponent: 'JaneDoe', result: 'Win', eloChange: '+20' },
+    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
+    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
+    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
+    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
+    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
+    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
+    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
+    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
+  ];
   getEloBefore(game: GameWithResult): number {
     if (this.user) {
       if (game.player1.id === this.user.id) {
