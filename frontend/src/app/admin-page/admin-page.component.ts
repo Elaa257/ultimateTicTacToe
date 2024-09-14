@@ -1,23 +1,17 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { MatCard, MatCardModule, MatCardTitle } from '@angular/material/card';
-import { MatTab, MatTabGroup, MatTabsModule } from '@angular/material/tabs';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../profile/user.service';
-import { MatOption, MatSelect } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { UserDTO, UsersDTO } from '../profile/DTOs/userDTO';
 import {
-  MatCell,
-  MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
-  MatTable,
   MatTableModule,
 } from '@angular/material/table';
 import { AdminService } from './admin.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-page',
@@ -27,29 +21,13 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatTableModule,
     MatTabsModule,
-    MatCard,
-    MatCardTitle,
-    MatTabGroup,
-    MatTab,
-    MatTable,
-    MatColumnDef,
-    MatHeaderCell,
-    MatCell,
-    MatCellDef,
-    MatHeaderCellDef,
-    MatHeaderRow,
-    MatHeaderRowDef,
-    MatRow,
-    MatRowDef,
     MatFormFieldModule,
-    MatSelect,
-    MatOption,
+    MatSelectModule,
   ],
   templateUrl: './admin-page.component.html',
-  styleUrl: './admin-page.component.css'
+  styleUrls: ['./admin-page.component.css'],
 })
-export class AdminPageComponent implements OnInit{
-
+export class AdminPageComponent implements OnInit, OnDestroy {
   isSmallScreen = false;
   selectedTab = 'players'; // Default selected tab
   tabIndex = 0; // Tracks the current tab index in MatTabGroup
@@ -58,13 +36,20 @@ export class AdminPageComponent implements OnInit{
   displayedColumns: string[] = ['id', 'nickname', 'email', 'elo', 'role'];
 
   currentQueue: { clientId: string; username: string; elo: number }[] = [];
+  activeGames: any[] = [];
 
   queueColumns: string[] = ['clientId', 'username', 'elo'];
+  gameColumns: string[] = ['id', 'player1', 'player2'];
 
-  constructor(private userService: UserService, private adminService: AdminService, private router: Router) {}
+  private subscriptions: Subscription[] = [];
+
+  constructor(
+    private userService: UserService,
+    private adminService: AdminService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-
     this.checkScreenSize();
 
     this.userService.getAllUsers().subscribe((data: UsersDTO) => {
@@ -73,19 +58,39 @@ export class AdminPageComponent implements OnInit{
       console.log('Users:', this.users);
     });
 
-    //Gets queue data from server
+    // Emit event to get the initial queue data
     this.adminService.emit('get-queue');
 
-    this.adminService.listen<{ clientId: string; username: string; elo: number }[]>('queue-data')
-      .subscribe(data => {
+    // Listen for updated queue data
+    const queueSub = this.adminService
+      .listen<{ clientId: string; username: string; elo: number }[]>(
+        'queue-data'
+      )
+      .subscribe((data) => {
         console.log('Received updated queue data:', data);
         this.currentQueue = data;
       });
+    this.subscriptions.push(queueSub);
 
-    this.adminService.listen('unauthorized')
+    // Listen for unauthorized event
+    const unauthorizedSub = this.adminService
+      .listen('unauthorized')
       .subscribe(() => {
         this.router.navigate(['/profile']);
       });
+    this.subscriptions.push(unauthorizedSub);
+
+    // Emit event to get the initial active games data
+    this.adminService.emit('get-games');
+
+    // Listen for active games updates
+    const activeGamesSub = this.adminService
+      .listen<any[]>('active-games')
+      .subscribe((data) => {
+        console.log('Received active games data:', data);
+        this.activeGames = data;
+      });
+    this.subscriptions.push(activeGamesSub);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -102,11 +107,19 @@ export class AdminPageComponent implements OnInit{
 
   getTabNameByIndex(index: number): string {
     switch (index) {
-      case 0: return 'players';
-      case 1: return 'queue';
-      case 2: return 'currentGames';
-      default: return 'players';
+      case 0:
+        return 'players';
+      case 1:
+        return 'queue';
+      case 2:
+        return 'currentGames';
+      default:
+        return 'players';
     }
   }
-}
 
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+}
