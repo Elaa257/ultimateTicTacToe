@@ -1,39 +1,38 @@
 
 # The Ultimate TicTacToe
 
-## 1) Overview
+## 1) Überblick
 
-Ultimate TicTacToe is a dynamic web-based application designed for competitive Tic Tac Toe players, offering a range of features including a ranking system, real-time multiplayer functionality, and a queue-based matchmaking system. The project leverages a modern tech stack to deliver a smooth and engaging user experience:
+Ultimate TicTacToe ist eine moderne Webanwendung für ambitionierte Tic-Tac-Toe-Spieler, die zahlreiche Funktionen bietet, darunter ein Echtzeit-Multiplayer und ein warteschlangenbasiertes Matchmaking. Die Anwendung nutzt eine zeitgemäße Technologie, um eine flüssige und ansprechende Benutzererfahrung zu ermöglichen:
 
-- **Angular** for the Frontend
-- **NestJS** for the Backend
-- **SQLite** for the Database
-- **Socket.io** for Real-Time, Two-Way Communication
+- **Angular mit Angular Materials** für das Frontend
+- **NestJS** für das Backend
+- **SQLite mit TypeORM** für die Datenbank
+- **Socket.io** für Echtzeit-Kommunikation
 
-We structured the project into two primary building blocks: the frontend and the backend, ensuring a clear separation of concerns for each functionality within the system. This modular approach enhances maintainability and scalability as the application grows.
+Das Projekt ist klar in zwei Hauptbereiche unterteilt: Frontend und Backend. Diese Struktur sorgt für eine saubere Trennung der Verantwortlichkeiten und erleichtert die Wartung sowie die Skalierbarkeit der Anwendung.  
+Das Backend ist in verschiedene Module aufgeteilt, die jeweils spezifische Funktionen abdecken:  
 
-On the backend, we organized our system into distinct modules, each responsible for a specific feature:
+- **`auth`**: Verwaltet die Benutzeranmeldung und -authentifizierung mittels JWT
+- **`game`**: Enthält die Logik und Regeln für das Tic-Tac-Toe-Spiel.
+- **`queue`**: Verwaltet die Spielervermittlung basierend auf dem Elo-Rating der Spieler.
+- **`user`**: Bietet Funktionen zur Benutzerverwaltung, einschließlich Profilaktualisierungen und statistischer Auswertungen.
 
-- **`auth`**: Manages the authentication system using JWT.
-- **`DTOs`**: Handles data transfer objects for smooth communication between different layers.
-- **`game`**: Contains the logic and rules for the Tic Tac Toe game.
-- **`queue`**: Manages matchmaking logic for pairing players based on their Elo ratings.
-- **`user`**: Provides user-management functionality, including profile updates and statistics.
+Im Frontend wurde ein **Mobile-First-Design** gewählt, um die Benutzererfahrung auf mobilen Geräten zu optimieren. Dabei wurde sichergestellt, dass die Anwendung auch auf größeren Bildschirmen gut funktioniert. Die Benutzeroberfläche besteht aus eigenständigen Komponenten, die jeweils für bestimmte Bereiche verantwortlich sind. Diese Komponenten kommunizieren mit dem Backend über APIs und WebSockets, um die Multiplayer-Interaktionen zu ermöglichen.  
 
-For the frontend, we adopted a **mobile-first design approach** to ensure a seamless experience across all device sizes. Each page and interface component is designed with responsiveness in mind, ensuring optimal usability on mobile devices, while gracefully scaling up to larger screen sizes. The frontend is composed of standalone components, each responsible for a specific part of the user interface, supported by services that handle API requests to the backend and real-time WebSocket events for multiplayer interactions.
 
-The following components where created for the different building blocks of the user Interface:
+Zu den Komponenten der Benutzeroberfläche gehören:
 
-- **`admin-page`**: This component provides an interface for administrators to manage users, monitor queues, and oversee matchmaking activity. It is a dashboard-like interface where admins can control key aspects of the platform.
-- **`assets`**: This folder contains static assets such as images, icons, and other media files that are used throughout the application for UI elements, branding, and design consistency.
-- **`auth`**: The authentication component manages user login, registration, and logout processes. It interacts with the backend to handle user credentials and manage authentication state using JWT tokens.
-- **`footer`**: The footer component provides a consistent footer across all pages of the application. It may include links to terms of service, privacy policies, and other important navigational links.
-- **`home`**: The home component serves as the landing page for the application. It welcomes users with an overview of the platform, providing access to main functionalities like starting a game or viewing the leaderboard.
-- **`loading`**: This component displays a loading spinner or indicator during asynchronous operations, such as waiting for server responses or loading game data, ensuring users are aware of background processes.
-- **`nav-bar`**: The navigation bar component is responsible for the top-level navigation of the application, providing links to important sections such as the home page, profile, admin page, and other core functionalities.
-- **`page-not-found`**: This component handles 404 errors and displays a user-friendly message when users attempt to navigate to a page that does not exist, ensuring a smooth user experience.
-- **`profile`**: The profile component displays user-specific information, such as their match history, Elo ranking, and personal details. It also allows users to update their profile settings and view their performance stats.
-- **`queue-modal`**: This modal component is responsible for the matchmaking queue UI, allowing users to join or leave the queue for a match. It shows real-time updates on the matchmaking status and a countdown when a match is found.
+- **`admin-page`**: Ermöglicht Administratoren die Verwaltung von Nutzern sowie die Überwachung der Matchmaking-Queue und der aktuellen laufenden Spiele.
+- **`assets`**: Beinhaltet alle statischen Ressourcen wie Bilder und Icons.
+- **`auth`**: Verwaltung von Benutzer-Login, -Registrierung und -Logout, interagiert mit dem Backend zur Authentifizierung.
+- **`footer`**: Bietet eine einheitliche Fußzeile auf allen Seiten der Anwendung mit wichtigen Links.
+- **`home`**: Die Startseite, die den Nutzern einen Überblick über die Plattform und den Zugang zu den Hauptfunktionen bietet.
+- **`loading`**: Zeigt einen Ladeindikator bei lang andauernden Prozessen an.
+- **`nav-bar`**: Die Navigationsleiste bietet Zugriff auf wichtige Bereiche wie Startseite, Profil und Verwaltung.
+- **`page-not-found`**: Kümmert sich um 404 errors and zeigt eine nutzerfreundliche Nachricht an, wenn ein User versucht, auf eine nicht verfügbare Seite zuzugreifen.
+- **`profile`**: Zeigt Informationen wie Spielhistorie, Elo-Rang und Statistiken eines Nutzers an. Hier können Nutzer auch ihre Profileinstellungen ändern.
+- **`queue-modal`**: Die UI-Komponente für das Matchmaking, in der Nutzer der Warteschlange beitreten oder diese verlassen können. Sie zeigt Echtzeit-Updates zum Status der Spielvermittlung.
 
 
 
@@ -41,30 +40,27 @@ The following components where created for the different building blocks of the 
  
 ---
 
-## 2) The Authentication System
+## 2) Das Authentifizierungssysstem
 
-In our application, we implemented a JWT (JSON Web Token) based authentication system instead of a session-based approach. This decision was driven by the need for scalability and efficiency. JWT allows us to manage authentication without relying on a server-side session database, which would introduce complexity when scaling across multiple instances. With JWT, we can maintain a stateless system where each server can independently verify tokens without requiring shared session data.
+Statt auf eine sitzungsbasierte Authentifizierung zu setzen, verwendet unsere Anwendung ein JWT-basiertes System. Diese Wahl fördert die Skalierbarkeit und Effizienz. Mit JWT können wir die Authentifizierung verwalten, ohne auf eine serverseitige Sitzungsverwaltung zurückgreifen zu müssen, was insbesondere bei einer Verteilung auf mehrere Server von Vorteil ist.  
 
-When a user registers, their details are sent to our NestJS backend, where the password is securely hashed and stored in the database. After successful registration, we generate a JWT token containing the user's information (ID, email, role), which is signed with the server's secret key and returned to the frontend. The token is stored in an `httpOnly` cookie, ensuring it is inaccessible by JavaScript and protected from client-side attacks.
+Wenn sich ein Nutzer registriert, werden seine Daten an unser NestJS-Backend übermittelt, wo das Passwort sicher gehasht und in der Datenbank gespeichert wird. Nach der erfolgreichen Registrierung wird ein JWT-Token generiert, der die Informationen des Nutzers (ID, E-Mail, Rolle) enthält. Dieses Token wird im httpOnly-Cookie gespeichert, um es vor clientseitigen Angriffen zu schützen.  
 
-When the user logs in, they provide their credentials, which are validated against the database. A new JWT token is generated and stored in the same secure manner. From then on, every request made by the user automatically includes the token, allowing the backend to authenticate the user without maintaining session state. The validity of the JWT token is checked by a guard in NestJS, ensuring that only authenticated users can access protected routes. If the token is invalid or missing, a 401 Unauthorized response is returned, and the frontend redirects the user to the login page.
+Nach dem Login sendet der Nutzer bei jeder Anfrage automatisch dieses Token, um sich zu authentifizieren. Das Backend überprüft dabei die Gültigkeit des Tokens. Ist das Token ungültig oder fehlt es, wird der Zugriff verweigert, und der Nutzer wird zur Login-Seite weitergeleitet.  
 
-In the frontend, we implemented an Angular interceptor to check for 401 status codes in the response. If a 401 is detected, the user is redirected to the login page, ensuring they cannot access protected content. Additionally, the frontend includes a short caching mechanism to avoid unnecessary server checks, making the app more efficient.
+Im Frontend haben wir einen Mechanismus integriert, der automatisch überprüft, ob eine Anfrage mit dem Status 401 (nicht autorisiert) zurückkommt, um den Nutzer gegebenenfalls wieder auf die Login-Seite zu schicken. Beim Logout wird das Token durch das Löschen des Cookies ungültig gemacht.
 
-When the user logs out, the frontend sends a request to the backend to clear the `httpOnly` cookie, effectively ending the session. Without the JWT token, the user is no longer authenticated and is redirected to the login page.
-
-This JWT-based approach offers advantages such as improved security and scalability. The stateless nature of JWT allows for easier scaling, as each request includes all the necessary authentication data, eliminating the need for server-side session management. This system is ideal for our application's high-traffic environment, where efficiency and security are key.
+Dieser Ansatz bietet Vorteile in puncto Sicherheit und Skalierbarkeit, da jede Anfrage bereits alle notwendigen Authentifizierungsdaten enthält, ohne dass eine Sitzungsverfolgung auf dem Server erforderlich ist.
 
 ---
 
-## 3) The Matchmaking Queue
+## 3) Die Matchmaking Queue
 
-Our matchmaking system is designed to pair users based on their Elo ratings, facilitating an efficient and fair matching process in real time. The system relies on WebSockets for real-time communication between clients and the server, allowing users to join the matchmaking queue, be matched with other players, and start a game. WebSockets were chosen to provide a persistent connection for seamless interaction between the server and clients without the need for constant HTTP requests.
+Unser Matchmaking-System ist darauf ausgelegt, Spieler basierend auf ihrem Elo-Rating zu paaren und so faire Matches in Echtzeit zu gewährleisten. Für die Echtzeit-Kommunikation nutzen wir WebSockets, was eine permanente Verbindung zwischen Client und Server ermöglicht, ohne dass ständig neue HTTP-Anfragen gesendet werden müssen.  
 
-### Queue System Overview
+### Queue System Überblick
 
-When a user connects to the server via WebSocket, they are authenticated using a JWT token stored in their cookies. This token contains essential user information such as their ID and Elo rating. Once authenticated, users can join or leave the matchmaking queue, and the server will attempt to find a suitable match.
-
+Sobald sich ein Spieler über WebSocket mit dem Server verbindet, wird er durch sein JWT-Token authentifiziert. Nach erfolgreicher Authentifizierung kann der Spieler der Matchmaking-Warteschlange beitreten. Das System sucht nach einem Gegner, dessen Elo-Rating sich in einem Bereich von ±99 Punkten befindet. Sobald ein passender Gegner gefunden wurde, werden beide Spieler benachrichtigt, und das Spiel beginnt nach einem Countdown.
 The system also provides real-time queue monitoring for administrators, allowing them to view which users are waiting for a match. The queue is updated every time a user joins or leaves, ensuring accurate and timely information is available to all connected clients, including admins.
 
 ### User Connection and Authentication
