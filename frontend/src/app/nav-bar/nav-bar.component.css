@@ -38,8 +38,30 @@ mat-toolbar {
 }
 
 .nav-links a {
+  position: relative;
   text-decoration: none;
   color: white;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(51, 181, 255, 0.75);
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+.nav-links a:hover {
+  color: rgba(51, 181, 255, 0.75);
+}
+
+.nav-links a:hover::before {
+  visibility: visible;
+  width: 100%;
 }
 
 .spacer-left, .spacer-right {

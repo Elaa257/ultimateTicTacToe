@@ -15,6 +15,7 @@ import {
 import { NgOptimizedImage } from '@angular/common';
 import { UserDTO } from './DTOs/userDTO';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
@@ -46,7 +47,7 @@ export class ProfileComponent {
   draws = 0;
   winRate = this.wins == 0 && this.losses == 0 ? '0' : (this.wins / (this.wins + this.losses)).toFixed(2);
 
-  constructor(private authService: AuthService, private userService: UserService, private dialog: MatDialog) {
+  constructor(private authService: AuthService, private userService: UserService, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -67,6 +68,15 @@ export class ProfileComponent {
       (error) => {
         console.error('Error getting profile', error);
       });
+  }
+  openSnackBar(message: string, action:string, isError: boolean) {
+    const config = new MatSnackBarConfig();
+    config.duration = 4500;
+    config.verticalPosition = 'top';
+    config.horizontalPosition = 'center'
+    config.panelClass = isError ? ['snackbar-error'] : ['snackbar-success']; // Verwende die entsprechenden Klassen
+
+    this.snackBar.open(message, 'close',config);
   }
 
   openModal() {
@@ -106,7 +116,11 @@ export class ProfileComponent {
         // Sende das Bild an den Backend-Dienst
         this.userService.changeProfilePicture(this.selectedImage, this.user.email).subscribe(
           (response) => {
-            console.log('Bild erfolgreich ans Backend gesendet', response);
+            if (response.ok){
+              this.openSnackBar('Profile Picture changed', 'close', false);
+            }else{
+              this.openSnackBar('Something went wrong', 'close', true);
+            }
           },
           (error) => {
             console.log('Fehler beim Hochladen des Bildes', error);
@@ -132,14 +146,19 @@ export class ProfileComponent {
 
   confirmPasswordChange(currentPassword: string, newPassword: string): void {
     const email = this.user?.email;
+
+    if (newPassword.trim().length < 0){
+      this.openSnackBar('you have to choose a valid Password', 'close', true)
+      return
+    }
     if (email !== undefined) {
       if (confirm('Möchten Sie Ihr Passwort wirklich ändern?')) {
           this.userService.changePassword(currentPassword, newPassword, email).subscribe(
           (response) => {
             if(response.ok) {
-              console.log('Passwort erfolgreich geändert');
+              this.openSnackBar('Password was change', 'close',false)
             }else{
-              console.log('check you Inputs something went wrong');
+             this.openSnackBar('Something went wrong', 'close',true)
             }
 
           },

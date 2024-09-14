@@ -6,7 +6,7 @@ export class ResponseDTO {
   @ApiProperty()
   message: string;
 
-  @ApiProperty({ required: false })  // Indicate that user is optional
+  @ApiProperty({ required: false }) // Indicate that user is optional
   user?: any;
 
   constructor(ok: boolean, message: string, user?: any) {
