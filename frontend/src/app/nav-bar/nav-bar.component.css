@@ -9,7 +9,7 @@
   left: 0;
   width: 100%;
   box-sizing: border-box;
-  z-index: 10000;
+  z-index: 1000;
 }
 
 mat-sidenav-content {
@@ -33,21 +33,39 @@ mat-toolbar {
   align-items: center;
   gap: 20px;
   padding: 0;
-  display: none; /* Hide menu on mobile */
+  display: none;
   margin-left: 20px;
 }
 
 .nav-links a {
+  position: relative;
   text-decoration: none;
   color: white;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(51, 181, 255, 0.75);
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+.nav-links a:hover {
+  color: rgba(51, 181, 255, 0.75);
 }
 
-.large-screen {
+.nav-links a:hover::before {
+  visibility: visible;
+  width: 100%;
+}
+
+.spacer-left, .spacer-right {
   display: none;
-}
-
-.spacer {
-  display: none; /* Hide spacer on mobile */
 }
 
 .menu-toggle {
@@ -60,12 +78,12 @@ mat-toolbar {
 }
 
 .menu {
-  background-color: black; /* Match navbar background */
+  background-color: black;
   color: white;
 }
 
 mat-sidenav-container {
-  z-index: 100000;
+  z-index: 1000;
 }
 
 mat-sidenav {
@@ -83,16 +101,24 @@ mat-sidenav {
 }
 
 .menu-item {
-  text-align: left;
+  text-align: center;
   display: block;
-  padding: 20px;
-  border: 3px solid black;
-  border-top: 3px solid #ED4AB7;
-  margin-top: 10%;
-  margin-left: 5%;
+  background-color: #15072E;
+  color: white !important;
+  border: 1px solid deeppink !important;
+  cursor: pointer;
+  padding-top: 15px;
+  padding-bottom: 15px;
   margin-right: 5%;
-  width: 80%;
+  margin-left: 15%;
+  margin-top: 13%;
   font-size: clamp(15px, 4vw, 25px);
+  width: 70%;
+  border-radius: 50px;
+}
+
+.first-btn {
+  margin-top: 30%;
 }
 
 .highlighted {
@@ -114,33 +140,37 @@ mat-sidenav {
   margin: 20px;
 }
 
-.login-btn {
-  background-color: #ED4AB7;
-  color: white !important;
-  border: none;
-  padding: 20px 35px;
-  cursor: pointer;
-  border-radius: 3px;
-  margin-right: 10px;
-  margin-left: 30%;
-  margin-top: 35%;
-  font-size: clamp(15px, 4vw, 25px);
+.btn:hover {
+  background-color: #d43a9a;
 }
 
-.login-btn:hover {
-  background-color: #d43a9a; /* Slightly darker shade for hover effect */
+.menu-item:hover {
+  background-color: #120622;
+}
+
+.btn {
+  display: none;
+}
+
+@keyframes blink-mobile-nav {
+  0%, 100% {
+    background-color: #15072E;
+  }
+  50% {
+    background-color: deeppink;
+  }
+}
+
+.blinking-button-mobile-nav {
+  animation: blink-mobile-nav 3s infinite;
 }
 
 /* Styles for larger screens (tablet and above) */
-@media (min-width: 600px) {
-
-  .large-screen {
-    display: flex;
-    align-items: flex-end;
-  }
+@media (min-width: 750px) {
 
   .nav-links {
     display: flex;
+    align-items: flex-end;
   }
 
   .nav-links li {
@@ -148,19 +178,31 @@ mat-sidenav {
   }
 
   .menu-toggle {
-    display: none; /* Hide menu toggle on larger screens */
+    display: none;
   }
 
-  .spacer {
-    flex: 1 1 auto;
-    display: block; /* Show spacer on larger screens */
+  .spacer-left {
+    flex-grow: 0;
+    margin-right: 80px;
+    display: block;
   }
 
-  .login-btn {
+  .spacer-right {
+    flex-grow: 1;
+    display: block;
+  }
+
+  .btn {
     margin-top: 0;
     margin-right: 20px;
     padding: 10px 20px;
     margin-left: 0;
     font-size: 16px;
+    border-radius: 3px;
+    background-color: #ED4AB7;
+    color: white !important;
+    width: 90px;
+    display: flex;
+    align-items: flex-end;
   }
 }

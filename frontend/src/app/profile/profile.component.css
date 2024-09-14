@@ -15,7 +15,32 @@
   text-align: center; /* Zentrierung des Textes */
   margin: 0; /* Entferne Standard-Margins */
 }
+.profile-page-container h1,h2,h3,h4,h5,h6 {
+  color:yellow;
+  font-family: 'Audiowide', sans-serif;
+}
+.profile-page-container p {
+  font-family: 'Helvetica', sans-serif;
+}
+::ng-deep .snackbar-error {
+  background-color: yellow !important;
+  color: black !important;
+}
 
+::ng-deep .snackbar-success {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+::ng-deep .mat-mdc-snack-bar-container {
+  position: fixed !important;
+  top: 20% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  max-width: 400px;
+  width: auto;
+  border-radius: 4px;
+  z-index: 10000;
+}
 /* Styling für den Button */
 .profile-page-container button {
   padding: 0.75rem 1.5rem;
@@ -38,7 +63,7 @@
 .profile-statistic-container{
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch; /* Karten werden gleich hoch gemacht */
   width: 100%;
   max-width: 1200px; /* Maximale Breite für den Container */
   gap: 20px; /* Abstand zwischen den beiden Karten */
@@ -85,7 +110,37 @@
 /* Profilinformationen Styling */
 .profile-info {
   font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Buttons werden an den unteren Rand geschoben */
+  flex-grow: 1; /* Profilinfo füllt den restlichen Platz */
+  margin-top: auto;
+  align-items: center;
+}
+.profile-info h2{
+  margin-bottom: 5rem;
+}
+.profile-info p {
+  margin-bottom: 5rem; /* Abstand zwischen Elo und Update Button */
+}
+.profile-info button{
   margin-top: 10px;
+}
+.update-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #3f51b5; /* Blau für den Update Button */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
+  margin-bottom: 0; /* Kein Abstand mehr nach unten */
+}
+
+.update-btn:hover {
+  background-color: #303f9f; /* Dunkleres Blau beim Hover */
 }
 
 /* Statistik-Card Styling */
@@ -96,6 +151,8 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
   color: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Spielstatistiken Styling */
@@ -177,7 +234,7 @@ mat-expansion-panel {
 }
 
 .modal-content {
-  background: white;
+  background: #15072E;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
@@ -215,6 +272,72 @@ button {
 button:hover {
   background-color: #0f6a9c;
 }
+/* Update Modal Overlay */
+.update-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Update Modal Content */
+.update-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
+}
+
+/* Input-Felder im Update-Modal */
+.update-modal-content .form-group {
+  margin-bottom: 20px;
+}
+
+.update-modal-content label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.update-modal-content input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Buttons im Update-Modal */
+.update-modal-content button {
+  padding: 10px 20px;
+  background-color: #1486ca;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.update-modal-content button[type="button"] {
+  background-color: #e53935; /* Rot für Cancel Button */
+}
+
+.update-modal-content button:hover {
+  background-color: #0f6a9c;
+}
+
+.update-modal-content button[type="button"]:hover {
+  background-color: #d32f2f; /* Dunkleres Rot für Cancel Button */
+}
 /* Responsives Styling für kleinere Bildschirme */
 @media (max-width: 600px) {
   .profile-statistic-container {
@@ -226,6 +349,7 @@ button:hover {
   .statistics-card {
     width: 100%;
     max-width: none;
+    align-items: stretch;
   }
 
 }

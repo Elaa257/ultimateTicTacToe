@@ -62,6 +62,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.broadcastQueueToAdmins();
   }
 
+
   @SubscribeMessage('join-queue')
   async handleJoinQueue(client: Socket): Promise<void> {
     try {
@@ -156,6 +157,39 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.disconnect();
     }
   }
+
+  @SubscribeMessage('leave-queue')
+  async handleLeaveQueue(client: Socket): Promise<void> {
+    try {
+      const token = this.extractJwtFromSocket(client);
+      const payload = this.jwtService.verify(token);
+      const user = await this.userRepository.findOne({
+        where: { id: payload.sub },
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      console.log(`User ${user.nickname} is leaving the queue`);
+
+      // Remove the user from the queue
+      this.queue = this.queue.filter((item) => item.clientId !== client.id);
+
+      // Notify admins about the updated queue
+      this.broadcastQueueToAdmins();
+
+      // Optionally, confirm to the client that they've left the queue
+      client.emit('left-queue', { message: 'You have left the queue.' });
+
+    } catch (err) {
+      console.log('Error during leave-queue:', err.message);
+      client.disconnect();
+    }
+  }
+
+
+
 
   //Get Queue Information's for the Admins
   @SubscribeMessage('get-queue')

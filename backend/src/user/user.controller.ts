@@ -4,23 +4,21 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe, Post,
-  Put,
-  Req,
-  Session,
+  ParseIntPipe,
+  Put, Res,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt/auth.guard';
 import { RolesGuard } from '../auth/roles/roles.guard';
 import { Roles } from '../auth/roles/roles.decorator';
 import { Role } from '../auth/roles/enum.roles';
-import { SessionData } from 'express-session';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { ResponseUserDTO } from './DTOs/responseUserDTO';
 import { MultiUsersResponseDTO } from './DTOs/multipleUsersResponseDTO';
-import { UpdateUserDTO } from './DTOs/updateUserDTO';
 import { UserService } from './user.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UpdateUserDTO } from './DTOs/updateUserDTO';
+import { FastifyReply } from 'fastify';
 
 @ApiTags('user')
 @Controller('user')
@@ -83,4 +81,28 @@ export class UserController {
     }
   
      */
+  @UseGuards(JwtAuthGuard)
+  @Put('change-password')
+  @ApiResponse({ type: ResponseUserDTO })
+  async changePassword(
+    @Body() updateUserDTO: UpdateUserDTO
+  ): Promise<ResponseDTO> {
+    if (!updateUserDTO.email || !updateUserDTO.currentPassword) {
+      return new ResponseDTO(false, 'Email and password are required');
+    }
+    return await this.userService.updatePassword(
+      updateUserDTO.email,
+      updateUserDTO.currentPassword,
+      updateUserDTO.newPassword
+    );
+  }
+  @UseGuards(JwtAuthGuard)
+  @Put('change-img')
+  @ApiResponse({ type: ResponseUserDTO })
+  async changeImg(@Body() updateUserDTO: UpdateUserDTO): Promise<ResponseDTO> {
+    return await this.userService.changeImage(
+      updateUserDTO.email,
+      updateUserDTO.profilePicture
+    );
+  }
 }

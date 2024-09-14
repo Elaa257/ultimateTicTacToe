@@ -1,42 +1,42 @@
 <div class="profile-page-container">
-  <!-- logout -->
-  <button (click)="logout()">Logout</button>
-
-    <div class="profile-statistic-container">
+  <div class="profile-statistic-container">
     <!-- Profilinformationen -->
     <mat-card class="profile-card">
       <div class="profile-image-container" (click)="openModal()">
-        <img class="profile-image" src="/profile-picture.jpg" alt="Profilbild" height="680" width="680">
+        <img class="profile-image" [src]="selectedImage" alt="Profilbild" height="680" width="680">
       </div>
       <div class="profile-info">
-        <h2>{{ username }}</h2>
-        <p>Elo Points: {{ eloPoints }}</p>
+        <h2>{{ user?.nickname }}</h2>
+        <p>Elo Points: {{ user?.elo }}</p>
+        <button mat-button color="primary" (click)="openChangePasswordDialog()">change password</button>
       </div>
     </mat-card>
-      @if(isModalOpen){
-        <div class="modal-overlay">
-          <div class="modal-content">
-            <h2>Profile picture</h2>
 
-            <img class="large-profile-image" [src]="selectedImage || 'assets/profile-picture.jpg'" alt="Großes Profilbild">
-            <div class="upload-area"
-                 (dragover)="onDragOver($event)"
-                 (drop)="onDrop($event)">
-              <p>Drag & Drop ein neues Bild hierher oder</p>
-              <input type="file" (change)="onFileSelected($event)">
-            </div>
-            <button (click)="closeModal()">Close</button>
+    <!-- Modal für Profilbild -->
+    @if(isModalOpen) {
+      <div class="modal-overlay">
+        <div class="modal-content">
+          <h2>Profile picture</h2>
+
+          <img class="large-profile-image" [src]="selectedImage || 'assets/profile-picture.jpg'" alt="Großes Profilbild">
+          <div class="upload-area"
+               (dragover)="onDragOver($event)"
+               (drop)="onDrop($event)">
+            <p>Drag & Drop ein neues Bild hierher oder</p>
+            <input type="file" (change)="onFileSelected($event)">
           </div>
+          <button (click)="closeModal()">Close</button>
         </div>
-      }
+      </div>
+    }
 
     <!-- Statistik und Graphik -->
     <mat-card class="statistics-card">
-      <h3>Spielstatistiken</h3>
+      <h3>Game Statistic</h3>
       <div class="stats">
-        <p>Gewonnen: {{ wins }}</p>
-        <p>Verloren: {{ losses }}</p>
-        <p>Unentschieden: {{ draws }}</p>
+        <p>Wins: {{ user?.wins }}</p>
+        <p>Loses: {{ user?.loses }}</p>
+        <p>Draws: {{ user?.draw }}</p>
         <p>Win Rate: {{ winRate }}</p>
       </div>
       <!-- Graphik -->
@@ -44,30 +44,18 @@
               [datasets]="chartData"
               [labels]="chartLabels"
               [options]="chartOptions"
-              [legend]="true"
-      >
+              [legend]="true">
       </canvas>
     </mat-card>
-    </div>
+  </div>
 
-  <!-- Game History
-  <div class="game-history">
-    @for (game of gameHistory; track $index) {
-      <mat-card class="game-card">
-        <h4>Gegner: {{ game.opponent }}</h4>
-        <p>Ergebnis: {{ game.result }}</p>
-        <p>Veränderte Elo-Punkte: {{ game.eloChange }}</p>
-      </mat-card>
-    }
-  </div>-->
-  <!-- Game History [ngClass]="{'win-panel': game.result === 'Win', 'lose-panel': game.result === 'Lose'}" -->
+  <!-- Game History -->
   <mat-card class="game-history-card">
     <h3>Game History</h3>
     <div class="game-history-scroll">
       <mat-accordion>
         @for (game of gameHistory; track $index) {
-          <mat-expansion-panel
-          >
+          <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
                 Gegner: {{ game.opponent }} | Ergebnis: {{ game.result }}
@@ -83,6 +71,4 @@
       </mat-accordion>
     </div>
   </mat-card>
-
 </div>
-

@@ -1,5 +1,10 @@
 // auth.service.ts
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ResponseDTO } from '../DTOs/responseDTO';
@@ -8,6 +13,7 @@ import * as crypto from 'crypto';
 import { LoginDTO } from './DTOs/loginDTO';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/user.entity';
+import { ResponseUserDTO } from '../user/DTOs/responseUserDTO';
 
 @Injectable()
 export class AuthService {
@@ -33,11 +39,6 @@ export class AuthService {
         email: user.email,
         nickname: user.nickname,
         role: user.role,
-        elo: user.elo,
-        profilePicture: user.profilePicture,
-        wins: user.wins,
-        loses: user.loses,
-        draw: user.draw,
       };
       const access_token = await this.jwtService.signAsync(payload);
 
@@ -81,11 +82,6 @@ export class AuthService {
         email: user.email,
         nickname: user.nickname,
         role: user.role,
-        elo: user.elo,
-        profilePicture: user.profilePicture,
-        wins: user.wins,
-        loses: user.loses,
-        draw: user.draw,
       };
 
       const access_token = await this.jwtService.signAsync(payload);
@@ -113,5 +109,15 @@ export class AuthService {
   ): boolean {
     const hashedPassword = this.hashPassword(password);
     return hashedPassword === storedPasswordHash;
+  }
+  async getCurrentUser(userID: string): Promise<ResponseUserDTO> {
+    const user = await this.userRepository.findOne({
+      where: { id: Number(userID) },
+    });
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    console.log('user in getCurrentUser service: ', user);
+    return new ResponseUserDTO('Current User is: ', user);
   }
 }

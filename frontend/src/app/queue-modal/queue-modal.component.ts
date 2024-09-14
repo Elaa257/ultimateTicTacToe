@@ -8,8 +8,8 @@ import {
 } from '@angular/material/dialog';
 import { WebSocketService } from './web-socket.service';
 import { MatButton } from '@angular/material/button';
-import { Router } from '@angular/router';  // Import the Router
-import { Subscription } from 'rxjs';  // Import Subscription
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { TicTacToeService } from '../tic-tac-toe/tic-tac-toe.service';
 
 @Component({
@@ -32,7 +32,6 @@ export class QueueModalComponent implements OnInit, OnDestroy {
   timer: any;
   countdownTimer: any;
 
-  // Add subscriptions for the WebSocket events
   private playerJoinedSubscription!: Subscription;
   protected urlParam!: string;
   constructor(
@@ -41,33 +40,32 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     private router: Router,
     private tictactoeService: TicTacToeService,
   ) {
-    // Join the queue when the component is initialized
+
     this.webSocketService.emit('join-queue');
   }
 
   ngOnInit() {
-    this.startTimer(); // Start the timer when the component is initialized
+    this.startTimer();
 
-    // Subscribe to the "player-joined" event
+
     this.playerJoinedSubscription = this.webSocketService.listen<{opponent: string, param: string, gameId: number}>('player-joined').subscribe((data) => {
       console.log('Received player-joined event');
       console.log(data);
       this.canStartGame = true;
       this.tictactoeService.gameId = data.gameId;
       this.urlParam = data.param;
-      this.stopTimer(); // Stop the queue timer
-      this.startCountdown(); // Start the 10-second countdown
+      this.stopTimer();
+      this.startCountdown();
     });
   }
 
   ngOnDestroy() {
     this.stopTimer();
-    this.leaveQueue(); // Emit leave-queue on component destroy
+    this.leaveQueue();
     this.stopCountdown();
-    this.unsubscribeEvents(); // Unsubscribe from WebSocket events
+    this.unsubscribeEvents();
   }
 
-  // Unsubscribe from all event listeners
   unsubscribeEvents() {
     if (this.playerJoinedSubscription) {
       this.playerJoinedSubscription.unsubscribe();
@@ -86,7 +84,6 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Start the 10-second countdown before the game starts
   startCountdown() {
     this.countdownTimer = setInterval(() => {
       this.countdown--;
@@ -103,7 +100,6 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Emit the start-game event after the countdown finishes
   emitStartGame(): void {
     console.log('Emitting start-game event after countdown');
     this.dialogRef.close();
@@ -111,7 +107,6 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     this.redirectToGame();
   }
 
-  // Redirect to the '/game' route when the server emits the game-started event
   redirectToGame(): void {
     console.log('Redirecting to /game');
     this.router.navigate(['/game/'+ this.urlParam]);
@@ -127,7 +122,6 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     return value < 10 ? `0${value}` : `${value}`;
   }
 
-  // Leave the queue when the game starts or is cancelled
   leaveQueue(): void {
     console.log('Leaving the queue');
     this.webSocketService.emit('leave-queue');

@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NgOptimizedImage } from '@angular/common';
 import { MatCard, MatCardImage } from '@angular/material/card';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-auth',
@@ -36,7 +37,7 @@ import { MatCard, MatCardImage } from '@angular/material/card';
 })
 export class AuthComponent {
   isLoginVisible = true;
-
+  isError:boolean = false;
   nickname: string = '';
   registerPassword: string = '';
   confirmPassword: string = '';
@@ -44,21 +45,97 @@ export class AuthComponent {
   role?: string;
   loginPassword: string = '';
   loginEmail: string = '';
+  message:string = '';
 
-  constructor(private authService: AuthService) {}
 
+  constructor(private authService: AuthService, private snackBar: MatSnackBar) {}
+
+  openSnackBar(message: string, action:string, isError: boolean) {
+    const config = new MatSnackBarConfig();
+    config.duration = 4500;
+    config.verticalPosition = 'top';
+    config.horizontalPosition = 'center'
+    config.panelClass = isError ? ['snackbar-error'] : ['snackbar-success']; // Verwende die entsprechenden Klassen
+
+    this.snackBar.open(message, 'close',config);
+  }
   onRegister() {
     console.log(this.nickname, this.registerPassword, this.registerEmail);
-    this.authService.register({ nickname: this.nickname, email: this.registerEmail, password: this.registerPassword }).subscribe(response => {
-      console.log(response);
-    });
+
+    if (this.registerEmail === '' || this.registerPassword === '' || this.nickname === '') {
+      this.isError = true;
+      this.message = 'The input fields are required.';
+      this.openSnackBar(this.message,'close', true);
+      return;
+    }
+
+    if (this.nickname.trim().length <= 0) {
+      this.isError = true;
+      this.message = 'Please enter a valid nickname';
+      this.openSnackBar(this.message,'close', true);
+      return;
+    }
+
+    if (this.registerEmail.trim().length <= 0 || !this.registerEmail.includes('@')) {
+      this.isError = true;
+      this.message = 'Please enter a valid email';
+      this.openSnackBar(this.message,'close', true);
+      return;
+    }
+
+    if (this.registerPassword !== this.confirmPassword) {
+      this.isError = true;
+      this.message = 'The passwords must match';
+      this.openSnackBar(this.message, 'Close', true);
+      return;
+    }
+
+    if (this.registerPassword.length < 8) {
+      this.isError = true;
+      this.message = 'The password must be at least 8 characters long';
+      this.openSnackBar(this.message, 'Close', true);
+      return;
+    }
+
+    this.authService.register({ nickname: this.nickname, email: this.registerEmail, password: this.registerPassword })
+      .subscribe(response => {
+        console.log(response);
+        this.isError = false;
+        this.message = 'Successfully registered';
+        this.openSnackBar(this.message, 'Close', false);
+      }, error => {
+        this.isError = true;
+        this.message = 'Registration failed. Try again.';
+        this.openSnackBar(this.message, 'Close', true);
+      });
   }
 
   onLogin() {
     console.log("Email:", this.loginEmail, " Password: ", this.loginPassword);
-    this.authService.login({ email: this.loginEmail, password: this.loginPassword }).subscribe(response => {
-      console.log('Login response:', response);
-    });
+    if (this.loginEmail === ''|| this.loginPassword === ''){
+      this.isError = true;
+      this.message = 'please enter some valid data'
+      this.openSnackBar(this.message, 'close', true);
+      return
+    }
+
+    this.authService.login({ email: this.loginEmail, password: this.loginPassword })
+      .subscribe(response => {
+        console.log('Login response:', response);
+        if(response.ok){
+          this.isError = false;
+          this.message = 'Login successful';
+          this.openSnackBar(this.message, 'Close', false);
+        } else {
+          this.isError = true;
+          this.message = 'Login failed. Please check your credentials.';
+          this.openSnackBar(this.message, 'Close', true);
+        }
+      }, error => {
+        this.isError = true;
+        this.message = 'Login failed. Please check your credentials.';
+        this.openSnackBar(this.message, 'Close', true);
+      });
   }
 
   showLogin(){
@@ -73,4 +150,5 @@ export class AuthComponent {
       console.log('Logout response:', response);
     });
   }
+
 }

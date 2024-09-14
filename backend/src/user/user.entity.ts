@@ -28,8 +28,8 @@ export class User {
   @Column({ default: 1000 })
   elo: number;
 
-  @Column({ type: 'blob', nullable: true })
-  profilePicture: Buffer;
+  @Column({ type: 'text', nullable: true })
+  profilePicture: string;
 
   @Column({ default: 0 })
   wins: number;

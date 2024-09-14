@@ -7,5 +7,5 @@ export class UserDTO {
   profilePicture: Buffer;
   wins: number;
   loses: number;
-  draw: number;
+  draws: number;
 }
