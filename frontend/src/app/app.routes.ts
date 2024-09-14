@@ -12,7 +12,7 @@ import { RedirectGuard } from './auth/redirect.guard';
 
 export const routes: Routes = [
   { path: 'auth', component: AuthComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard, RedirectGuard] },
   { path: 'game/:id', component: TicTacToeComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent },
   { path: 'admin', component: AdminPageComponent , canActivate: [AuthGuard, RedirectGuard]},
