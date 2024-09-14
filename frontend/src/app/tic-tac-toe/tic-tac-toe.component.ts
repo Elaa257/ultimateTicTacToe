@@ -24,8 +24,14 @@ export class TicTacToeComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe(user => {
-      this.currentUserId = Number(user.id);
-      console.log('Current User ID:', this.currentUserId);
+      console.log('User:', user.user?.id);
+      console.log('User:', user.user?.id);
+
+      if (user.user?.id !== null && user.user?.id !== undefined) {
+        this.currentUserId = Number(user.user?.id);
+      } else {
+        console.error('User ID is null or undefined');
+      }
       
       this.ticTacToeService.getGame().subscribe((gameData) => {
         this.cells = gameData.board.map(Number);
