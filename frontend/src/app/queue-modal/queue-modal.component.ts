@@ -1,16 +1,14 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import {
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
+  MAT_DIALOG_DATA,
   MatDialogRef,
-  MatDialogTitle,
 } from '@angular/material/dialog';
 import { WebSocketService } from './web-socket.service';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TicTacToeService } from '../tic-tac-toe/tic-tac-toe.service';
+import { GameOverDialogData } from './gameOverDialogData';
 
 @Component({
   selector: 'app-queue-modal',
@@ -19,10 +17,6 @@ import { TicTacToeService } from '../tic-tac-toe/tic-tac-toe.service';
   styleUrls: ['./queue-modal.component.css'],
   imports: [
     MatButton,
-    MatDialogClose,
-    MatDialogActions,
-    MatDialogContent,
-    MatDialogTitle,
   ],
 })
 export class QueueModalComponent implements OnInit, OnDestroy {
@@ -31,37 +25,43 @@ export class QueueModalComponent implements OnInit, OnDestroy {
   countdown: number = 10;
   timer: any;
   countdownTimer: any;
+  gameModal: boolean = false;
 
   private playerJoinedSubscription!: Subscription;
   protected urlParam!: string;
+
   constructor(
     public dialogRef: MatDialogRef<QueueModalComponent>,
     private webSocketService: WebSocketService,
     private router: Router,
     private tictactoeService: TicTacToeService,
+    @Inject(MAT_DIALOG_DATA) public data: GameOverDialogData
   ) {
-
-    this.webSocketService.emit('join-queue');
+    if (data) {
+      console.log('Data passed to the dialog:', data);
+      this.gameModal = true;
+    } else {
+      this.webSocketService.emit('join-queue');
+    }
   }
 
   ngOnInit() {
     this.startTimer();
 
-
-    this.playerJoinedSubscription = this.webSocketService.listen<{opponent: string, param: string, gameId: number}>('player-joined').subscribe((data) => {
-      console.log('Received player-joined event');
-      console.log(data);
-      this.canStartGame = true;
-      this.tictactoeService.gameId = data.gameId;
-      this.urlParam = data.param;
-      this.stopTimer();
-      this.startCountdown();
-    });
+    this.playerJoinedSubscription = this.webSocketService
+      .listen<{ opponent: string; param: string; gameId: number }>('player-joined')
+      .subscribe((data) => {
+        console.log('Received player-joined event');
+        this.canStartGame = true;
+        this.tictactoeService.gameId = data.gameId;
+        this.urlParam = data.param;
+        this.stopTimer();
+        this.startCountdown();
+      });
   }
 
   ngOnDestroy() {
     this.stopTimer();
-    this.leaveQueue();
     this.stopCountdown();
     this.unsubscribeEvents();
   }
@@ -72,7 +72,7 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     }
   }
 
-    startTimer() {
+  startTimer() {
     this.timer = setInterval(() => {
       this.timeInQueue++;
     }, 1000);
@@ -109,21 +109,30 @@ export class QueueModalComponent implements OnInit, OnDestroy {
 
   redirectToGame(): void {
     console.log('Redirecting to /game');
-    this.router.navigate(['/game/'+ this.urlParam]);
+    this.router.navigate(['/game/' + this.urlParam]);
   }
 
-  formatTime(sec: number) {
+  formatTime(sec: number): string {
     const minutes = Math.floor(sec / 60);
     const seconds = sec % 60;
     return `${this.pad(minutes)}:${this.pad(seconds)}`;
   }
 
-  pad(value: number) {
+  pad(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
   }
 
   leaveQueue(): void {
     console.log('Leaving the queue');
     this.webSocketService.emit('leave-queue');
+  }
+
+  returnHome(): void {
+    console.log('Return Home clicked');
+    this.dialogRef.close();
+    this.dialogRef.afterClosed().subscribe(() => {
+      console.log('Dialog closed, navigating to home');
+      this.router.navigate(['/home']);
+    });
   }
 }
