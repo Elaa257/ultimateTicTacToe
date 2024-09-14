@@ -8,10 +8,9 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put,
+  Put, Query,
   UseGuards,
 } from '@nestjs/common';
-import { CreateGameRequestDto } from './DTOs/createGameRequestDto';
 import { GameService } from './game.service';
 import { UpdateGameRequestDto } from './DTOs/updateGameRequestDto';
 import { GameResponseDto } from './DTOs/gameResponseDto';
@@ -39,11 +38,10 @@ export class GameController {
 
   //get specific game
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
   @Get(':id')
   @ApiResponse({ type: GameResponseDto })
   async getGame(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: number
   ): Promise<GameResponseDto> {
     return await this.gameService.getGame(id);
   }
@@ -93,9 +91,10 @@ export class GameController {
   @Post()
   @ApiResponse({ type: ResponseDTO })
   async createGame(
-    @Body() createGameRequestDto: CreateGameRequestDto,
+    @Query('player1Id', ParseIntPipe) player1Id: number,
+    @Query('player2Id', ParseIntPipe) player2Id: number
   ): Promise<ResponseDTO> {
-    return await this.gameService.create(createGameRequestDto);
+    return await this.gameService.create(player1Id, player2Id);
   }
 
   //delete a specific game
@@ -104,7 +103,7 @@ export class GameController {
   @Delete('delete')
   @ApiResponse({ type: ResponseDTO })
   async deleteGame(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: number
   ): Promise<ResponseDTO> {
     return await this.gameService.deleteGame(id);
   }
@@ -115,8 +114,8 @@ export class GameController {
   @ApiResponse({ type: GameResponseDto })
   async updateGame(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateGameRequestDTO: UpdateGameRequestDto,
+    @Param('board index', ParseIntPipe) boardIndex: number,
   ): Promise<GameResponseDto> {
-    return this.gameService.makeMove(id, updateGameRequestDTO);
+    return this.gameService.makeMove(id, boardIndex);
   }
 }

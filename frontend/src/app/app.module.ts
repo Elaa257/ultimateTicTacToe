@@ -14,6 +14,8 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
 import { RouterModule } from '@angular/router';
 import { LoadingComponent } from './loading/loading.component';
 import { BaseChartDirective } from 'ng2-charts';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { LayoutModule } from '@angular/cdk/layout';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -45,6 +47,8 @@ export function initializeApp(): () => Promise<void> {
     AuthComponent,
     LoadingComponent,
     BaseChartDirective,
+    MatGridListModule,
+    LayoutModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,

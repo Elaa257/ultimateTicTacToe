@@ -17,7 +17,7 @@ export class EndGameDTO {
     loser: User,
     player1: User,
     player2: User,
-    draw: boolean,
+    draw: boolean
   ) {
     this.winner = winner;
     this.loser = loser;

@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="outer-edges">
+    <div class="inner-edges">
+      <div class="grid">
+          @for (cell of cells; track $index) {
+          <div class="cell" (click)="makeMove($index)">
+            <button mat-button>{{ getCellSymbol(cell) }}</button>
+          </div>
+      }
+      </div>
+    </div>
+  </div>
+</div>
+8

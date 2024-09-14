@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -10,6 +10,7 @@ import { WebSocketService } from './web-socket.service';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { TicTacToeService } from '../tic-tac-toe/tic-tac-toe.service';
 
 @Component({
   selector: 'app-queue-modal',
@@ -32,11 +33,12 @@ export class QueueModalComponent implements OnInit, OnDestroy {
   countdownTimer: any;
 
   private playerJoinedSubscription!: Subscription;
-
+  protected urlParam!: string;
   constructor(
     public dialogRef: MatDialogRef<QueueModalComponent>,
     private webSocketService: WebSocketService,
-    private router: Router
+    private router: Router,
+    private tictactoeService: TicTacToeService,
   ) {
 
     this.webSocketService.emit('join-queue');
@@ -45,9 +47,13 @@ export class QueueModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.startTimer();
 
-    this.playerJoinedSubscription = this.webSocketService.listen('player-joined').subscribe(() => {
+
+    this.playerJoinedSubscription = this.webSocketService.listen<{opponent: string, param: string, gameId: number}>('player-joined').subscribe((data) => {
       console.log('Received player-joined event');
+      console.log(data);
       this.canStartGame = true;
+      this.tictactoeService.gameId = data.gameId;
+      this.urlParam = data.param;
       this.stopTimer();
       this.startCountdown();
     });
@@ -66,7 +72,7 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  startTimer() {
+    startTimer() {
     this.timer = setInterval(() => {
       this.timeInQueue++;
     }, 1000);
@@ -103,7 +109,7 @@ export class QueueModalComponent implements OnInit, OnDestroy {
 
   redirectToGame(): void {
     console.log('Redirecting to /game');
-    this.router.navigate(['/game']);
+    this.router.navigate(['/game/'+ this.urlParam]);
   }
 
   formatTime(sec: number) {

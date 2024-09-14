@@ -11,7 +11,7 @@ import { UpdateUserDTO } from '../user/DTOs/updateUserDTO';
 export class GameLogicService {
   constructor(
     @InjectRepository(User)
-    private userRepo: Repository<User>,
+    private userRepo: Repository<User>
   ) {}
 
   //checks whether there is winner or if the game is draw
@@ -29,36 +29,22 @@ export class GameLogicService {
       [2, 4, 6],
     ];
 
-    let sum: number;
-    let endGameDTO: EndGameDTO;
-
     for (const row of rows) {
+      const [a, b, c] = row;
       if (
-        board[row[0]] === null ||
-        board[row[1]] === null ||
-        board[row[2]] === null
-      )
-        continue;
-      sum = board[row[0]] + board[row[1]] + board[row[2]];
-      if (sum === 3) {
-        this.updateWinningStatistic(game.player2, game.player1);
-        endGameDTO = new EndGameDTO(
-          game.player2,
-          game.player1,
-          game.player1,
-          game.player2,
-          false,
-        );
-        return endGameDTO;
-      }
-      if (sum === 0) {
-        this.updateWinningStatistic(game.player1, game.player2);
-        endGameDTO = new EndGameDTO(
+        Number(board[a]) !== -1 &&
+        Number(board[a]) === Number(board[b]) &&
+        Number(board[b]) === Number(board[c])
+      ) {
+        const winner = board[a] === 0 ? game.player1 : game.player2;
+        const loser = board[a] === 0 ? game.player2 : game.player1;
+        this.updateWinningStatistic(winner, loser);
+        const endGameDTO = new EndGameDTO(
+          winner,
+          loser,
           game.player1,
           game.player2,
-          game.player1,
-          game.player2,
-          false,
+          false
         );
         return endGameDTO;
       }
@@ -66,7 +52,13 @@ export class GameLogicService {
 
     if (this.gameIsFinished(game)) {
       this.updateDraw(game.player1, game.player2);
-      endGameDTO = new EndGameDTO(null, null, game.player1, game.player2, true);
+      const endGameDTO = new EndGameDTO(
+        null,
+        null,
+        game.player1,
+        game.player2,
+        true
+      );
       return endGameDTO;
     }
 
@@ -89,10 +81,13 @@ export class GameLogicService {
     ];
 
     for (const row of rows) {
+      console.log(board[row[0]]);
+      console.log(board[row[1]]);
+      console.log(board[row[2]]);
       if (
-        board[row[0]] === null ||
-        board[row[1]] === null ||
-        board[row[2]] === null
+        Number(board[row[0]]) === -1 ||
+        Number(board[row[1]]) === -1 ||
+        Number(board[row[2]]) === -1
       )
         return false;
     }
@@ -101,7 +96,7 @@ export class GameLogicService {
 
   async updateWinningStatistic(
     winner: User,
-    loser: User,
+    loser: User
   ): Promise<ResponseDTO> {
     try {
       winner.wins += 1;
@@ -114,7 +109,7 @@ export class GameLogicService {
     } catch (error) {
       return new ResponseDTO(
         false,
-        `Winning statistic could not be updated. Error: ${error}`,
+        `Winning statistic could not be updated. Error: ${error}`
       );
     }
   }
@@ -131,7 +126,7 @@ export class GameLogicService {
     } catch (error) {
       return new ResponseDTO(
         false,
-        `Winning statistic could not be updated. Error: ${error}`,
+        `Winning statistic could not be updated. Error: ${error}`
       );
     }
   }
@@ -145,7 +140,7 @@ export class GameLogicService {
   async calculateNewElo(
     player: UpdateUserDTO,
     opponent: UpdateUserDTO,
-    endState?: string,
+    endState?: string
   ): Promise<ResponseDTO> {
     try {
       const adjustFactor: number = 20;
@@ -170,12 +165,12 @@ export class GameLogicService {
 
       return new ResponseDTO(
         true,
-        `the new Elo-Points of ${player.nickname} are ${newEloPoints} now.`,
+        `the new Elo-Points of ${player.nickname} are ${newEloPoints} now.`
       );
     } catch (error) {
       return new ResponseDTO(
         false,
-        `Elo-Points of ${player.nickname} could not be updated.`,
+        `Elo-Points of ${player.nickname} could not be updated.`
       );
     }
   }

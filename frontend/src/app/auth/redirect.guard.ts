@@ -20,7 +20,7 @@ export class RedirectGuard implements CanActivate {
           return false;
         }
         // If the user is a normal user and tries to access the admin page
-        if (user && user.user?.role === 'user' && state.url === '/admin') {
+        if (user && user.user?.role  === 'user' && state.url === '/admin') {
           this.router.navigate(['/profile']);
           return false;
         }
