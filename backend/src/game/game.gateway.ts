@@ -56,6 +56,9 @@ export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
         board: response.board,
         turnId: response.turn.id,
         gameEnd: response.finished,
+        loser: response.loser,
+        winner: response.winner,
+        draw: response.draw,
       });
 
       // If the game has ended, handle game end

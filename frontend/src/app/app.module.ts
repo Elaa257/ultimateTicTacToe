@@ -52,7 +52,7 @@ export function initializeApp(): () => Promise<void> {
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule ,
   ],
   providers: [
     {

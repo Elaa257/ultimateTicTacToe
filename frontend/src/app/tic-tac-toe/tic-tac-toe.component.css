@@ -4,39 +4,54 @@
   align-items: center;
   height: 100vh;
   background-color: #282828;
+  padding: 20px;
 }
 
-/* Äußere Kanten des Rahmens */
+/* Äußere Kanten des Rahmens, responsiv angepasst */
 .outer-edges {
   position: relative;
-  padding: 30px; /* Erhöht das Padding für größere äußere Ränder */
+  width: 60vw; /* Dynamische Breite: 60% der Viewport-Breite */
+  height: 60vw; /* Dynamische Höhe entsprechend der Breite */
+  max-width: 750px; /* Maximale Breite auf größeren Bildschirmen */
+  max-height: 750px; /* Maximale Höhe auf größeren Bildschirmen */
+  min-width: 250px; /* Mindestgröße auf kleineren Bildschirmen */
+  min-height: 250px;
+  display: flex; /* Flexbox, um die inneren Elemente zu zentrieren */
+  justify-content: center;
+  align-items: center;
   background-color: #444;
-  animation: pulsate 1.5s infinite alternate;  
+  animation: pulsate 1.5s infinite alternate;
   border: 0.2rem solid #fff;
   border-radius: 2rem;
   box-shadow: 0 0 .2rem #fff,
-            0 0 .2rem #fff,
-            0 0 2rem #bc13fe,
-            0 0 0.8rem #bc13fe,
-            0 0 2.8rem #bc13fe,
-            inset 0 0 1.3rem #bc13fe; 
+              0 0 .2rem #fff,
+              0 0 2rem #bc13fe,
+              0 0 0.8rem #bc13fe,
+              0 0 2.8rem #bc13fe,
+              inset 0 0 1.3rem #bc13fe;
+  box-sizing: border-box;
 }
 
-/* Innere Kanten des Rahmens */
+/* Innere Kanten des Rahmens, zentriert in outer-edges */
 .inner-edges {
-  position: relative;
-  padding: 20px; /* Erhöht das Padding für größere innere Ränder */
+  box-sizing: border-box;
+  width: 90%; /* Relativ zu outer-edges */
+  height: 90%; /* Relativ zu outer-edges */
   background-color: #1e1e1e;
+  padding: 30px;
   border-radius: 8px;
+  display: flex; /* Flexbox für das innere Layout */
+  justify-content: center;
+  align-items: center;
 }
 
 /* Grid-Layout für das Tic-Tac-Toe-Spiel */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px; /* Erhöht den Abstand zwischen den Zellen */
-  width: 450px; /* Breiteres Spielfeld */
-  height: 450px; /* Erhöht die Höhe des Spielfelds */
+  gap: 10px;
+  width: 100%; /* Füllt den inneren Bereich */
+  height: 100%; /* Füllt den inneren Bereich */
   background-color: black;
   padding: 10px;
   border-radius: 4px;
@@ -47,14 +62,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 140px; /* Erhöht die Höhe der Zellen */
+  aspect-ratio: 1; /* Stellt sicher, dass die Zellen quadratisch bleiben */
+  padding: 5px;
 }
 
 /* Styling für die Buttons */
 button[mat-button] {
   width: 100%;
   height: 100%;
-  font-size: 32px; /* Größerer Text für größere Buttons */
+  font-size: 2vw; /* Dynamische Schriftgröße basierend auf der Viewport-Breite */
   color: white;
   background-color: #1e1e1e;
   border: 1px solid #444;
@@ -62,4 +78,30 @@ button[mat-button] {
 
 button[mat-button]:hover {
   background-color: #333;
+}
+
+/* Media Query für kleinere Bildschirme */
+@media (max-width: 600px) {
+  .outer-edges {
+    width: 80vw; /* Vergrößert die outer-edges auf kleineren Bildschirmen */
+    height: 80vw;
+    padding: 10px;
+  }
+
+  .inner-edges {
+    padding: 20px; /* Vergrößert den inneren Bereich auf kleineren Bildschirmen */
+  }
+  .cell {
+    padding: 3px;
+  }
+
+  .grid {
+    gap: 0 !important;
+    padding: 10px;
+  
+  }
+
+  button[mat-button] {
+    font-size: 10vw; /* Vergrößert die Schriftgröße auf kleineren Bildschirmen */
+  }
 }
