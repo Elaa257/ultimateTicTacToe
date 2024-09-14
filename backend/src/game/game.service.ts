@@ -10,6 +10,7 @@ import { GameLogicService } from './game-logic.service';
 import { GameResponseDto } from './DTOs/gameResponseDto';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { MultiGamesResponseDTO } from './DTOs/multiGamesResponseDTO';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class GameService {
@@ -17,6 +18,7 @@ export class GameService {
     @InjectRepository(Game)
     private gameRepo: Repository<Game>,
     private gameLogicService: GameLogicService,
+    private userService: UserService,
   ) {}
 
   //create new game
@@ -64,6 +66,82 @@ export class GameService {
     } catch (error) {
       return new GameResponseDto(
         `There was an error queueing game with id ${id}: ${error}`,
+      );
+    }
+  }
+
+  //get games for a specific user
+  async getUserGames(userId: number): Promise<MultiGamesResponseDTO> {
+    try {
+      const user = await this.userService.getUser(userId);
+      const userGames = await this.gameRepo.find({
+        where: [{ player1: user.user }, { player2: user.user }],
+      });
+      return new MultiGamesResponseDTO(
+        `Successfully retrieved all available games for user ${userId}.`,
+        userGames,
+      );
+    } catch(error) {
+      return new MultiGamesResponseDTO(
+        `There was an error queueing games for user ${userId}: ${error}`,
+      );
+    }
+  }
+
+  //get wins for a specific user
+  async getWins(userId: number): Promise<MultiGamesResponseDTO> {
+    try {
+      const user = await this.userService.getUser(userId);
+      const userGames = await this.gameRepo.find({
+        where: { winner: user.user }
+      });
+      return new MultiGamesResponseDTO(
+        `Successfully retrieved all available wins for user ${userId}.`,
+        userGames,
+      );
+    } catch(error) {
+      return new MultiGamesResponseDTO(
+        `There was an error queueing wins for user ${userId}: ${error}`,
+      );
+    }
+  }
+
+  //get loses for a specific user
+  async getLoses(userId: number): Promise<MultiGamesResponseDTO> {
+    try {
+      const user = await this.userService.getUser(userId);
+      const userGames = await this.gameRepo.find({
+        where: { loser: user.user }
+      });
+      return new MultiGamesResponseDTO(
+        `Successfully retrieved all available loses for user ${userId}.`,
+        userGames,
+      );
+    } catch(error) {
+      return new MultiGamesResponseDTO(
+        `There was an error queueing loses for user ${userId}: ${error}`,
+      );
+    }
+  }
+
+  //get drwas for a specific user
+  async getDraws(userId: number): Promise<MultiGamesResponseDTO> {
+    try {
+      const user = await this.userService.getUser(userId);
+      const userGames = await this.gameRepo.find({
+        where: [
+          { player1: user.user, draw: true },
+          { player2: user.user, draw: true }
+        ]
+      });
+
+      return new MultiGamesResponseDTO(
+        `Successfully retrieved all available draws for user ${userId}.`,
+        userGames,
+      );
+    } catch(error) {
+      return new MultiGamesResponseDTO(
+        `There was an error queueing draws for user ${userId}: ${error}`,
       );
     }
   }

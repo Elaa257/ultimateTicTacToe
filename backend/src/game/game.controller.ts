@@ -48,6 +48,46 @@ export class GameController {
     return await this.gameService.getGame(id);
   }
 
+  //get all games for a specific user
+  @UseGuards(JwtAuthGuard)
+  @Get('userGames')
+  @ApiResponse({ type: MultiGamesResponseDTO })
+  async getUserGames(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<MultiGamesResponseDTO> {
+    return await this.gameService.getUserGames(userId);
+  }
+
+  //get all wins for a specific user
+  @UseGuards(JwtAuthGuard)
+  @Get('userWins')
+  @ApiResponse({ type: MultiGamesResponseDTO })
+  async getWins(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<MultiGamesResponseDTO> {
+    return await this.gameService.getWins(userId);
+  }
+
+  //get all loses for a specific user
+  @UseGuards(JwtAuthGuard)
+  @Get('userLoses')
+  @ApiResponse({ type: MultiGamesResponseDTO })
+  async getLoses(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<MultiGamesResponseDTO> {
+    return await this.gameService.getLoses(userId);
+  }
+
+  //get all draws for a specific user
+  @UseGuards(JwtAuthGuard)
+  @Get('userDraws')
+  @ApiResponse({ type: MultiGamesResponseDTO })
+  async getDraws(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<MultiGamesResponseDTO> {
+    return await this.gameService.getDraws(userId);
+  }
+
   //create new game
   @UseGuards(JwtAuthGuard)
   @Post()

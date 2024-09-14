@@ -143,6 +143,10 @@ mat-sidenav {
   animation: blink-mobile-nav 3s infinite;
 }
 
+.blinking-button-mobile-nav:hover {
+  animation: none;
+}
+
 /* Styles for larger screens (tablet and above) */
 @media (min-width: 750px) {
 
