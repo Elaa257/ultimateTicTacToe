@@ -22,7 +22,25 @@
 .profile-page-container p {
   font-family: 'Helvetica', sans-serif;
 }
+::ng-deep .snackbar-error {
+  background-color: yellow !important;
+  color: black !important;
+}
 
+::ng-deep .snackbar-success {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+::ng-deep .mat-mdc-snack-bar-container {
+  position: fixed !important;
+  top: 20% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  max-width: 400px;
+  width: auto;
+  border-radius: 4px;
+  z-index: 10000;
+}
 /* Styling für den Button */
 .profile-page-container button {
   padding: 0.75rem 1.5rem;
