@@ -16,6 +16,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { UserDTO } from './DTOs/userDTO';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { QueueModalComponent } from '../queue-modal/queue-modal.component';
 
 @Component({
   selector: 'app-profile',
@@ -171,6 +172,13 @@ export class ProfileComponent {
       }
     }
 
+  }
+
+  openQueueModal(): void {
+    this.dialog.open(QueueModalComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+    });
   }
 
   gameHistory = [

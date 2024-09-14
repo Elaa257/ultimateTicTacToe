@@ -6,12 +6,11 @@
   background-color: #282828;
 }
 
-/* Äußere Kanten des Rahmens */
 .outer-edges {
   position: relative;
-  padding: 30px; /* Erhöht das Padding für größere äußere Ränder */
+  padding: 30px;
   background-color: #444;
-  animation: pulsate 1.5s infinite alternate;  
+  animation: pulsate 1.5s infinite alternate;
   border: 0.2rem solid #fff;
   border-radius: 2rem;
   box-shadow: 0 0 .2rem #fff,
@@ -19,42 +18,38 @@
             0 0 2rem #bc13fe,
             0 0 0.8rem #bc13fe,
             0 0 2.8rem #bc13fe,
-            inset 0 0 1.3rem #bc13fe; 
+            inset 0 0 1.3rem #bc13fe;
 }
 
-/* Innere Kanten des Rahmens */
 .inner-edges {
   position: relative;
-  padding: 20px; /* Erhöht das Padding für größere innere Ränder */
+  padding: 20px;
   background-color: #1e1e1e;
   border-radius: 8px;
 }
 
-/* Grid-Layout für das Tic-Tac-Toe-Spiel */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px; /* Erhöht den Abstand zwischen den Zellen */
-  width: 450px; /* Breiteres Spielfeld */
-  height: 450px; /* Erhöht die Höhe des Spielfelds */
+  gap: 15px;
+  width: 450px;
+  height: 450px;
   background-color: black;
   padding: 10px;
   border-radius: 4px;
 }
 
-/* Styling für jede Zelle im Grid */
 .cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 140px; /* Erhöht die Höhe der Zellen */
+  height: 140px;
 }
 
-/* Styling für die Buttons */
 button[mat-button] {
   width: 100%;
   height: 100%;
-  font-size: 32px; /* Größerer Text für größere Buttons */
+  font-size: 32px;
   color: white;
   background-color: #1e1e1e;
   border: 1px solid #444;
@@ -62,4 +57,61 @@ button[mat-button] {
 
 button[mat-button]:hover {
   background-color: #333;
+}
+
+.profile-card {
+  flex: 1 1 20%;
+  max-width: 300px;
+  padding: 20px;
+  margin: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.profile-image-container {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.profile-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.profile-info {
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-grow: 1;
+  margin-top: auto;
+  align-items: center;
+  font-family: Audiowide, sans-serif;
+}
+.profile-info h2{
+  margin-bottom: 5rem;
+}
+.profile-info p {
+  margin-bottom: 5rem;
+}
+
+.active {
+  border: 4px solid #bc13fe;
 }
