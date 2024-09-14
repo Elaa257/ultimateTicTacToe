@@ -11,6 +11,7 @@ import { join } from 'path';
 import { GameModule } from './game/game.module';
 import { UserModule } from './user/user.module';
 import { QueueModule } from './queue/queue.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { QueueModule } from './queue/queue.module';
       entities: [User, Game],
       synchronize: true,
     }),
+    EventEmitterModule.forRoot(),
     AuthModule,
     GameModule,
     UserModule,
