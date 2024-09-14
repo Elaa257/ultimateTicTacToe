@@ -39,12 +39,12 @@
         <p>Draws: {{ user?.draw }}</p>
         <p>Win Rate: {{ winRate }}</p>
       </div>
-      <!-- Graphik -->
+
       <canvas baseChart
               [datasets]="chartData"
               [labels]="chartLabels"
               [options]="chartOptions"
-              [legend]="true">
+              >
       </canvas>
     </mat-card>
   </div>
@@ -54,18 +54,21 @@
     <h3>Game History</h3>
     <div class="game-history-scroll">
       <mat-accordion>
-        @for (game of gameHistory; track $index) {
+        @for( game of games; track $index){
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Gegner: {{ game.opponent }} | Ergebnis: {{ game.result }}
+                {{ game.player1.nickname }} vs. {{ game.player2.nickname }}
               </mat-panel-title>
               <mat-panel-description>
-                Elo Änderung: {{ game.eloChange }}
+                {{ game.result }} ({{ game.eloChange > 0 ? '+' : '' }}{{ game.eloChange }})
               </mat-panel-description>
             </mat-expansion-panel-header>
-            <p>Ergebnis: {{ game.result }}</p>
-            <p>Veränderte Elo-Punkte: {{ game.eloChange }}</p>
+            <div class="game-details">
+              <p>Date: {{ game.time | date:'short' }}</p>
+              <p>Your ELO Before: {{ getEloBefore(game) }}</p>
+              <p>Your ELO After: {{ getEloAfter(game) }}</p>
+            </div>
           </mat-expansion-panel>
         }
       </mat-accordion>
