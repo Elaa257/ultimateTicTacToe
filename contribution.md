@@ -8,16 +8,26 @@
 4. Run `npm start` in the `backend` directory.
 5. You can now access the application via `localhost:3000`.
 
-## Development
+## Default data
 
-If you make changes in the frontend while running the application via `localhost:3000`, you need to build the frontend again and restart the application in the `backend` directory.  
-The easiest way to this is:
+## Admin
 
-1. Run `npm run watch` in the `frontend` directory.
-2. Run `npm run start dev` in the `backend` directory.
+E-Mail: admin@mail.de  
+Password: admin1234
 
-Now all changes that you make are displayed directly without rebuilding or restarting.
+## Users
 
+### User 1:
 
-If you are just trying to style the frontend without need for the backend, run `npm start` in the `frontend` directory.  
-You can now access the `frontend` via `localhost:4200`.
+E-Mail: user1@mail.de  
+Password: user11234
+
+### User 2:
+
+E-Mail: user2@mail.de  
+Password: user21234
+
+### User 3 (Elo != 1000)
+
+E-Mail: user3@mail.de  
+Password: user31234

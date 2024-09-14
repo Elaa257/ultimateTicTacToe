@@ -60,41 +60,11 @@ Unser Matchmaking-System ist darauf ausgelegt, Spieler basierend auf ihrem Elo-R
 
 ### Queue System Überblick
 
-Sobald sich ein Spieler über WebSocket mit dem Server verbindet, wird er durch sein JWT-Token authentifiziert. Nach erfolgreicher Authentifizierung kann der Spieler der Matchmaking-Warteschlange beitreten. Das System sucht nach einem Gegner, dessen Elo-Rating sich in einem Bereich von ±99 Punkten befindet. Sobald ein passender Gegner gefunden wurde, werden beide Spieler benachrichtigt, und das Spiel beginnt nach einem Countdown.
-The system also provides real-time queue monitoring for administrators, allowing them to view which users are waiting for a match. The queue is updated every time a user joins or leaves, ensuring accurate and timely information is available to all connected clients, including admins.
+Sobald sich ein Spieler über WebSocket mit dem Server verbindet, wird er durch sein JWT-Token authentifiziert. Nach erfolgreicher Authentifizierung kann der Spieler der Matchmaking-Warteschlange beitreten. Das System sucht nach einem Gegner, dessen Elo-Rating sich in einem Bereich von ±99 Punkten befindet. Sobald ein passender Gegner gefunden wurde, werden beide Spieler benachrichtigt, und das Spiel beginnt nach einem Countdown.  
 
-### User Connection and Authentication
+Außerdem gibt es ein Queue-Monotoring, durch welches Admins überwachen können, welche User sich gerade in der Queue befinden. Diese Queue-Übersicht wird jedes Mal geupdated, wenn ein Spieler die Queue betritt oder verlässt.
 
-Upon connecting to the WebSocket server, the `handleConnection` method is triggered. The server extracts the JWT token from the user's cookies and verifies it using the `JwtService`. If the token is valid, the user's details (nickname, Elo rating) are retrieved from the database. If the token is invalid or the user is not found, the connection is terminated. This ensures that only authenticated users can interact with the matchmaking system.
 
-### Joining the Queue
+### User Connection und Authentifizierung
 
-Once connected, users can emit a `join-queue` event to enter the matchmaking queue. The server processes this event by verifying the user's token and retrieving their information. If the user is not already in the queue, they are added, and the system attempts to find a match based on their Elo rating.
-
-The matching algorithm searches for another user in the queue whose Elo rating is within a range of ±99 points. If a match is found, both users are notified, and their information is removed from the queue. If no match is found, the user remains in the queue, waiting for a suitable opponent.
-
-### Real-Time Queue Updates
-
-Whenever a user joins or leaves the queue, the server updates the queue and broadcasts this information to all connected administrators. Admins can request the current queue state by emitting a `get-queue` event. The server ensures that only users with the admin role can access this data by verifying their JWT token.
-
-### Leaving the Queue
-
-Users can emit a `leave-queue` event to exit the queue before a match is found. The server processes this by removing the user from the queue and notifying administrators of the updated queue state. Users also receive confirmation that they have successfully left the queue.
-
-### Countdown and Game Start
-
-When two users are matched, they are notified via the `player-joined` event, which triggers a 10-second countdown on the frontend. During this countdown, the frontend displays a timer, preparing the players for the upcoming match. After the countdown ends, the frontend emits a `start-game` event, and the user is redirected to the game screen.
-
-### Admin Queue Monitoring
-
-Admins can monitor the queue in real time by emitting a `get-queue` event. The server checks the admin's role using their JWT token and then responds with the current queue state. This feature gives admins full visibility of the queue, allowing them to manage the matchmaking process if necessary.
-
-### Security Considerations
-
-To ensure security, the JWT token is used throughout the matchmaking process for user authentication. The token is extracted from the user's cookies and verified with every connection and request, ensuring that only authorized users can participate. Admins are also restricted to viewing queue data based on their verified role. This prevents unauthorized access to sensitive queue information.
-
-### Frontend WebSocket Handling
-
-In the frontend, we use a WebSocket service to manage connections between the client and server. When the user opens the queue modal, they are automatically added to the queue by emitting the `join-queue` event. The frontend listens for the `player-joined` event to trigger the countdown to the game start.
-
-If the user decides to leave the queue before a match is found, the modal emits a `leave-queue` event, which removes the user from the queue on the server side. Once the countdown finishes, the user is redirected to the game screen.
+Bei der Verbindung mit dem WebSocket-Server wird die JWT-Authentifizierung überprüft. Wenn das Token gültig ist, wird der Nutzer mit seinen Informationen in die Warteschlange aufgenommen. Andernfalls wird die Verbindung abgelehnt. Dies stellt sicher, dass nur authentifizierte Spieler am Matchmaking teilnehmen können.
