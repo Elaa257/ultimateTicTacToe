@@ -11,6 +11,7 @@ import { ResponseDTO } from '../DTOs/responseDTO';
 import { MultiGamesResponseDTO } from './DTOs/multiGamesResponseDTO';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/user.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class GameService {
@@ -18,7 +19,8 @@ export class GameService {
     @InjectRepository(Game)
     private gameRepo: Repository<Game>,
     private gameLogicService: GameLogicService,
-    private userService: UserService
+    private userService: UserService,
+    private eventEmitter: EventEmitter2
   ) {}
 
   //create new game
@@ -38,6 +40,8 @@ export class GameService {
         new CreateGameRequestDto(player1.user, player2.user)
       );
       const saveGame = await this.gameRepo.save(newGame);
+      this.eventEmitter.emit('game.started', newGame);
+      console.log("new game emmited to admin")
 
       if (!saveGame.id) {
         return new ResponseDTO(false, 'Failed to generate game ID');
@@ -108,6 +112,7 @@ export class GameService {
       return new ResponseDTO(false, `Game with id ${id} could not be found`);
     }
     try {
+      this.eventEmitter.emit('game.ended', game);
       await this.gameRepo.delete(id);
       return new ResponseDTO(true, `Game with id ${id} successfully deleted`);
     } catch (error) {
