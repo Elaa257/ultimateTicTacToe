@@ -8,7 +8,9 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put, Query,
+  Put,
+  Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { GameService } from './game.service';
@@ -50,9 +52,8 @@ export class GameController {
   @UseGuards(JwtAuthGuard)
   @Get('userGames')
   @ApiResponse({ type: MultiGamesResponseDTO })
-  async getUserGames(
-    @Param('userId', ParseIntPipe) userId: number,
-  ): Promise<MultiGamesResponseDTO> {
+  async getUserGames(@Req() req): Promise<MultiGamesResponseDTO> {
+    const userId = req.user.id;
     return await this.gameService.getUserGames(userId);
   }
 

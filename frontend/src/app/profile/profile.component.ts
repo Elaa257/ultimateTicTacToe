@@ -12,10 +12,12 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { NgOptimizedImage } from '@angular/common';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { UserDTO } from './DTOs/userDTO';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { GameWithResult } from './DTOs/gamesDTO';
+import { MultiGamesResponseDTO } from './DTOs/gamesDTO';
 
 @Component({
   selector: 'app-profile',
@@ -34,18 +36,28 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
     MatExpansionPanel,
     MatAccordion,
     NgOptimizedImage,
+    DatePipe,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
 export class ProfileComponent {
   user: UserDTO | undefined;
+  games: GameWithResult[] = [];
   isModalOpen = false;
   selectedImage: string | null ='';
   wins = 0;
   losses = 0;
   draws = 0;
-  winRate = this.wins == 0 && this.losses == 0 ? '0' : (this.wins / (this.wins + this.losses)).toFixed(2);
+  winRate:any = 0;
+  chartData = [
+
+    { data: [0,0,0], label: 'Games' },
+  ];
+  chartLabels = ['Wins', 'Loses', 'Draws'];
+  chartOptions = {
+    responsive: true,
+  };
 
   constructor(private authService: AuthService, private userService: UserService, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
@@ -54,11 +66,11 @@ export class ProfileComponent {
     this.selectedImage = '/profile-picture.jpg'
     this.userService.getProfile().subscribe((data) => {
         this.user = data.user;
-        console.log('WO IST DRAW: ', this.user);
         if (this.user) {
           this.wins = this.user.wins
           this.losses = this.user.loses
           this.draws = this.user.draw;
+          this.updateChartData();
         }
         if (this.user?.profilePicture) {
           this.selectedImage ='data:image/jpeg;base64'+ this.user.profilePicture;
@@ -68,6 +80,47 @@ export class ProfileComponent {
       (error) => {
         console.error('Error getting profile', error);
       });
+
+    this.userService.getGameHistory().subscribe(
+      (data: MultiGamesResponseDTO) => {
+        if (data.games) {
+          this.games = data.games.map((game) => {
+            let eloBefore = 0;
+            let eloAfter = 0;
+            let eloChange = 0;
+            let result = '';
+
+            if (this.user) {
+              if (game.player1.id === this.user.id) {
+                eloBefore = game.player1EloBefore;
+                eloAfter = game.player1EloAfter;
+              } else if (game.player2.id === this.user.id) {
+                eloBefore = game.player2EloBefore;
+                eloAfter = game.player2EloAfter;
+              }
+
+              eloChange = eloAfter - eloBefore;
+
+              // Determine result
+              if (game.draw) {
+                result = 'Draw';
+              } else if (game.winner && game.winner.id === this.user.id) {
+                result = 'Win';
+              } else if (game.loser && game.loser.id === this.user.id) {
+                result = 'Loss';
+              }
+            }
+
+            return { ...game, eloChange, result } as GameWithResult;
+          });
+        } else {
+          this.games = [];
+        }
+      },
+      (error) => {
+        console.error('Error getting game history', error);
+      }
+    );
   }
   openSnackBar(message: string, action:string, isError: boolean) {
     const config = new MatSnackBarConfig();
@@ -170,28 +223,34 @@ export class ProfileComponent {
         console.log('Email is undefined', email);
       }
     }
-
+  }
+  updateChartData(){
+    this.chartData = [
+      { data: [this.wins, this.losses, this.draws], label: 'Games'}
+    ]
+    this.winRate = this.wins === 0 && this.losses === 0 ? '0' : (this.wins / (this.wins + this.losses)).toFixed(2);
   }
 
-  gameHistory = [
-    { opponent: 'JaneDoe', result: 'Win', eloChange: '+20' },
-    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
-    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
-    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
-    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
-    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
-    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
-    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
-    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
-  ];
+  getEloBefore(game: GameWithResult): number {
+    if (this.user) {
+      if (game.player1.id === this.user.id) {
+        return game.player1EloBefore;
+      } else if (game.player2.id === this.user.id) {
+        return game.player2EloBefore;
+      }
+    }
+    return 0;
+  }
 
-  // Daten für das Diagramm
-  chartData = [
-    { data: [this.wins, this.losses, this.draws], label: 'Games' },
-  ];
-  chartLabels = ['Wins', 'Losses', 'Draws'];
-  chartOptions = {
-    responsive: true,
-  };
+  getEloAfter(game: GameWithResult): number {
+    if (this.user) {
+      if (game.player1.id === this.user.id) {
+        return game.player1EloAfter;
+      } else if (game.player2.id === this.user.id) {
+        return game.player2EloAfter;
+      }
+    }
+    return 0;
+  }
 
 }

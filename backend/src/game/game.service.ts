@@ -104,7 +104,9 @@ export class GameService {
       const user = await this.userService.getUser(userId);
       const userGames = await this.gameRepo.find({
         where: [{ player1: user.user }, { player2: user.user }],
+        relations: ['player1', 'player2', 'turn', 'winner', 'loser'], // Include the related users
       });
+      console.log(userGames);
       return new MultiGamesResponseDTO(
         `Successfully retrieved all available games for user ${userId}.`,
         userGames,
