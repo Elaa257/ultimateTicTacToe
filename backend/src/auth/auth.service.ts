@@ -1,5 +1,10 @@
 // auth.service.ts
-import { Injectable, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ResponseDTO } from '../DTOs/responseDTO';
@@ -8,7 +13,6 @@ import * as crypto from 'crypto';
 import { LoginDTO } from './DTOs/loginDTO';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/user.entity';
-import { UserDTO } from '../user/DTOs/UserDTO';
 import { ResponseUserDTO } from '../user/DTOs/responseUserDTO';
 
 @Injectable()

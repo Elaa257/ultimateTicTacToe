@@ -98,7 +98,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (!user) {
-      return new ResponseDTO(false, 'User not found') ;
+      return new ResponseDTO(false, 'User not found');
     }
 
     try {
