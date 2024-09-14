@@ -1,0 +1,65 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #282828;
+}
+
+/* Äußere Kanten des Rahmens */
+.outer-edges {
+  position: relative;
+  padding: 30px; /* Erhöht das Padding für größere äußere Ränder */
+  background-color: #444;
+  animation: pulsate 1.5s infinite alternate;  
+  border: 0.2rem solid #fff;
+  border-radius: 2rem;
+  box-shadow: 0 0 .2rem #fff,
+            0 0 .2rem #fff,
+            0 0 2rem #bc13fe,
+            0 0 0.8rem #bc13fe,
+            0 0 2.8rem #bc13fe,
+            inset 0 0 1.3rem #bc13fe; 
+}
+
+/* Innere Kanten des Rahmens */
+.inner-edges {
+  position: relative;
+  padding: 20px; /* Erhöht das Padding für größere innere Ränder */
+  background-color: #1e1e1e;
+  border-radius: 8px;
+}
+
+/* Grid-Layout für das Tic-Tac-Toe-Spiel */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px; /* Erhöht den Abstand zwischen den Zellen */
+  width: 450px; /* Breiteres Spielfeld */
+  height: 450px; /* Erhöht die Höhe des Spielfelds */
+  background-color: black;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+/* Styling für jede Zelle im Grid */
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 140px; /* Erhöht die Höhe der Zellen */
+}
+
+/* Styling für die Buttons */
+button[mat-button] {
+  width: 100%;
+  height: 100%;
+  font-size: 32px; /* Größerer Text für größere Buttons */
+  color: white;
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+}
+
+button[mat-button]:hover {
+  background-color: #333;
+}

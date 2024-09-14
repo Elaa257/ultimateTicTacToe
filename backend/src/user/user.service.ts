@@ -22,6 +22,9 @@ export class UserService {
   async getUser(id: number): Promise<ResponseUserDTO> {
     try {
       const user = await this.userRepository.findOne({ where: { id } });
+      if (!user) {
+        return new ResponseUserDTO(`User with id ${id} could not be found`);
+      }
       return new ResponseUserDTO(`User ${user.id} found successfully`, user);
     } catch (error) {
       return new ResponseUserDTO(`User with id ${id} could not be found`);

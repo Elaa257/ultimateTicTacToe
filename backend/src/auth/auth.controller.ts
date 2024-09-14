@@ -14,7 +14,6 @@ import { LoginDTO } from './DTOs/loginDTO';
 import { FastifyReply } from 'fastify';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from './jwt/auth.guard';
-import { UpdateUserDTO } from '../user/DTOs/updateUserDTO';
 import { UserService } from '../user/user.service';
 
 @ApiTags('auth')
