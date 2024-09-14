@@ -134,9 +134,14 @@ export class ProfileComponent {
     const email = this.user?.email;
     if (email !== undefined) {
       if (confirm('Möchten Sie Ihr Passwort wirklich ändern?')) {
-        this.userService.changePassword(currentPassword, newPassword, email).subscribe(
+          this.userService.changePassword(currentPassword, newPassword, email).subscribe(
           (response) => {
-            console.log('Passwort erfolgreich geändert');
+            if(response.ok) {
+              console.log('Passwort erfolgreich geändert');
+            }else{
+              console.log('check you Inputs something went wrong');
+            }
+
           },
           (error) => {
             console.error('Fehler beim Ändern des Passworts', error);
