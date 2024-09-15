@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Game } from './game.entity';
 import { Repository } from 'typeorm';
 import { CreateGameRequestDto } from './DTOs/createGameRequestDto';
-import { UpdateGameRequestDto } from './DTOs/updateGameRequestDto';
 import { GameLogicService } from './game-logic.service';
 import { GameResponseDto } from './DTOs/gameResponseDto';
 import { ResponseDTO } from '../DTOs/responseDTO';
