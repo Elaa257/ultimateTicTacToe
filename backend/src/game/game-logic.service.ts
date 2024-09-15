@@ -14,11 +14,11 @@ export class GameLogicService {
     private userRepo: Repository<User>
   ) {}
 
-  //checks whether there is winner or if the game is draw
+  winnerElo: number;
+  loserElo: number;
+
   async calculateGameOutcome(game: Game): Promise<EndGameDTO> {
     const board: number[] = game.board;
-
-    console.log("Turn: " + game.turn.nickname);
 
     const rows: number[][] = [
       [0, 1, 2],
@@ -38,18 +38,28 @@ export class GameLogicService {
         Number(board[a]) === Number(board[b]) &&
         Number(board[b]) === Number(board[c])
       ) {
-
-        const winner = board[a] === 0 ? game.player1 : game.player2;
-        const loser = board[a] === 0 ? game.player2 : game.player1;
+        const winner = Number(board[a]) === 0 ? game.player1 : game.player2;
+        const loser = Number(board[a]) === 0 ? game.player2 : game.player1;
         await this.updateWinningStatistic(winner, loser);
-        const endGameDTO = new EndGameDTO(
-          winner,
-          loser,
-          game.player1,
-          game.player2,
-          false
-        );
-        return endGameDTO;
+        if (winner.id === game.player1.id) {
+          const endGameDTO = new EndGameDTO(
+            winner,
+            loser,
+            this.winnerElo,
+            this.loserElo,
+            false
+          );
+          return endGameDTO;
+        } else {
+          const endGameDTO = new EndGameDTO(
+            winner,
+            loser,
+            this.loserElo,
+            this.winnerElo,
+            false
+          );
+          return endGameDTO;
+        }
       }
     }
 
@@ -58,8 +68,8 @@ export class GameLogicService {
       const endGameDTO = new EndGameDTO(
         null,
         null,
-        game.player1,
-        game.player2,
+        this.winnerElo,
+        this.loserElo,
         true
       );
       return endGameDTO;
@@ -68,7 +78,6 @@ export class GameLogicService {
     return null;
   }
 
-  //checks whether all fields are occupied
   gameIsFinished(game: Game): boolean {
     const board: number[] = game.board;
 
@@ -106,8 +115,8 @@ export class GameLogicService {
       await this.userRepo.save(winner);
       loser.loses += 1;
       await this.userRepo.save(loser);
-      await this.calculateNewElo(winner, loser, 'winner');
-      await this.calculateNewElo(loser, winner, 'loser');
+      this.winnerElo = await this.calculateNewElo(winner, loser, 'winner');
+      this.loserElo = await this.calculateNewElo(loser, winner, 'loser');
       return new ResponseDTO(true, `Successfully updated winning statistic`);
     } catch (error) {
       return new ResponseDTO(
@@ -123,8 +132,8 @@ export class GameLogicService {
       await this.userRepo.save(player1);
       player2.draw += 1;
       await this.userRepo.save(player2);
-      await this.calculateNewElo(player1, player2);
-      await this.calculateNewElo(player2, player1);
+      this.winnerElo = await this.calculateNewElo(player1, player2);
+      this.loserElo = await this.calculateNewElo(player2, player1);
       return new ResponseDTO(true, `Successfully updated winning statistic`);
     } catch (error) {
       return new ResponseDTO(
@@ -144,9 +153,8 @@ export class GameLogicService {
     player: UpdateUserDTO,
     opponent: UpdateUserDTO,
     endState?: string
-  ): Promise<ResponseDTO> {
+  ): Promise<number> {
     try {
-      console.log("calculated elo");
       const adjustFactor: number = 20;
       let gamePoint: number = 0.5;
       const expectedValue: number =
@@ -159,24 +167,19 @@ export class GameLogicService {
           gamePoint = 0;
           break;
       }
-      //calculate the new elo points
       let newEloPoints =
         player.elo + adjustFactor * (gamePoint - expectedValue);
       if (newEloPoints < 0) {
         newEloPoints = 0;
       }
-      console.log("elo p" + newEloPoints);
-      await this.userRepo.update({ nickname: player.nickname }, { elo: newEloPoints });
+      await this.userRepo.update(
+        { nickname: player.nickname },
+        { elo: newEloPoints }
+      );
 
-      return new ResponseDTO(
-        true,
-        `the new Elo-Points of ${player.nickname} are ${newEloPoints} now.`
-      );
+      return newEloPoints;
     } catch (error) {
-      return new ResponseDTO(
-        false,
-        `Elo-Points of ${player.nickname} could not be updated.`
-      );
+      return player.elo;
     }
   }
 }

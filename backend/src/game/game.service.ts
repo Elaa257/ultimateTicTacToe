@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Game } from './game.entity';
 import { Repository } from 'typeorm';
 import { CreateGameRequestDto } from './DTOs/createGameRequestDto';
-import { UpdateGameRequestDto } from './DTOs/updateGameRequestDto';
 import { GameLogicService } from './game-logic.service';
 import { GameResponseDto } from './DTOs/gameResponseDto';
 import { ResponseDTO } from '../DTOs/responseDTO';
@@ -42,7 +41,7 @@ export class GameService {
       );
       const saveGame = await this.gameRepo.save(newGame);
       this.eventEmitter.emit('game.started', newGame);
-      console.log("new game emmited to admin")
+      console.log('new game emmited to admin');
 
       if (!saveGame.id) {
         return new ResponseDTO(false, 'Failed to generate game ID');
@@ -114,36 +113,37 @@ export class GameService {
         .leftJoinAndSelect('game.turn', 'turn')
         .leftJoinAndSelect('game.winner', 'winner')
         .leftJoinAndSelect('game.loser', 'loser')
-        .where('player1.id = :userId OR player2.id = :userId', { userId: user.user.id })
+        .where('player1.id = :userId OR player2.id = :userId', {
+          userId: user.user.id,
+        })
         .getMany();
 
       console.log(userGames);
       return new MultiGamesResponseDTO(
         `Successfully retrieved all available games for user ${userId}.`,
-        userGames,
+        userGames
       );
     } catch (error) {
       return new MultiGamesResponseDTO(
-        `There was an error queueing games for user ${userId}: ${error}`,
+        `There was an error queueing games for user ${userId}: ${error}`
       );
     }
   }
-
 
   //get wins for a specific user
   async getWins(userId: number): Promise<MultiGamesResponseDTO> {
     try {
       const user = await this.userService.getUser(userId);
       const userGames = await this.gameRepo.find({
-        where: { winner: user.user }
+        where: { winner: user.user },
       });
       return new MultiGamesResponseDTO(
         `Successfully retrieved all available wins for user ${userId}.`,
         userGames
       );
-    } catch(error) {
+    } catch (error) {
       return new MultiGamesResponseDTO(
-        `There was an error queueing wins for user ${userId}: ${error}`,
+        `There was an error queueing wins for user ${userId}: ${error}`
       );
     }
   }
@@ -153,15 +153,15 @@ export class GameService {
     try {
       const user = await this.userService.getUser(userId);
       const userGames = await this.gameRepo.find({
-        where: { loser: user.user }
+        where: { loser: user.user },
       });
       return new MultiGamesResponseDTO(
         `Successfully retrieved all available loses for user ${userId}.`,
-        userGames,
+        userGames
       );
-    } catch(error) {
+    } catch (error) {
       return new MultiGamesResponseDTO(
-        `There was an error queueing loses for user ${userId}: ${error}`,
+        `There was an error queueing loses for user ${userId}: ${error}`
       );
     }
   }
@@ -173,17 +173,17 @@ export class GameService {
       const userGames = await this.gameRepo.find({
         where: [
           { player1: user.user, draw: true },
-          { player2: user.user, draw: true }
-        ]
+          { player2: user.user, draw: true },
+        ],
       });
 
       return new MultiGamesResponseDTO(
         `Successfully retrieved all available draws for user ${userId}.`,
-        userGames,
+        userGames
       );
-    } catch(error) {
+    } catch (error) {
       return new MultiGamesResponseDTO(
-        `There was an error queueing draws for user ${userId}: ${error}`,
+        `There was an error queueing draws for user ${userId}: ${error}`
       );
     }
   }

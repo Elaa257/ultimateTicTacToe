@@ -1,7 +1,6 @@
 //controller for game endpoints
 
 import {
-  Body,
   Controller,
   Delete,
   Get,
@@ -14,7 +13,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { GameService } from './game.service';
-import { UpdateGameRequestDto } from './DTOs/updateGameRequestDto';
 import { GameResponseDto } from './DTOs/gameResponseDto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MultiGamesResponseDTO } from './DTOs/multiGamesResponseDTO';
