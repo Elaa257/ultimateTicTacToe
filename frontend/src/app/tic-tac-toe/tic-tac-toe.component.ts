@@ -44,6 +44,14 @@ export class TicTacToeComponent implements OnInit {
     this.authService.getCurrentUser().subscribe(user => {
       console.log('User:', user.user?.id);
       console.log('User:', user.user?.id);
+      this.player1Image = '/profile-picture.jpg'
+      this.player2Image = '/profile-picture.jpg'
+      if (this.player1?.profilePicture) {
+        this.player1Image = this.player1.profilePicture;
+      }
+      if (this.player2?.profilePicture) {
+        this.player2Image = this.player2.profilePicture;
+      }
 
       if (user.user?.id !== null && user.user?.id !== undefined) {
         this.currentUserId = Number(user.user?.id);
@@ -58,17 +66,9 @@ export class TicTacToeComponent implements OnInit {
         this.player1 = gameData.player1;
         this.player2 = gameData.player2;
 
-
-
       });
 
-      this.player1Image = this.player1?.profilePicture
-        ? 'data:image/jpeg;base64' + this.player1.profilePicture
-        : '/profile-picture.jpg';
 
-      this.player2Image = this.player2?.profilePicture
-        ? 'data:image/jpeg;base64' + this.player2.profilePicture
-        : '/profile-picture.jpg';
     });
 
     this.webSocketService.listen<{ board: number[], turnId: number, gameEnd: boolean, loser: UserDTO, winner: UserDTO, draw: boolean }>('player-move')
