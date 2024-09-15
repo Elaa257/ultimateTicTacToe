@@ -87,7 +87,6 @@ export class ProfileComponent {
 
         if (data.games) {
           this.games = data.games.map((game) => {
-            console.log("profile games" + game.id);
 
             let eloBefore = 0;
             let eloAfter = 0;
@@ -241,18 +240,6 @@ export class ProfileComponent {
       hasBackdrop: true,
     });
   }
-
-  gameHistory = [
-    { opponent: 'JaneDoe', result: 'Win', eloChange: '+20' },
-    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
-    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
-    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
-    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
-    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
-    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
-    { opponent: 'MaxMustermann', result: 'Lose', eloChange: '-15' },
-    { opponent: 'Player123', result: 'Win', eloChange: '+25' },
-  ];
   getEloBefore(game: GameWithResult): number {
     if (this.user) {
       if (game.player1.id === this.user.id) {
