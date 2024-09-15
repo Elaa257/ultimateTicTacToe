@@ -60,11 +60,6 @@ export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
         winner: response.winner,
         draw: response.draw,
       });
-
-      // If the game has ended, handle game end
-      if (response.finished) {
-        await this.gameService.deleteGame(gameId);
-      }
     }
   }
 

@@ -18,39 +18,11 @@ import { MultiUsersResponseDTO } from './DTOs/multipleUsersResponseDTO';
 import { UserService } from './user.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDTO } from './DTOs/updateUserDTO';
-import { FastifyReply } from 'fastify';
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  /*
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.User)
-  @Delete('deleteUserProfile')
-  @ApiResponse({ type: ResponseDTO })
-  async deleteOwnProfile(
-    @Session() session: SessionData
-  ): Promise<ResponseDTO> {
-    //kam vorher ausm authService
-    const user = (await this.getLoggedInUser(session)).user;
-    return await this.userService.deleteUserProfile(user.id);
-  }
-*/
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
-  @Delete('delete/:id')
-  @ApiResponse({ type: ResponseDTO })
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<ResponseDTO> {
-    return await this.userService.deleteUserProfile(id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  @ApiResponse({ type: ResponseUserDTO })
-  async getOneUser(@Param('id') id: string): Promise<ResponseUserDTO> {
-    return await this.userService.getUser(Number(id));
-  }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()

@@ -21,8 +21,8 @@ export class EndGameDTO {
   ) {
     this.winner = winner;
     this.loser = loser;
-    this.player1EloAfter = player1.elo;
-    this.player2EloAfter = player2.elo;
+    this.player1EloAfter = winner.elo;
+    this.player2EloAfter = winner.elo;
     this.draw = draw;
     this.finished = true;
   }

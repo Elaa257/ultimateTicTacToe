@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { User } from '../user/user.entity';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { UpdateUserDTO } from '../user/DTOs/updateUserDTO';
-//TODO: add elo calculation before creating new EndGameDTO -> will be part of the user service
+
 @Injectable()
 export class GameLogicService {
   constructor(
@@ -15,8 +15,10 @@ export class GameLogicService {
   ) {}
 
   //checks whether there is winner or if the game is draw
-  calculateGameOutcome(game: Game): EndGameDTO {
+  async calculateGameOutcome(game: Game): Promise<EndGameDTO> {
     const board: number[] = game.board;
+
+    console.log("Turn: " + game.turn.nickname);
 
     const rows: number[][] = [
       [0, 1, 2],
@@ -36,9 +38,10 @@ export class GameLogicService {
         Number(board[a]) === Number(board[b]) &&
         Number(board[b]) === Number(board[c])
       ) {
+
         const winner = board[a] === 0 ? game.player1 : game.player2;
         const loser = board[a] === 0 ? game.player2 : game.player1;
-        this.updateWinningStatistic(winner, loser);
+        await this.updateWinningStatistic(winner, loser);
         const endGameDTO = new EndGameDTO(
           winner,
           loser,
@@ -51,7 +54,7 @@ export class GameLogicService {
     }
 
     if (this.gameIsFinished(game)) {
-      this.updateDraw(game.player1, game.player2);
+      await this.updateDraw(game.player1, game.player2);
       const endGameDTO = new EndGameDTO(
         null,
         null,
@@ -143,6 +146,7 @@ export class GameLogicService {
     endState?: string
   ): Promise<ResponseDTO> {
     try {
+      console.log("calculated elo");
       const adjustFactor: number = 20;
       let gamePoint: number = 0.5;
       const expectedValue: number =
@@ -161,7 +165,8 @@ export class GameLogicService {
       if (newEloPoints < 0) {
         newEloPoints = 0;
       }
-      await this.userRepo.update(player.nickname, { elo: newEloPoints });
+      console.log("elo p" + newEloPoints);
+      await this.userRepo.update({ nickname: player.nickname }, { elo: newEloPoints });
 
       return new ResponseDTO(
         true,

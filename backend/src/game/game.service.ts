@@ -106,21 +106,29 @@ export class GameService {
   async getUserGames(userId: number): Promise<MultiGamesResponseDTO> {
     try {
       const user = await this.userService.getUser(userId);
-      const userGames = await this.gameRepo.find({
-        where: [{ player1: user.user }, { player2: user.user }],
-        relations: ['player1', 'player2', 'turn', 'winner', 'loser'], // Include the related users
-      });
+
+      const userGames = await this.gameRepo
+        .createQueryBuilder('game')
+        .leftJoinAndSelect('game.player1', 'player1')
+        .leftJoinAndSelect('game.player2', 'player2')
+        .leftJoinAndSelect('game.turn', 'turn')
+        .leftJoinAndSelect('game.winner', 'winner')
+        .leftJoinAndSelect('game.loser', 'loser')
+        .where('player1.id = :userId OR player2.id = :userId', { userId: user.user.id })
+        .getMany();
+
       console.log(userGames);
       return new MultiGamesResponseDTO(
         `Successfully retrieved all available games for user ${userId}.`,
         userGames,
       );
-    } catch(error) {
+    } catch (error) {
       return new MultiGamesResponseDTO(
         `There was an error queueing games for user ${userId}: ${error}`,
       );
     }
   }
+
 
   //get wins for a specific user
   async getWins(userId: number): Promise<MultiGamesResponseDTO> {
@@ -204,8 +212,6 @@ export class GameService {
 
   //make a move
   async makeMove(id: number, boardIndex: number): Promise<GameResponseDto> {
-    console.log('id: ', id);
-    console.log('type id: ', typeof id);
     let game = await this.gameRepo.findOne({
       where: { id: id },
       relations: ['player1', 'player2', 'turn', 'winner', 'loser'],
@@ -214,7 +220,6 @@ export class GameService {
       return new GameResponseDto(`Game with id ${id} could not be found`);
     }
 
-    this;
     try {
       const player = (await this.userService.getUser(game.turn.id)).user;
       this.updateGame(game, boardIndex, player);
