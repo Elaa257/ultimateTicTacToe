@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   MatCard,
   MatCardActions,
@@ -13,7 +13,7 @@ import { NgIf } from '@angular/common';
 import { QueueModalComponent } from '../queue-modal/queue-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../auth/auth.service';
-
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -31,17 +31,27 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
+  /**
+ * Gibt an, ob der Benutzer authentifiziert ist.
+ */
+  protected isLoggedIn: boolean = false;
+  /**
+ * Subscription zur Verwaltung der Authentifizierungs-Observable.
+ * Wird verwendet, um die Subscription bei der Zerstörung der Komponente zu kündigen.
+ */
+  private authSubscription!: Subscription;
 
-  isLoggedIn: boolean = false;
+  constructor(public dialog: MatDialog, private authService: AuthService) { }
 
-  constructor(public dialog: MatDialog, private authService: AuthService) {}
-
-  ngDoCheck() {
-    this.authService.isAuthenticated().subscribe(
+  /**
+ * Lifecycle-Hook, der beim Initialisieren der Komponente aufgerufen wird.
+ * Abonniert den Authentifizierungsstatus des Benutzers und aktualisiert die isLoggedIn-Eigenschaft entsprechend.
+ */
+  ngOnInit() {
+    this.authSubscription = this.authService.isAuthenticated().subscribe(
       (isAuthenticated: boolean) => {
         this.isLoggedIn = isAuthenticated;
-        console.log("check ngDoCheck", this.isLoggedIn);
       },
       (error: any) => {
         console.error("Error checking authentication", error);
@@ -50,7 +60,23 @@ export class HomeComponent {
     );
   }
 
-  openQueueModal(): void {
+  /**
+ * Lifecycle-Hook, der aufgerufen wird, wenn die Komponente zerstört wird.
+ * Kündigt die Authentifizierungs-Subscription, um Speicherlecks zu vermeiden.
+ */
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
+  }
+
+  /**
+ * Öffnet das Warteschlangen-Modal.
+ * 
+ * Das Modal ist konfiguriert, um nicht geschlossen werden zu können, solange es geöffnet ist,
+ * und zeigt eine Hintergrundabschattung (Backdrop).
+ */
+  protected openQueueModal(): void {
     this.dialog.open(QueueModalComponent, {
       disableClose: true,
       hasBackdrop: true,
