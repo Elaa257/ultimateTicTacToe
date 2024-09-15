@@ -115,3 +115,61 @@ button[mat-button]:hover {
 .active {
   border: 4px solid #bc13fe;
 }
+/* Media Query für mobile Geräte */
+@media screen and (max-width: 768px) {
+  /* Container im mobilen Layout anpassen */
+  .container {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  /* Profilkarten als schmale Container über dem Spielbrett */
+  .profile-card {
+    max-width: 100%;
+    flex-direction: row;
+    align-items: center;
+    margin: 30px 0;
+    padding: 5px;
+    height: 60px;
+  }
+
+  /* Profilbild in der mobilen Ansicht kleiner machen */
+  .profile-image-container {
+    width: 50px;
+    height: 50px;
+  }
+
+  .profile-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Text kleiner und schmaler anpassen */
+  .profile-info {
+    font-size: 14px;
+    margin-top: 0;
+    margin-left: 10px;
+  }
+
+  .profile-info h2 {
+    margin-bottom: 0;
+  }
+
+  .profile-info p {
+    margin-bottom: 0;
+  }
+
+  /* Spielraster kleiner machen */
+  .grid {
+    width: 300px;
+    height: 300px;
+  }
+
+  .cell {
+    height: 90px;
+  }
+
+  button[mat-button] {
+    font-size: 24px;
+  }
+}
