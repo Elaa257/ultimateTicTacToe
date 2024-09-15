@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
+  MAT_DIALOG_DATA, MatDialogActions, MatDialogClose,
+  MatDialogRef, MatDialogTitle,
 } from '@angular/material/dialog';
 import { WebSocketService } from './web-socket.service';
 import { MatButton } from '@angular/material/button';
@@ -17,6 +17,9 @@ import { GameOverDialogData } from './gameOverDialogData';
   styleUrls: ['./queue-modal.component.css'],
   imports: [
     MatButton,
+    MatDialogTitle,
+    MatDialogActions,
+    MatDialogClose,
   ],
 })
 export class QueueModalComponent implements OnInit, OnDestroy {
