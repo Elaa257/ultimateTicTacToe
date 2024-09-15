@@ -12,18 +12,17 @@ export class EndGameDTO {
   draw: boolean;
   finished: boolean;
 
-
   constructor(
     winner: User,
     loser: User,
-    player1: User,
-    player2: User,
+    player1Elo: number,
+    player2Elo: number,
     draw: boolean
   ) {
     this.winner = winner;
     this.loser = loser;
-    this.player1EloAfter = player1.elo;
-    this.player2EloAfter = player2.elo;
+    this.player1EloAfter = player1Elo;
+    this.player2EloAfter = player2Elo;
     this.draw = draw;
     this.finished = true;
   }
