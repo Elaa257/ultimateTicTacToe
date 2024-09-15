@@ -11,14 +11,16 @@ import { UpdateUserDTO } from '../user/DTOs/updateUserDTO';
 export class GameLogicService {
   constructor(
     @InjectRepository(User)
-    private userRepo: Repository<User>
+    @InjectRepository(Game)
+    private userRepo: Repository<User>,
+    private gameRepo: Repository<Game>
   ) {}
 
   //checks whether there is winner or if the game is draw
   async calculateGameOutcome(game: Game): Promise<EndGameDTO> {
     const board: number[] = game.board;
 
-    console.log("Turn: " + game.turn.nickname);
+    console.log('Turn: ' + game.turn.nickname);
 
     const rows: number[][] = [
       [0, 1, 2],
@@ -38,9 +40,10 @@ export class GameLogicService {
         Number(board[a]) === Number(board[b]) &&
         Number(board[b]) === Number(board[c])
       ) {
-
-        const winner = board[a] === 0 ? game.player1 : game.player2;
-        const loser = board[a] === 0 ? game.player2 : game.player1;
+        const winner = Number(board[a]) === 0 ? game.player1 : game.player2;
+        const loser = Number(board[a]) === 0 ? game.player2 : game.player1;
+        console.log('loser:' + loser.nickname);
+        console.log('winner:' + winner.nickname);
         await this.updateWinningStatistic(winner, loser);
         const endGameDTO = new EndGameDTO(
           winner,
@@ -146,7 +149,7 @@ export class GameLogicService {
     endState?: string
   ): Promise<ResponseDTO> {
     try {
-      console.log("calculated elo");
+      console.log('calculated elo');
       const adjustFactor: number = 20;
       let gamePoint: number = 0.5;
       const expectedValue: number =
@@ -165,8 +168,11 @@ export class GameLogicService {
       if (newEloPoints < 0) {
         newEloPoints = 0;
       }
-      console.log("elo p" + newEloPoints);
-      await this.userRepo.update({ nickname: player.nickname }, { elo: newEloPoints });
+      console.log('elo p' + newEloPoints);
+      await this.userRepo.update(
+        { nickname: player.nickname },
+        { elo: newEloPoints }
+      );
 
       return new ResponseDTO(
         true,
