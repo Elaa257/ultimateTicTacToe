@@ -124,7 +124,9 @@ export class TicTacToeComponent implements OnInit {
   }
 
   openGameOverDialog(winner: UserDTO, loser: UserDTO, draw: boolean) {
-    console.log(draw);
+    // Close any existing dialogs before opening a new one
+    this.dialog.closeAll();
+
     if (draw) {
       this.dialog.open(QueueModalComponent, {
         disableClose: true,
@@ -150,6 +152,6 @@ export class TicTacToeComponent implements OnInit {
         },
       });
     }
-
   }
+
 }
