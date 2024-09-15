@@ -1,8 +1,5 @@
-//controller for game endpoints
-
 import {
   Controller,
-  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -19,8 +16,6 @@ import { MultiGamesResponseDTO } from './DTOs/multiGamesResponseDTO';
 import { ResponseDTO } from '../DTOs/responseDTO';
 import { JwtAuthGuard } from '../auth/jwt/auth.guard';
 import { RolesGuard } from '../auth/roles/roles.guard';
-import { Roles } from '../auth/roles/roles.decorator';
-import { Role } from '../auth/roles/enum.roles';
 
 @ApiTags('game')
 @Controller('game')
@@ -63,27 +58,5 @@ export class GameController {
     @Query('player2Id', ParseIntPipe) player2Id: number
   ): Promise<ResponseDTO> {
     return await this.gameService.create(player1Id, player2Id);
-  }
-
-  //delete a specific game
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
-  @Delete('delete')
-  @ApiResponse({ type: ResponseDTO })
-  async deleteGame(
-    @Param('id', ParseIntPipe) id: number
-  ): Promise<ResponseDTO> {
-    return await this.gameService.deleteGame(id);
-  }
-
-  //update a specific game
-  @UseGuards(JwtAuthGuard)
-  @Put('update')
-  @ApiResponse({ type: GameResponseDto })
-  async updateGame(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('board index', ParseIntPipe) boardIndex: number,
-  ): Promise<GameResponseDto> {
-    return this.gameService.makeMove(id, boardIndex);
   }
 }

@@ -1,11 +1,8 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
-  Param,
-  ParseIntPipe,
-  Put, Res,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt/auth.guard';
@@ -31,28 +28,6 @@ export class UserController {
   async getAllUsers(): Promise<MultiUsersResponseDTO> {
     return await this.userService.getUsers();
   }
-  /*
-    @UseGuards(JwtAuthGuard)
-    @Put('update')
-    @ApiResponse({ type: ResponseDTO })
-    async updateUser(
-      @Session() session: SessionData,
-      @Body() updateUserDTO: UpdateUserDTO
-    ): Promise<ResponseDTO> {
-      return await this.userService.updateUser(session, updateUserDTO);
-    }
-  
-    
-    @UseGuards(JwtAuthGuard)
-    @Get('current-user')
-    @ApiResponse({ type: ResponseUserDTO })
-    async getLoggedInUser(@Req() req): Promise<ResponseUserDTO> {
-      const user = req.user;
-      console.log('Backend current-user: ', user);
-      return ;
-    }
-  
-     */
   @UseGuards(JwtAuthGuard)
   @Put('change-password')
   @ApiResponse({ type: ResponseUserDTO })

@@ -7,16 +7,13 @@ import { Observable, Subscriber } from 'rxjs';
 })
 export class WebSocketService {
   private socket: Socket;
-  private gameId: number | null = null;
 
   constructor() {
     this.socket = io('http://localhost:3000');
-    console.log('WebSocket connection initialized');
   }
 
 
   emit(event: string, data?: any): void {
-    console.log(`Emitting event: ${event}`, data);
     this.socket.emit(event, data);
   }
 

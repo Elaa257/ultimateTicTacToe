@@ -47,7 +47,6 @@ export class NavBarComponent {
     this.authService.isAuthenticated().subscribe(
       (isAuthenticated: boolean) => {
         this.isLoggedIn = isAuthenticated;
-        console.log("check ngDoCheck", this.isLoggedIn);
       },
       (error) => {
         console.error("Error checking authentication", error);

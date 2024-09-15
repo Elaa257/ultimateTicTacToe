@@ -104,7 +104,6 @@ export class ProfileComponent {
 
               eloChange = eloAfter - eloBefore;
 
-              // Determine result
               if (game.draw) {
                 result = 'Draw';
               } else if (game.winner && game.winner.id === this.user.id) {
@@ -166,7 +165,6 @@ export class ProfileComponent {
     const reader = new FileReader();
     reader.onload = () => {
       this.selectedImage = reader.result as string;  // Base64-String wird hier gespeichert
-      console.log(this.selectedImage);  // Zum Debuggen, um den Base64-String zu sehen
 
       if (this.user?.email && this.selectedImage) {
         // Sende das Bild an den Backend-Dienst
@@ -203,7 +201,7 @@ export class ProfileComponent {
   confirmPasswordChange(currentPassword: string, newPassword: string): void {
     const email = this.user?.email;
 
-    if (newPassword.trim().length < 0){
+    if (newPassword.trim().length < 0 || newPassword.length < 8){
       this.openSnackBar('you have to choose a valid Password', 'close', true)
       return
     }
@@ -222,8 +220,6 @@ export class ProfileComponent {
             console.error('Fehler beim Ändern des Passworts', error);
           },
         );
-      } else {
-        console.log('Email is undefined', email);
       }
     }
   }

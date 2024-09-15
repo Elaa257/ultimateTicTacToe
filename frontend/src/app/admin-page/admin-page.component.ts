@@ -29,8 +29,8 @@ import { Subscription } from 'rxjs';
 })
 export class AdminPageComponent implements OnInit, OnDestroy {
   isSmallScreen = false;
-  selectedTab = 'players'; // Default selected tab
-  tabIndex = 0; // Tracks the current tab index in MatTabGroup
+  selectedTab = 'players';
+  tabIndex = 0;
 
   users: UserDTO[] = [];
   displayedColumns: string[] = ['id', 'nickname', 'email', 'elo', 'role'];
@@ -119,7 +119,6 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions to prevent memory leaks
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 }

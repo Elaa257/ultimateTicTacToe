@@ -42,8 +42,6 @@ export class TicTacToeComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe(user => {
-      console.log('User:', user.user?.id);
-      console.log('User:', user.user?.id);
       this.player1Image = '/profile-picture.jpg'
       this.player2Image = '/profile-picture.jpg'
       if (this.player1?.profilePicture) {
@@ -73,7 +71,6 @@ export class TicTacToeComponent implements OnInit {
 
     this.webSocketService.listen<{ board: number[], turnId: number, gameEnd: boolean, loser: UserDTO, winner: UserDTO, draw: boolean }>('player-move')
       .subscribe((game) => {
-        console.log('Received player-move event', game);
         this.currentPlayerId = Number(game.turnId);
         this.cells = game.board.map(cell => Number(cell));
         this.gameEnd = game.gameEnd;
@@ -112,7 +109,6 @@ export class TicTacToeComponent implements OnInit {
   }
 
   getCellSymbol(cellValue: number): string {
-    console.log('Cell value:', cellValue);
     if (cellValue === -1) {
       return '';
     } else if (cellValue === 0) {

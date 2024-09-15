@@ -16,10 +16,8 @@ import { GameService } from 'src/game/game.service';
 
 interface QueueUser {
   clientId: string;
-  userId: number;
   username: string;
   elo: number;
-  socket: Socket;
 }
 
 @Injectable()
@@ -29,7 +27,6 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
   server: Server;
 
   private queue: QueueUser[] = [];
-  private matchingInProgress = false;
 
   constructor(
     private jwtService: JwtService,
@@ -86,76 +83,76 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
         return;
       }
 
-      // Add user to the queue
-      this.queue.push({
-        clientId: client.id,
-        userId: user.id,
-        username: user.nickname,
-        elo: user.elo,
-        socket: client,
-      });
+      // Try to match the user
+      const match = this.queue.find(
+        (queueUser) =>
+          Math.abs(queueUser.elo - user.elo) <= 99 &&
+          queueUser.clientId !== client.id
+      );
 
-      // Try to match users
-      await this.attemptMatch();
+      if (match) {
+        // Found a match
+        console.log(
+          `Matched ${user.nickname} (Elo: ${user.elo}) with ${match.username} (Elo: ${match.elo})`
+        );
+
+        const param = uuidv4();
+
+        const matchClientId = (
+          await this.userRepository.findOne({
+            where: { nickname: match.username },
+          })
+        ).id;
+        const userClientId = (
+          await this.userRepository.findOne({
+            where: { nickname: user.nickname },
+          })
+        ).id;
+        console.log(
+          `MatchClientId: ${matchClientId}, UserClientId: ${userClientId}`
+        );
+        const newGame = await this.gameService.create(
+          userClientId,
+          matchClientId
+        );
+        if (!newGame) {
+          throw new Error('Could not create game');
+        }
+        console.log(`Game created with ID ${newGame.id}`);
+
+        // Remove matched users from the queue
+        this.queue = this.queue.filter(
+          (item) =>
+            item.clientId !== client.id && item.clientId !== match.clientId
+        );
+
+        // Notify both players that a match has been found (player-joined)
+        this.server.to(client.id).emit('player-joined', {
+          opponent: match.username,
+          param: param,
+          gameId: newGame.id,
+        });
+        this.server.to(match.clientId).emit('player-joined', {
+          opponent: user.nickname,
+          param: param,
+          gameId: newGame.id,
+        });
+      } else {
+        // No match found, add user to the queue
+        this.queue.push({
+          clientId: client.id,
+          username: user.nickname,
+          elo: user.elo,
+        });
+        console.log(
+          `Current queue: ${this.queue.map((item) => item.username).join(', ')}`
+        );
+      }
+
+      this.broadcastQueueToAdmins();
     } catch (err) {
       console.log('Error during join-queue:', err.message);
       client.disconnect();
-    }
-  }
-
-  private async attemptMatch() {
-    if (this.matchingInProgress) {
-      return;
-    }
-
-    this.matchingInProgress = true;
-
-    try {
-      while (this.queue.length >= 2) {
-        const player1 = this.queue.shift()!;
-
-        const matchIndex = this.queue.findIndex(
-          (queueUser) =>
-            Math.abs(queueUser.elo - player1.elo) <= 99 &&
-            queueUser.clientId !== player1.clientId
-        );
-
-        if (matchIndex !== -1) {
-          const player2 = this.queue.splice(matchIndex, 1)[0];
-
-          // Create a unique room ID
-          const roomId = uuidv4();
-
-          // Add both clients to the room
-          player1.socket.join(roomId);
-          player2.socket.join(roomId);
-
-          // Create the game
-          const newGame = await this.gameService.create(
-            player1.userId,
-            player2.userId
-          );
-          if (!newGame) {
-            throw new Error('Could not create game');
-          }
-          console.log(`Game created with ID ${newGame.id}`);
-
-          // Emit 'player-joined' event to the room
-          this.server.to(roomId).emit('player-joined', {
-            opponents: [player1.username, player2.username],
-            param: roomId,
-            gameId: newGame.id,
-          });
-        } else {
-          // No suitable match found for player1, put them back in the queue
-          this.queue.unshift(player1);
-          break;
-        }
-      }
-    } catch (err) {
-      console.log('Error during attemptMatch:', err.message);
-    } finally {
-      this.matchingInProgress = false;
     }
   }
 
@@ -165,7 +162,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const token = this.extractJwtFromSocket(client);
       const payload = this.jwtService.verify(token);
       const user = await this.userRepository.findOne({
-        where: { id: payload.id },
+        where: { id: payload.sub },
       });
 
       if (!user) {
@@ -177,18 +174,16 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       // Remove the user from the queue
       this.queue = this.queue.filter((item) => item.clientId !== client.id);
 
-      // Notify admins about the updated queue
       this.broadcastQueueToAdmins();
 
-      // Optionally, confirm to the client that they've left the queue
       client.emit('left-queue', { message: 'You have left the queue.' });
+
     } catch (err) {
       console.log('Error during leave-queue:', err.message);
       client.disconnect();
     }
   }
 
-  // Get Queue Information's for the Admins
   @SubscribeMessage('get-queue')
   async handleGetQueue(client: Socket): Promise<void> {
     const token = this.extractJwtFromSocket(client);

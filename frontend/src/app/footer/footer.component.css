@@ -4,13 +4,13 @@ mat-toolbar.footer {
   padding: 10px;
   color: white;
   display: flex;
-  flex-direction: column; /* Stack items vertically on small screens */
+  flex-direction: column;
   align-items: center;
   width: 100%;
   box-sizing: border-box;
   position: relative;
-  margin-top: auto; /* Push footer to the bottom of the page */
-  z-index: 9999;  /* Ensure footer appears above other content, but stays below side nav on mobile view */
+  margin-top: auto;
+  z-index: 9999;
 }
 
 /* Footer left and right section styling */

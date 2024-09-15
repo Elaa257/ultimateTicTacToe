@@ -1,5 +1,3 @@
-//controls general game operations
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Game } from './game.entity';
@@ -41,7 +39,6 @@ export class GameService {
       );
       const saveGame = await this.gameRepo.save(newGame);
       this.eventEmitter.emit('game.started', newGame);
-      console.log('new game emmited to admin');
 
       if (!saveGame.id) {
         return new ResponseDTO(false, 'Failed to generate game ID');
@@ -118,7 +115,6 @@ export class GameService {
         })
         .getMany();
 
-      console.log(userGames);
       return new MultiGamesResponseDTO(
         `Successfully retrieved all available games for user ${userId}.`,
         userGames
@@ -130,66 +126,7 @@ export class GameService {
     }
   }
 
-  //get wins for a specific user
-  async getWins(userId: number): Promise<MultiGamesResponseDTO> {
-    try {
-      const user = await this.userService.getUser(userId);
-      const userGames = await this.gameRepo.find({
-        where: { winner: user.user },
-      });
-      return new MultiGamesResponseDTO(
-        `Successfully retrieved all available wins for user ${userId}.`,
-        userGames
-      );
-    } catch (error) {
-      return new MultiGamesResponseDTO(
-        `There was an error queueing wins for user ${userId}: ${error}`
-      );
-    }
-  }
-
-  //get loses for a specific user
-  async getLoses(userId: number): Promise<MultiGamesResponseDTO> {
-    try {
-      const user = await this.userService.getUser(userId);
-      const userGames = await this.gameRepo.find({
-        where: { loser: user.user },
-      });
-      return new MultiGamesResponseDTO(
-        `Successfully retrieved all available loses for user ${userId}.`,
-        userGames
-      );
-    } catch (error) {
-      return new MultiGamesResponseDTO(
-        `There was an error queueing loses for user ${userId}: ${error}`
-      );
-    }
-  }
-
-  //get drwas for a specific user
-  async getDraws(userId: number): Promise<MultiGamesResponseDTO> {
-    try {
-      const user = await this.userService.getUser(userId);
-      const userGames = await this.gameRepo.find({
-        where: [
-          { player1: user.user, draw: true },
-          { player2: user.user, draw: true },
-        ],
-      });
-
-      return new MultiGamesResponseDTO(
-        `Successfully retrieved all available draws for user ${userId}.`,
-        userGames
-      );
-    } catch (error) {
-      return new MultiGamesResponseDTO(
-        `There was an error queueing draws for user ${userId}: ${error}`
-      );
-    }
-  }
-
-  //delete a specific game
-  async deleteGame(id: number): Promise<ResponseDTO> {
+  async endGame(id: number): Promise<ResponseDTO> {
     const game: Game = await this.gameRepo.findOne({
       where: {
         id: id,
@@ -200,7 +137,6 @@ export class GameService {
     }
     try {
       this.eventEmitter.emit('game.ended', game);
-      await this.gameRepo.delete(id);
       return new ResponseDTO(true, `Game with id ${id} successfully deleted`);
     } catch (error) {
       return new ResponseDTO(

@@ -23,7 +23,7 @@ async function bootstrap() {
     new FastifyAdapter()
   );
   await app.register(fastifyCookie, {
-    secret: 'my-secret', // for signed cookies
+    secret: 'my-secret',
   });
 
   app.setGlobalPrefix('backend');
