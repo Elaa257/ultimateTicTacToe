@@ -18,6 +18,7 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { GameWithResult } from './DTOs/gamesDTO';
 import { MultiGamesResponseDTO } from './DTOs/gamesDTO';
+import { QueueModalComponent } from '../queue-modal/queue-modal.component';
 
 @Component({
   selector: 'app-profile',
@@ -83,8 +84,10 @@ export class ProfileComponent {
 
     this.userService.getGameHistory().subscribe(
       (data: MultiGamesResponseDTO) => {
+
         if (data.games) {
           this.games = data.games.map((game) => {
+
             let eloBefore = 0;
             let eloAfter = 0;
             let eloChange = 0;
@@ -231,6 +234,12 @@ export class ProfileComponent {
     this.winRate = this.wins === 0 && this.losses === 0 ? '0' : (this.wins / (this.wins + this.losses)).toFixed(2);
   }
 
+  openQueueModal(): void {
+    this.dialog.open(QueueModalComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+    });
+  }
   getEloBefore(game: GameWithResult): number {
     if (this.user) {
       if (game.player1.id === this.user.id) {

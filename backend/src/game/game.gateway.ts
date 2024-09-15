@@ -60,7 +60,6 @@ export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
         winner: response.winner,
         draw: response.draw,
       });
-
     }
   }
 

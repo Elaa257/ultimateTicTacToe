@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
+  MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose,
+  MatDialogRef, MatDialogTitle,
 } from '@angular/material/dialog';
 import { WebSocketService } from './web-socket.service';
 import { MatButton } from '@angular/material/button';
@@ -17,6 +17,9 @@ import { GameOverDialogData } from './gameOverDialogData';
   styleUrls: ['./queue-modal.component.css'],
   imports: [
     MatButton,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogTitle,
   ],
 })
 export class QueueModalComponent implements OnInit, OnDestroy {
@@ -35,7 +38,7 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     private webSocketService: WebSocketService,
     private router: Router,
     private tictactoeService: TicTacToeService,
-    @Inject(MAT_DIALOG_DATA) public data: GameOverDialogData
+  @Inject(MAT_DIALOG_DATA) public data: GameOverDialogData
   ) {
     if (data) {
       console.log('Data passed to the dialog:', data);
@@ -46,6 +49,7 @@ export class QueueModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.startTimer();
 
     this.playerJoinedSubscription = this.webSocketService
@@ -64,6 +68,7 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     this.stopTimer();
     this.stopCountdown();
     this.unsubscribeEvents();
+    this.dialogRef.close();
   }
 
   unsubscribeEvents() {
@@ -129,10 +134,10 @@ export class QueueModalComponent implements OnInit, OnDestroy {
 
   returnHome(): void {
     console.log('Return Home clicked');
-    this.dialogRef.close();
+    this.dialogRef.close(); // Request to close the modal
     this.dialogRef.afterClosed().subscribe(() => {
       console.log('Dialog closed, navigating to home');
-      this.router.navigate(['/home']);
+      this.router.navigate(['/home']); // Navigate after modal closes
     });
   }
 }

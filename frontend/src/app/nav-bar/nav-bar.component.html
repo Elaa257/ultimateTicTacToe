@@ -18,8 +18,6 @@
     </div>
 
     @if(isLoggedIn){
-      <span class="spacer-left"></span>
-      <button mat-button class="btn blinking-button" (click)="openQueueModal()">Play</button>
       <span class="spacer-right"></span>
       <button mat-button class="btn" [routerLink]="'/auth'" (click)="logout()"><span>Logout</span></button>
     } @else {
