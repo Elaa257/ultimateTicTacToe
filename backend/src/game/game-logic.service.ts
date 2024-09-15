@@ -10,12 +10,14 @@ import { UpdateUserDTO } from '../user/DTOs/updateUserDTO';
 @Injectable()
 export class GameLogicService {
   constructor(
-    @InjectRepository(User)
-    @InjectRepository(Game)
-    private userRepo: Repository<User>,
-    private gameRepo: Repository<Game>
+    @InjectRepository(User) 
+    private userRepo: Repository<User>
   ) {}
 
+  userElo: number;
+  set userEloPoints(elo: number) {
+    this.userElo = elo;
+  }
   //checks whether there is winner or if the game is draw
   async calculateGameOutcome(game: Game): Promise<EndGameDTO> {
     const board: number[] = game.board;
@@ -44,15 +46,26 @@ export class GameLogicService {
         const loser = Number(board[a]) === 0 ? game.player2 : game.player1;
         console.log('loser:' + loser.nickname);
         console.log('winner:' + winner.nickname);
-        await this.updateWinningStatistic(winner, loser);
-        const endGameDTO = new EndGameDTO(
-          winner,
-          loser,
-          game.player1,
-          game.player2,
-          false
-        );
-        return endGameDTO;
+        const player = await this.updateWinningStatistic(winner, loser);
+        if (player.userWinner.id === game.player1.id) {
+          const endGameDTO = new EndGameDTO(
+            winner,
+            loser,
+            player.userWinner,
+            player.userLoser,
+            false
+          );
+          return endGameDTO;
+        } else {
+          const endGameDTO = new EndGameDTO(
+            winner,
+            loser,
+            player.userLoser,
+            player.userWinner,
+            false
+          );
+          return endGameDTO;
+        }
       }
     }
 
@@ -111,7 +124,12 @@ export class GameLogicService {
       await this.userRepo.save(loser);
       await this.calculateNewElo(winner, loser, 'winner');
       await this.calculateNewElo(loser, winner, 'loser');
-      return new ResponseDTO(true, `Successfully updated winning statistic`);
+      return new ResponseDTO(
+        true,
+        `Successfully updated winning statistic`,
+        undefined,
+        undefined,
+      );
     } catch (error) {
       return new ResponseDTO(
         false,
@@ -174,9 +192,10 @@ export class GameLogicService {
         { elo: newEloPoints }
       );
 
+      this.userElo = newEloPoints;
       return new ResponseDTO(
         true,
-        `the new Elo-Points of ${player.nickname} are ${newEloPoints} now.`
+        `the new Elo-Points of ${player.nickname} are ${newEloPoints} now.`,
       );
     } catch (error) {
       return new ResponseDTO(
