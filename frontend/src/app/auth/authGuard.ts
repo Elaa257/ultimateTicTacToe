@@ -9,10 +9,16 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
+  /**
+ * Determines whether the route can be activated based on the user's authentication status.
+ * @param next The next route to be activated.
+ * @param state The current state of the router.
+ * @returns An Observable<boolean> indicating whether the route can be activated (true) or not (false).
+ */
   canActivate(
-    next: ActivatedRouteSnapshot,
+    route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
     return this.authService.isAuthenticated().pipe(
       map(isAuthenticated => {
