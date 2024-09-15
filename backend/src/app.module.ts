@@ -32,7 +32,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
         '..',
         '..',
         '..',
-        'ultimateTicTacToe',
         'frontend',
         'dist',
         'frontend',
