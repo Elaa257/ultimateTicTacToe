@@ -39,8 +39,6 @@ export class GameLogicService {
         Number(board[b]) === Number(board[c])
       ) {
 
-        console.log
-
         const winner = board[a] === 0 ? game.player1 : game.player2;
         const loser = board[a] === 0 ? game.player2 : game.player1;
         await this.updateWinningStatistic(winner, loser);
