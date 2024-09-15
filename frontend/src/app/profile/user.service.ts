@@ -48,7 +48,7 @@ export class UserService {
   }
 
   getGameHistory():Observable<MultiGamesResponseDTO>{
-    const response = this.http.get<MultiGamesResponseDTO>(`${this.apiGameUrl}/userGames`);
+    const response = this.http.get<MultiGamesResponseDTO>(`${this.apiGameUrl}/userGames`, { withCredentials: true });
       console.log("fetching Games for Users");
       console.log(response);
       return response;

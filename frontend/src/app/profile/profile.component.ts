@@ -84,8 +84,11 @@ export class ProfileComponent {
 
     this.userService.getGameHistory().subscribe(
       (data: MultiGamesResponseDTO) => {
+
         if (data.games) {
           this.games = data.games.map((game) => {
+            console.log("profile games" + game.id);
+
             let eloBefore = 0;
             let eloAfter = 0;
             let eloChange = 0;
