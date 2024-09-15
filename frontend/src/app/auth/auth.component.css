@@ -103,10 +103,19 @@ a {
   text-align: center;
   margin-top: 1rem;
   cursor: pointer;
+  margin-bottom: 2rem;
 }
 
 mat-form-field {
   width: 100%;
+}
+
+input {
+  padding-bottom: 10px;
+}
+
+a:hover {
+  color: whitesmoke;
 }
 
 @media (max-width: 768px) {
