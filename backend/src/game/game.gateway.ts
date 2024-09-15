@@ -10,7 +10,7 @@ import { Server, Socket } from 'socket.io';
 import { GameService } from 'src/game/game.service';
 import { JwtService } from '@nestjs/jwt';
 import { Game } from './game.entity';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 
 @WebSocketGateway({ cors: true })
 export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
@@ -21,7 +21,8 @@ export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
     private gameService: GameService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private eventEmitter: EventEmitter2
   ) {}
 
   handleConnection(socket: Socket) {
@@ -60,6 +61,10 @@ export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
         winner: response.winner,
         draw: response.draw,
       });
+    }
+
+    if (response.finished) {
+      await this.gameService.endGame(gameId);
     }
   }
 

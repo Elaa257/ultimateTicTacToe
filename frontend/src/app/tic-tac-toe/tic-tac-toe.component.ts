@@ -73,7 +73,6 @@ export class TicTacToeComponent implements OnInit {
 
     this.webSocketService.listen<{ board: number[], turnId: number, gameEnd: boolean, loser: UserDTO, winner: UserDTO, draw: boolean }>('player-move')
       .subscribe((game) => {
-        console.log('Received player-move event', game);
         this.currentPlayerId = Number(game.turnId);
         this.cells = game.board.map(cell => Number(cell));
         this.gameEnd = game.gameEnd;

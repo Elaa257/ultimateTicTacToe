@@ -4,7 +4,7 @@
 
 1. Checkout `dev`.
 2. Run `npm install` in the `frontend` and `backend` directories.
-3. Run `npm run build` in the `frontend` directory.
+3. Run `ng build` in the `frontend` directory.
 4. Run `npm start` in the `backend` directory.
 5. You can now access the application via `localhost:3000`.
 
