@@ -10,24 +10,21 @@ import { Server, Socket } from 'socket.io';
 import { GameService } from 'src/game/game.service';
 import { JwtService } from '@nestjs/jwt';
 import { Game } from './game.entity';
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { OnEvent } from '@nestjs/event-emitter';
 
 @WebSocketGateway({ cors: true })
 export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  private activeGames: Game[] = []; // Declare activeGames array
+  private activeGames: Game[] = [];
 
   constructor(
     private gameService: GameService,
-    private jwtService: JwtService,
-    private eventEmitter: EventEmitter2
+    private jwtService: JwtService
   ) {}
 
   handleConnection(socket: Socket) {
-    console.log('New Admin client connected:', socket.id);
-
     const token = this.extractJwtFromSocket(socket);
     if (!token) {
       console.error('No token found for socket:', socket.id);
@@ -49,7 +46,6 @@ export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
   async handlePlayerMove(
     @MessageBody() data: { gameId: number; index: number }
   ) {
-    console.log('Received make-move event with data:', data);
     const { gameId, index } = data;
     const response = await this.gameService.makeMove(gameId, index);
     if (response.message === 'Successfully made move') {
@@ -74,7 +70,6 @@ export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
 
   @OnEvent('game.started')
   handleGameStartedEvent(game: Game) {
-    console.log('game started event emitted');
     this.activeGames.push(game);
     this.broadcastActiveGamesToAdmins();
   }
@@ -88,8 +83,6 @@ export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('get-games')
   handleGetGames(client: Socket) {
-    console.log('Received get-games event from:', client.id);
-
     const token = this.extractJwtFromSocket(client);
     if (!token) {
       console.error('No token found for socket:', client.id);
@@ -139,7 +132,6 @@ export class GameGateWay implements OnGatewayConnection, OnGatewayDisconnect {
       id: game.id,
       player1: { id: game.player1.id, nickname: game.player1.nickname },
       player2: { id: game.player2.id, nickname: game.player2.nickname },
-      // Include other necessary properties
     }));
   }
 

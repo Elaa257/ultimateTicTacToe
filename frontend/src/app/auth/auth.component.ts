@@ -36,18 +36,19 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
   styleUrl: './auth.component.css'
 })
 export class AuthComponent {
-  // Flag to toggle between login and registration views
+
   protected isLoginVisible = true;
 
-  // Error handling status and messages
   protected isError: boolean = false;
   protected message: string = '';
+
   // Registration form fields
   protected nickname: string = '';
   protected registerPassword: string = '';
   protected confirmPassword: string = '';
   protected registerEmail: string = '';
   protected role?: string;
+
   // Login form fields
   protected loginPassword: string = '';
   protected loginEmail: string = '';
@@ -60,11 +61,10 @@ export class AuthComponent {
   constructor(private authService: AuthService, private snackBar: MatSnackBar) { }
 
   /**
-  * Handles the registration process by validating the input fields 
+  * Handles the registration process by validating the input fields
   * and calling the AuthService to register the user.
   */
   protected onRegister(): void {
-    console.log(this.nickname, this.registerPassword, this.registerEmail);
 
     if (!this.nickname.trim() || !this.registerEmail.trim() || !this.registerPassword) {
       this.showError('All fields are required.');

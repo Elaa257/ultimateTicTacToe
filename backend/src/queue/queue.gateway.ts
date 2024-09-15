@@ -118,7 +118,6 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
         if (!newGame) {
           throw new Error('Could not create game');
         }
-        console.log(newGame);
         console.log(`Game created with ID ${newGame.id}`);
 
         // Remove matched users from the queue
@@ -175,10 +174,8 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       // Remove the user from the queue
       this.queue = this.queue.filter((item) => item.clientId !== client.id);
 
-      // Notify admins about the updated queue
       this.broadcastQueueToAdmins();
 
-      // Optionally, confirm to the client that they've left the queue
       client.emit('left-queue', { message: 'You have left the queue.' });
 
     } catch (err) {
@@ -187,10 +184,6 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-
-
-
-  //Get Queue Information's for the Admins
   @SubscribeMessage('get-queue')
   async handleGetQueue(client: Socket): Promise<void> {
     const token = this.extractJwtFromSocket(client);

@@ -1,5 +1,3 @@
-//controls general game operations
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Game } from './game.entity';
@@ -41,7 +39,6 @@ export class GameService {
       );
       const saveGame = await this.gameRepo.save(newGame);
       this.eventEmitter.emit('game.started', newGame);
-      console.log('new game emmited to admin');
 
       if (!saveGame.id) {
         return new ResponseDTO(false, 'Failed to generate game ID');
@@ -118,7 +115,6 @@ export class GameService {
         })
         .getMany();
 
-      console.log(userGames);
       return new MultiGamesResponseDTO(
         `Successfully retrieved all available games for user ${userId}.`,
         userGames

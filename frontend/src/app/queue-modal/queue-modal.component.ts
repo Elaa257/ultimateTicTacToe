@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import {
-  MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose,
+  MAT_DIALOG_DATA, MatDialogActions, MatDialogClose,
   MatDialogRef, MatDialogTitle,
 } from '@angular/material/dialog';
 import { WebSocketService } from './web-socket.service';
@@ -41,7 +41,6 @@ export class QueueModalComponent implements OnInit, OnDestroy {
   @Inject(MAT_DIALOG_DATA) public data: GameOverDialogData
   ) {
     if (data) {
-      console.log('Data passed to the dialog:', data);
       this.gameModal = true;
     } else {
       this.webSocketService.emit('join-queue');
@@ -55,7 +54,6 @@ export class QueueModalComponent implements OnInit, OnDestroy {
     this.playerJoinedSubscription = this.webSocketService
       .listen<{ opponent: string; param: string; gameId: number }>('player-joined')
       .subscribe((data) => {
-        console.log('Received player-joined event');
         this.canStartGame = true;
         this.tictactoeService.gameId = data.gameId;
         this.urlParam = data.param;
@@ -106,14 +104,12 @@ export class QueueModalComponent implements OnInit, OnDestroy {
   }
 
   emitStartGame(): void {
-    console.log('Emitting start-game event after countdown');
     this.dialogRef.close();
     this.leaveQueue();
     this.redirectToGame();
   }
 
   redirectToGame(): void {
-    console.log('Redirecting to /game');
     this.router.navigate(['/game/' + this.urlParam]);
   }
 
@@ -128,16 +124,13 @@ export class QueueModalComponent implements OnInit, OnDestroy {
   }
 
   leaveQueue(): void {
-    console.log('Leaving the queue');
     this.webSocketService.emit('leave-queue');
   }
 
   returnHome(): void {
-    console.log('Return Home clicked');
-    this.dialogRef.close(); // Request to close the modal
+    this.dialogRef.close();
     this.dialogRef.afterClosed().subscribe(() => {
-      console.log('Dialog closed, navigating to home');
-      this.router.navigate(['/home']); // Navigate after modal closes
+      this.router.navigate(['/home']);
     });
   }
 }

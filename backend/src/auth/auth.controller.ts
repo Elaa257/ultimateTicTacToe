@@ -14,14 +14,12 @@ import { LoginDTO } from './DTOs/loginDTO';
 import { FastifyReply } from 'fastify';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from './jwt/auth.guard';
-import { UserService } from '../user/user.service';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
-    private userService: UserService
+    private readonly authService: AuthService
   ) {}
 
   @Post('register')
@@ -34,8 +32,8 @@ export class AuthController {
       await this.authService.register(registerDTO);
     reply
       .setCookie('access_token', access_token, {
-        httpOnly: true, // Makes the cookie accessible only by the web server
-        path: '/', //Makes the cookie accessible by all routes
+        httpOnly: true,
+        path: '/',
       })
       .send(response);
   }
@@ -49,8 +47,8 @@ export class AuthController {
     const { access_token, response } = await this.authService.login(loginDto);
     reply
       .setCookie('access_token', access_token, {
-        httpOnly: true, // Makes the cookie accessible only by the web server
-        path: '/', //Makes the cookie accessible by all routes
+        httpOnly: true,
+        path: '/',
       })
       .send(response);
   }

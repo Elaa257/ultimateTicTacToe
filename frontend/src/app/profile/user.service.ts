@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsersDTO } from './DTOs/userDTO';
 import { MultiGamesResponseDTO } from './DTOs/gamesDTO';
-import { GameDTO, Payload, ResponseDTO } from './DTOs/responseDTO';
+import { Payload, ResponseDTO } from './DTOs/responseDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +19,6 @@ export class UserService {
 
   getAllUsers(): Observable<UsersDTO> {
     const response = this.http.get<UsersDTO>(this.apiUrl, { withCredentials: true });
-    console.log('users: ' + response);
-    return response;
-  }
-
-  getAllUserGames(): Observable<MultiGamesResponseDTO> {
-    const response = this.http.get<MultiGamesResponseDTO>(`{this.apiGameUrl}/userGames`, { withCredentials: true });
     console.log('users: ' + response);
     return response;
   }
@@ -49,7 +43,6 @@ export class UserService {
 
   getGameHistory():Observable<MultiGamesResponseDTO>{
     const response = this.http.get<MultiGamesResponseDTO>(`${this.apiGameUrl}/userGames`, { withCredentials: true });
-      console.log("fetching Games for Users");
       console.log(response);
       return response;
 

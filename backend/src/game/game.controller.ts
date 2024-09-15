@@ -1,5 +1,3 @@
-//controller for game endpoints
-
 import {
   Controller,
   Get,
@@ -60,16 +58,5 @@ export class GameController {
     @Query('player2Id', ParseIntPipe) player2Id: number
   ): Promise<ResponseDTO> {
     return await this.gameService.create(player1Id, player2Id);
-  }
-
-  //update a specific game
-  @UseGuards(JwtAuthGuard)
-  @Put('update')
-  @ApiResponse({ type: GameResponseDto })
-  async updateGame(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('board index', ParseIntPipe) boardIndex: number,
-  ): Promise<GameResponseDto> {
-    return this.gameService.makeMove(id, boardIndex);
   }
 }

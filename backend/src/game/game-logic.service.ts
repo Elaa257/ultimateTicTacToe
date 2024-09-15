@@ -93,9 +93,6 @@ export class GameLogicService {
     ];
 
     for (const row of rows) {
-      console.log(board[row[0]]);
-      console.log(board[row[1]]);
-      console.log(board[row[2]]);
       if (
         Number(board[row[0]]) === -1 ||
         Number(board[row[1]]) === -1 ||
@@ -143,12 +140,6 @@ export class GameLogicService {
     }
   }
 
-  /**
-   * CalculateNewElo needs two valid UserObjects and an calculated endstate.
-   * @param player
-   * @param opponent
-   * @param endState
-   */
   async calculateNewElo(
     player: UpdateUserDTO,
     opponent: UpdateUserDTO,

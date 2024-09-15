@@ -7,26 +7,22 @@ export class ResponseDTO {
   message: string;
   @ApiProperty({ required: false })
   id: number;
-  @ApiProperty({ required: false }) // Indicate that user is optional
+  @ApiProperty({ required: false })
   user?: any;
-  @ApiProperty({ required: false }) // Indicate that user is optional
+  @ApiProperty({ required: false })
   userWinner?: any;
-  @ApiProperty({ required: false }) // Indicate that user is optional
+  @ApiProperty({ required: false })
   userLoser?: any;
 
   constructor(
     ok: boolean,
     message: string,
     user?: any,
-    id?: number,
-    userWinner?: any,
-    userLoser?: any
+    id?: number
   ) {
     this.ok = ok;
     this.message = message;
     this.user = user;
     this.id = id;
-    this.userWinner = userWinner;
-    this.userLoser = userLoser;
   }
 }
