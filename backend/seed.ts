@@ -30,6 +30,17 @@ async function seed() {
     await userRepository.save(user);
     users.push(user);
   }
+  const adminUsers = [];
+  for (let i = 1; i <= 3; i++){
+    const admin = new User();
+    admin.email = `admin${i}@example.com`;
+    admin.password = crypto.createHmac('sha256', 'password123').digest('hex');
+    admin.nickname = `Admin${i}`;
+    admin.role = Role.Admin;
+    await validateOrReject(admin);
+    await userRepository.save(admin);
+    adminUsers.push(admin);
+  }
 
   // For each user, create 3 games
   for (const user of users) {
