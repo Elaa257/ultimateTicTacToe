@@ -1,7 +1,6 @@
 //controller for game endpoints
 
 import {
-  Body,
   Controller,
   Delete,
   Get,
@@ -14,7 +13,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { GameService } from './game.service';
-import { UpdateGameRequestDto } from './DTOs/updateGameRequestDto';
 import { GameResponseDto } from './DTOs/gameResponseDto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MultiGamesResponseDTO } from './DTOs/multiGamesResponseDTO';
@@ -62,7 +60,7 @@ export class GameController {
   @Get('userWins')
   @ApiResponse({ type: MultiGamesResponseDTO })
   async getWins(
-    @Param('userId', ParseIntPipe) userId: number,
+    @Param('userId', ParseIntPipe) userId: number
   ): Promise<MultiGamesResponseDTO> {
     return await this.gameService.getWins(userId);
   }
@@ -72,7 +70,7 @@ export class GameController {
   @Get('userLoses')
   @ApiResponse({ type: MultiGamesResponseDTO })
   async getLoses(
-    @Param('userId', ParseIntPipe) userId: number,
+    @Param('userId', ParseIntPipe) userId: number
   ): Promise<MultiGamesResponseDTO> {
     return await this.gameService.getLoses(userId);
   }
@@ -82,7 +80,7 @@ export class GameController {
   @Get('userDraws')
   @ApiResponse({ type: MultiGamesResponseDTO })
   async getDraws(
-    @Param('userId', ParseIntPipe) userId: number,
+    @Param('userId', ParseIntPipe) userId: number
   ): Promise<MultiGamesResponseDTO> {
     return await this.gameService.getDraws(userId);
   }
@@ -115,7 +113,7 @@ export class GameController {
   @ApiResponse({ type: GameResponseDto })
   async updateGame(
     @Param('id', ParseIntPipe) id: number,
-    @Param('board index', ParseIntPipe) boardIndex: number,
+    @Param('board index', ParseIntPipe) boardIndex: number
   ): Promise<GameResponseDto> {
     return this.gameService.makeMove(id, boardIndex);
   }
